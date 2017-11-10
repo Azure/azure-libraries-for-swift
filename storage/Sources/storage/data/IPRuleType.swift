@@ -23,7 +23,7 @@ public struct IPRuleType : IPRuleTypeProtocol {
 
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
-    try container.encode(value, forKey: .value)
-    try container.encode(action as! ActionEnum?, forKey: .action)
+    if self.value != nil {try container.encode(value, forKey: .value)}
+    if self.action != nil {try container.encode(action, forKey: .action)}
   }
 }

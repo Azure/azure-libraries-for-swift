@@ -23,7 +23,7 @@ public struct CustomDomainType : CustomDomainTypeProtocol {
 
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
-    try container.encode(name, forKey: .name)
-    try container.encode(useSubDomain, forKey: .useSubDomain)
+    if self.name != nil {try container.encode(name, forKey: .name)}
+    if self.useSubDomain != nil {try container.encode(useSubDomain, forKey: .useSubDomain)}
   }
 }

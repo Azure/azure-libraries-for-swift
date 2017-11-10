@@ -33,9 +33,9 @@ public struct UsageType : UsageTypeProtocol {
 
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
-    try container.encode(unit as! UsageUnitEnum?, forKey: .unit)
-    try container.encode(currentValue, forKey: .currentValue)
-    try container.encode(limit, forKey: .limit)
-    try container.encode(name as! UsageNameType?, forKey: .name)
+    if self.unit != nil {try container.encode(unit, forKey: .unit)}
+    if self.currentValue != nil {try container.encode(currentValue, forKey: .currentValue)}
+    if self.limit != nil {try container.encode(limit, forKey: .limit)}
+    if self.name != nil {try container.encode(name as! UsageNameType?, forKey: .name)}
   }
 }

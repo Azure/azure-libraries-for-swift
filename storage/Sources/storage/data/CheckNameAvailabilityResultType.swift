@@ -28,8 +28,8 @@ public struct CheckNameAvailabilityResultType : CheckNameAvailabilityResultTypeP
 
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
-    try container.encode(nameAvailable, forKey: .nameAvailable)
-    try container.encode(reason as! ReasonEnum?, forKey: .reason)
-    try container.encode(message, forKey: .message)
+    if self.nameAvailable != nil {try container.encode(nameAvailable, forKey: .nameAvailable)}
+    if self.reason != nil {try container.encode(reason, forKey: .reason)}
+    if self.message != nil {try container.encode(message, forKey: .message)}
   }
 }

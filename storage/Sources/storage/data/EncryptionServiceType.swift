@@ -23,7 +23,7 @@ public struct EncryptionServiceType : EncryptionServiceTypeProtocol {
 
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
-    try container.encode(enabled, forKey: .enabled)
-    try container.encode(lastEnabledTime, forKey: .lastEnabledTime)
+    if self.enabled != nil {try container.encode(enabled, forKey: .enabled)}
+    if self.lastEnabledTime != nil {try container.encode(lastEnabledTime, forKey: .lastEnabledTime)}
   }
 }

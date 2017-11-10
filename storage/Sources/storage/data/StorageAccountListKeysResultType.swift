@@ -18,6 +18,6 @@ public struct StorageAccountListKeysResultType : StorageAccountListKeysResultTyp
 
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
-    try container.encode(keys as! [StorageAccountKeyType?]?, forKey: .keys)
+    if self.keys != nil {try container.encode(keys as! [StorageAccountKeyType?]?, forKey: .keys)}
   }
 }

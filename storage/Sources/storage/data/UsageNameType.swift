@@ -23,7 +23,7 @@ public struct UsageNameType : UsageNameTypeProtocol {
 
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
-    try container.encode(value, forKey: .value)
-    try container.encode(localizedValue, forKey: .localizedValue)
+    if self.value != nil {try container.encode(value, forKey: .value)}
+    if self.localizedValue != nil {try container.encode(localizedValue, forKey: .localizedValue)}
   }
 }

@@ -1,3 +1,4 @@
+import Foundation
 import azureSwiftRuntime
 // Create asynchronously creates a new storage account with the specified parameters. If an account is already created
 // and a subsequent create request is issued with different properties, the account properties will be updated. If an
@@ -26,7 +27,16 @@ class StorageAccountsCreateCommand : BaseCommand {
         self.body = parameters
     }
 
-    override func returnFunc(decoder: ResponseDecoder, jsonString: String) throws -> Decodable? {
-        return try decoder.decode(StorageAccountListResultType?.self, from: jsonString)
+    override func encodeBody() throws -> Data? {
+        let jsonEncoder = JSONEncoder()
+        let jsonData = try jsonEncoder.encode(parameters as! StorageAccountCreateParametersType?)
+        return jsonData
     }
-}
+
+    override func returnFunc(decoder: ResponseDecoder, jsonString: String) throws -> Decodable? {
+        return try decoder.decode(StorageAccountType?.self, from: jsonString)
+    }
+    public func execute(client: RuntimeClient) throws -> StorageAccountTypeProtocol? {
+        return try client.execute(command: self) as! StorageAccountTypeProtocol?
+    }
+    }

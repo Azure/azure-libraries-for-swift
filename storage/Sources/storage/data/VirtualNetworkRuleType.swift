@@ -28,8 +28,8 @@ public struct VirtualNetworkRuleType : VirtualNetworkRuleTypeProtocol {
 
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
-    try container.encode(id, forKey: .id)
-    try container.encode(action as! ActionEnum?, forKey: .action)
-    try container.encode(state as! StateEnum?, forKey: .state)
+    if self.id != nil {try container.encode(id, forKey: .id)}
+    if self.action != nil {try container.encode(action, forKey: .action)}
+    if self.state != nil {try container.encode(state, forKey: .state)}
   }
 }

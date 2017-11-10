@@ -28,8 +28,8 @@ public struct StorageAccountKeyType : StorageAccountKeyTypeProtocol {
 
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
-    try container.encode(keyName, forKey: .keyName)
-    try container.encode(value, forKey: .value)
-    try container.encode(permissions as! KeyPermissionEnum?, forKey: .permissions)
+    if self.keyName != nil {try container.encode(keyName, forKey: .keyName)}
+    if self.value != nil {try container.encode(value, forKey: .value)}
+    if self.permissions != nil {try container.encode(permissions, forKey: .permissions)}
   }
 }

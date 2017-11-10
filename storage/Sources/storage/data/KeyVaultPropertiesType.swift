@@ -28,8 +28,8 @@ public struct KeyVaultPropertiesType : KeyVaultPropertiesTypeProtocol {
 
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
-    try container.encode(keyname, forKey: .keyname)
-    try container.encode(keyversion, forKey: .keyversion)
-    try container.encode(keyvaulturi, forKey: .keyvaulturi)
+    if self.keyname != nil {try container.encode(keyname, forKey: .keyname)}
+    if self.keyversion != nil {try container.encode(keyversion, forKey: .keyversion)}
+    if self.keyvaulturi != nil {try container.encode(keyvaulturi, forKey: .keyvaulturi)}
   }
 }

@@ -1,3 +1,4 @@
+import Foundation
 import azureSwiftRuntime
 // Delete deletes a storage account in Microsoft Azure.
 class StorageAccountsDeleteCommand : BaseCommand {
@@ -20,7 +21,8 @@ class StorageAccountsDeleteCommand : BaseCommand {
         if self.apiVersion != nil { queryParameters["api-version"] = String(describing: self.apiVersion!) }
     }
 
-    override func returnFunc(decoder: ResponseDecoder, jsonString: String) throws -> Decodable? {
-        return try decoder.decode(StorageAccountListResultType?.self, from: jsonString)
+
+    public func execute(client: RuntimeClient) throws -> Decodable? {
+        return try client.execute(command: self)
     }
-}
+    }

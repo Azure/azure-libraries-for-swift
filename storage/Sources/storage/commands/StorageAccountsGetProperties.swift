@@ -1,3 +1,4 @@
+import Foundation
 import azureSwiftRuntime
 // GetProperties returns the properties for the specified storage account including but not limited to name, SKU name,
 // location, and account status. The ListKeys operation should be used to retrieve storage keys.
@@ -21,7 +22,11 @@ class StorageAccountsGetPropertiesCommand : BaseCommand {
         if self.apiVersion != nil { queryParameters["api-version"] = String(describing: self.apiVersion!) }
     }
 
+
     override func returnFunc(decoder: ResponseDecoder, jsonString: String) throws -> Decodable? {
-        return try decoder.decode(StorageAccountListResultType?.self, from: jsonString)
+        return try decoder.decode(StorageAccountType?.self, from: jsonString)
     }
-}
+    public func execute(client: RuntimeClient) throws -> StorageAccountTypeProtocol? {
+        return try client.execute(command: self) as! StorageAccountTypeProtocol?
+    }
+    }

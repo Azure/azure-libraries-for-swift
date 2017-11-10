@@ -83,19 +83,19 @@ public struct StorageAccountPropertiesType : StorageAccountPropertiesTypeProtoco
 
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
-    try container.encode(provisioningState as! ProvisioningStateEnum?, forKey: .provisioningState)
-    try container.encode(primaryEndpoints as! EndpointsType?, forKey: .primaryEndpoints)
-    try container.encode(primaryLocation, forKey: .primaryLocation)
-    try container.encode(statusOfPrimary as! AccountStatusEnum?, forKey: .statusOfPrimary)
-    try container.encode(lastGeoFailoverTime, forKey: .lastGeoFailoverTime)
-    try container.encode(secondaryLocation, forKey: .secondaryLocation)
-    try container.encode(statusOfSecondary as! AccountStatusEnum?, forKey: .statusOfSecondary)
-    try container.encode(creationTime, forKey: .creationTime)
-    try container.encode(customDomain as! CustomDomainType?, forKey: .customDomain)
-    try container.encode(secondaryEndpoints as! EndpointsType?, forKey: .secondaryEndpoints)
-    try container.encode(encryption as! EncryptionType?, forKey: .encryption)
-    try container.encode(accessTier as! AccessTierEnum?, forKey: .accessTier)
-    try container.encode(supportsHttpsTrafficOnly, forKey: .supportsHttpsTrafficOnly)
-    try container.encode(networkAcls as! NetworkRuleSetType?, forKey: .networkAcls)
+    if self.provisioningState != nil {try container.encode(provisioningState, forKey: .provisioningState)}
+    if self.primaryEndpoints != nil {try container.encode(primaryEndpoints as! EndpointsType?, forKey: .primaryEndpoints)}
+    if self.primaryLocation != nil {try container.encode(primaryLocation, forKey: .primaryLocation)}
+    if self.statusOfPrimary != nil {try container.encode(statusOfPrimary, forKey: .statusOfPrimary)}
+    if self.lastGeoFailoverTime != nil {try container.encode(lastGeoFailoverTime, forKey: .lastGeoFailoverTime)}
+    if self.secondaryLocation != nil {try container.encode(secondaryLocation, forKey: .secondaryLocation)}
+    if self.statusOfSecondary != nil {try container.encode(statusOfSecondary, forKey: .statusOfSecondary)}
+    if self.creationTime != nil {try container.encode(creationTime, forKey: .creationTime)}
+    if self.customDomain != nil {try container.encode(customDomain as! CustomDomainType?, forKey: .customDomain)}
+    if self.secondaryEndpoints != nil {try container.encode(secondaryEndpoints as! EndpointsType?, forKey: .secondaryEndpoints)}
+    if self.encryption != nil {try container.encode(encryption as! EncryptionType?, forKey: .encryption)}
+    if self.accessTier != nil {try container.encode(accessTier, forKey: .accessTier)}
+    if self.supportsHttpsTrafficOnly != nil {try container.encode(supportsHttpsTrafficOnly, forKey: .supportsHttpsTrafficOnly)}
+    if self.networkAcls != nil {try container.encode(networkAcls as! NetworkRuleSetType?, forKey: .networkAcls)}
   }
 }

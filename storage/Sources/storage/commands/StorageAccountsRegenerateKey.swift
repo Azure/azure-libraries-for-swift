@@ -1,3 +1,4 @@
+import Foundation
 import azureSwiftRuntime
 // RegenerateKey regenerates one of the access keys for the specified storage account.
 class StorageAccountsRegenerateKeyCommand : BaseCommand {
@@ -22,7 +23,16 @@ class StorageAccountsRegenerateKeyCommand : BaseCommand {
         self.body = regenerateKey
     }
 
-    override func returnFunc(decoder: ResponseDecoder, jsonString: String) throws -> Decodable? {
-        return try decoder.decode(StorageAccountListResultType?.self, from: jsonString)
+    override func encodeBody() throws -> Data? {
+        let jsonEncoder = JSONEncoder()
+        let jsonData = try jsonEncoder.encode(regenerateKey as! StorageAccountRegenerateKeyParametersType?)
+        return jsonData
     }
-}
+
+    override func returnFunc(decoder: ResponseDecoder, jsonString: String) throws -> Decodable? {
+        return try decoder.decode(StorageAccountListKeysResultType?.self, from: jsonString)
+    }
+    public func execute(client: RuntimeClient) throws -> StorageAccountListKeysResultTypeProtocol? {
+        return try client.execute(command: self) as! StorageAccountListKeysResultTypeProtocol?
+    }
+    }

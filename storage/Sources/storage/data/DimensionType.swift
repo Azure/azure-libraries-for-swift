@@ -23,7 +23,7 @@ public struct DimensionType : DimensionTypeProtocol {
 
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
-    try container.encode(name, forKey: .name)
-    try container.encode(displayName, forKey: .displayName)
+    if self.name != nil {try container.encode(name, forKey: .name)}
+    if self.displayName != nil {try container.encode(displayName, forKey: .displayName)}
   }
 }

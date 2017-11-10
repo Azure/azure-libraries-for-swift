@@ -1,3 +1,4 @@
+import Foundation
 import azureSwiftRuntime
 // Update the update operation can be used to update the SKU, encryption, access tier, or tags for a storage account.
 // It can also be used to map the account to a custom domain. Only one custom domain is supported per storage account;
@@ -27,7 +28,16 @@ class StorageAccountsUpdateCommand : BaseCommand {
         self.body = parameters
     }
 
-    override func returnFunc(decoder: ResponseDecoder, jsonString: String) throws -> Decodable? {
-        return try decoder.decode(StorageAccountListResultType?.self, from: jsonString)
+    override func encodeBody() throws -> Data? {
+        let jsonEncoder = JSONEncoder()
+        let jsonData = try jsonEncoder.encode(parameters as! StorageAccountUpdateParametersType?)
+        return jsonData
     }
-}
+
+    override func returnFunc(decoder: ResponseDecoder, jsonString: String) throws -> Decodable? {
+        return try decoder.decode(StorageAccountType?.self, from: jsonString)
+    }
+    public func execute(client: RuntimeClient) throws -> StorageAccountTypeProtocol? {
+        return try client.execute(command: self) as! StorageAccountTypeProtocol?
+    }
+    }

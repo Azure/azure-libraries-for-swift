@@ -18,6 +18,6 @@ public struct StorageAccountListResultType : StorageAccountListResultTypeProtoco
 
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
-    try container.encode(value as! [StorageAccountType?]?, forKey: .value)
+    if self.value != nil {try container.encode(value as! [StorageAccountType?]?, forKey: .value)}
   }
 }

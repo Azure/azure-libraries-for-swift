@@ -28,8 +28,8 @@ public struct IdentityType : IdentityTypeProtocol {
 
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
-    try container.encode(principalId, forKey: .principalId)
-    try container.encode(tenantId, forKey: .tenantId)
-    try container.encode(type, forKey: .type)
+    if self.principalId != nil {try container.encode(principalId, forKey: .principalId)}
+    if self.tenantId != nil {try container.encode(tenantId, forKey: .tenantId)}
+    if self.type != nil {try container.encode(type, forKey: .type)}
   }
 }

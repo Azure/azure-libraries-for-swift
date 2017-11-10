@@ -1,3 +1,4 @@
+import Foundation
 import azureSwiftRuntime
 // CheckNameAvailability checks that the storage account name is valid and is not already in use.
 class StorageAccountsCheckNameAvailabilityCommand : BaseCommand {
@@ -18,7 +19,16 @@ class StorageAccountsCheckNameAvailabilityCommand : BaseCommand {
         self.body = accountName
     }
 
-    override func returnFunc(decoder: ResponseDecoder, jsonString: String) throws -> Decodable? {
-        return try decoder.decode(StorageAccountListResultType?.self, from: jsonString)
+    override func encodeBody() throws -> Data? {
+        let jsonEncoder = JSONEncoder()
+        let jsonData = try jsonEncoder.encode(accountName as! StorageAccountCheckNameAvailabilityParametersType?)
+        return jsonData
     }
-}
+
+    override func returnFunc(decoder: ResponseDecoder, jsonString: String) throws -> Decodable? {
+        return try decoder.decode(CheckNameAvailabilityResultType?.self, from: jsonString)
+    }
+    public func execute(client: RuntimeClient) throws -> CheckNameAvailabilityResultTypeProtocol? {
+        return try client.execute(command: self) as! CheckNameAvailabilityResultTypeProtocol?
+    }
+    }

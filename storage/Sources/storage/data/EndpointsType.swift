@@ -33,9 +33,9 @@ public struct EndpointsType : EndpointsTypeProtocol {
 
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
-    try container.encode(blob, forKey: .blob)
-    try container.encode(queue, forKey: .queue)
-    try container.encode(table, forKey: .table)
-    try container.encode(file, forKey: .file)
+    if self.blob != nil {try container.encode(blob, forKey: .blob)}
+    if self.queue != nil {try container.encode(queue, forKey: .queue)}
+    if self.table != nil {try container.encode(table, forKey: .table)}
+    if self.file != nil {try container.encode(file, forKey: .file)}
   }
 }

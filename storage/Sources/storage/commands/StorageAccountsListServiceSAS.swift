@@ -1,3 +1,4 @@
+import Foundation
 import azureSwiftRuntime
 // ListServiceSAS list service SAS credentials of a specific resource.
 class StorageAccountsListServiceSASCommand : BaseCommand {
@@ -22,7 +23,16 @@ class StorageAccountsListServiceSASCommand : BaseCommand {
         self.body = parameters
     }
 
-    override func returnFunc(decoder: ResponseDecoder, jsonString: String) throws -> Decodable? {
-        return try decoder.decode(StorageAccountListResultType?.self, from: jsonString)
+    override func encodeBody() throws -> Data? {
+        let jsonEncoder = JSONEncoder()
+        let jsonData = try jsonEncoder.encode(parameters as! ServiceSasParametersType?)
+        return jsonData
     }
-}
+
+    override func returnFunc(decoder: ResponseDecoder, jsonString: String) throws -> Decodable? {
+        return try decoder.decode(ListServiceSasResponseType?.self, from: jsonString)
+    }
+    public func execute(client: RuntimeClient) throws -> ListServiceSasResponseTypeProtocol? {
+        return try client.execute(command: self) as! ListServiceSasResponseTypeProtocol?
+    }
+    }

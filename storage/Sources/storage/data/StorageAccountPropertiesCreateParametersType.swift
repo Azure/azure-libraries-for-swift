@@ -38,10 +38,10 @@ public struct StorageAccountPropertiesCreateParametersType : StorageAccountPrope
 
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
-    try container.encode(customDomain as! CustomDomainType?, forKey: .customDomain)
-    try container.encode(encryption as! EncryptionType?, forKey: .encryption)
-    try container.encode(networkAcls as! NetworkRuleSetType?, forKey: .networkAcls)
-    try container.encode(accessTier as! AccessTierEnum?, forKey: .accessTier)
-    try container.encode(supportsHttpsTrafficOnly, forKey: .supportsHttpsTrafficOnly)
+    if self.customDomain != nil {try container.encode(customDomain as! CustomDomainType?, forKey: .customDomain)}
+    if self.encryption != nil {try container.encode(encryption as! EncryptionType?, forKey: .encryption)}
+    if self.networkAcls != nil {try container.encode(networkAcls as! NetworkRuleSetType?, forKey: .networkAcls)}
+    if self.accessTier != nil {try container.encode(accessTier, forKey: .accessTier)}
+    if self.supportsHttpsTrafficOnly != nil {try container.encode(supportsHttpsTrafficOnly, forKey: .supportsHttpsTrafficOnly)}
   }
 }

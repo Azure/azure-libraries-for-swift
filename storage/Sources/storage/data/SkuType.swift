@@ -48,12 +48,12 @@ public struct SkuType : SkuTypeProtocol {
 
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
-    try container.encode(name as! SkuNameEnum?, forKey: .name)
-    try container.encode(tier as! SkuTierEnum?, forKey: .tier)
-    try container.encode(resourceType, forKey: .resourceType)
-    try container.encode(kind as! KindEnum?, forKey: .kind)
-    try container.encode(locations as! [String?]?, forKey: .locations)
-    try container.encode(capabilities as! [SKUCapabilityType?]?, forKey: .capabilities)
-    try container.encode(restrictions as! [RestrictionType?]?, forKey: .restrictions)
+    if self.name != nil {try container.encode(name, forKey: .name)}
+    if self.tier != nil {try container.encode(tier, forKey: .tier)}
+    if self.resourceType != nil {try container.encode(resourceType, forKey: .resourceType)}
+    if self.kind != nil {try container.encode(kind, forKey: .kind)}
+    if self.locations != nil {try container.encode(locations as! [String?]?, forKey: .locations)}
+    if self.capabilities != nil {try container.encode(capabilities as! [SKUCapabilityType?]?, forKey: .capabilities)}
+    if self.restrictions != nil {try container.encode(restrictions as! [RestrictionType?]?, forKey: .restrictions)}
   }
 }

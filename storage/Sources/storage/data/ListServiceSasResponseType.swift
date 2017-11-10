@@ -18,6 +18,6 @@ public struct ListServiceSasResponseType : ListServiceSasResponseTypeProtocol {
 
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
-    try container.encode(serviceSasToken, forKey: .serviceSasToken)
+    if self.serviceSasToken != nil {try container.encode(serviceSasToken, forKey: .serviceSasToken)}
   }
 }

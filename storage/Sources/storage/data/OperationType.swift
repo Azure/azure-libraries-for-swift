@@ -33,9 +33,9 @@ public struct OperationType : OperationTypeProtocol {
 
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
-    try container.encode(name, forKey: .name)
-    try container.encode(display as! OperationDisplayType?, forKey: .display)
-    try container.encode(origin, forKey: .origin)
-    try container.encode(properties as! OperationPropertiesType?, forKey: .properties)
+    if self.name != nil {try container.encode(name, forKey: .name)}
+    if self.display != nil {try container.encode(display as! OperationDisplayType?, forKey: .display)}
+    if self.origin != nil {try container.encode(origin, forKey: .origin)}
+    if self.properties != nil {try container.encode(properties as! OperationPropertiesType?, forKey: .properties)}
   }
 }

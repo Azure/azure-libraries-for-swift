@@ -18,6 +18,6 @@ public struct StorageAccountRegenerateKeyParametersType : StorageAccountRegenera
 
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
-    try container.encode(keyName, forKey: .keyName)
+    if self.keyName != nil {try container.encode(keyName, forKey: .keyName)}
   }
 }
