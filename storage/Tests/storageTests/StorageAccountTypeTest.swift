@@ -25,7 +25,8 @@ class StorageAccountTypeTest : XCTestCase {
             
             let storageAccountsCreateCommand = StorageAccountsCreateCommand()
             storageAccountsCreateCommand.resourceGroupName = "shch-rg"
-            storageAccountsCreateCommand.accountName = self.randomName(prefix: "swift", length: 10)
+            let myAccountName = self.randomName(prefix: "swift", length: 10)
+            storageAccountsCreateCommand.accountName = myAccountName
             storageAccountsCreateCommand.subscriptionId = defaultSubscription
             
             var storageAccountCreateParameters = StorageAccountCreateParametersType()
@@ -59,15 +60,31 @@ class StorageAccountTypeTest : XCTestCase {
                 }
             }
             
+            // === check availability
+            
+            let storageAccountsCheckNameAvailabilityCommand = StorageAccountsCheckNameAvailabilityCommand()
+            storageAccountsCheckNameAvailabilityCommand.subscriptionId = defaultSubscription
+            var param = StorageAccountCheckNameAvailabilityParametersType()
+            param.name = myAccountName
+            // FIXME: should be enum
+            param.type = "Microsoft.Storage/storageAccounts"
+            storageAccountsCheckNameAvailabilityCommand.accountName = param
+            guard let availResult = try azureClient.execute(command: storageAccountsCheckNameAvailabilityCommand ) else {
+                XCTFail("command result is nil")
+                return
+            }
+            
+            print("=== check availability", availResult)
+            
             // === list storage accounts
             
             let storageAccountsListCommand = StorageAccountsListCommand()
             storageAccountsListCommand.subscriptionId = defaultSubscription
-            guard let res = try azureClient.execute(command: storageAccountsListCommand) else {
+            guard let listResult = try azureClient.execute(command: storageAccountsListCommand) else {
                 XCTFail("command result is nil")
                 return
             }
-            print(res)
+            print("=== list storage accounts:", listResult)
             
         } catch RuntimeClientError.executionError(let message) {
             print("RuntimeClientError:", message)
