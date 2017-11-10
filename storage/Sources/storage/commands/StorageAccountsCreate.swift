@@ -30,6 +30,9 @@ class StorageAccountsCreateCommand : BaseCommand {
     override func encodeBody() throws -> Data? {
         let jsonEncoder = JSONEncoder()
         let jsonData = try jsonEncoder.encode(parameters as! StorageAccountCreateParametersType?)
+        if let str = String(data: jsonData, encoding: .utf8) {
+            print("=== Json body:", str)
+        }
         return jsonData
     }
 
