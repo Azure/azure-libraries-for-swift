@@ -43,11 +43,11 @@ public struct StorageAccountCreateParametersType : StorageAccountCreateParameter
 
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
-    try container.encode(sku as! SkuType?, forKey: .sku)
-    try container.encode(kind as! KindEnum?, forKey: .kind)
-    try container.encode(location, forKey: .location)
-    try container.encode(tags as! [String:String?]?, forKey: .tags)
-    try container.encode(identity as! IdentityType?, forKey: .identity)
-    try container.encode(properties as! StorageAccountPropertiesCreateParametersType?, forKey: .properties)
+    if self.sku != nil {try container.encode(sku as! SkuType?, forKey: .sku)}
+    if self.kind != nil {try container.encode(kind as! KindEnum?, forKey: .kind)}
+    if self.location != nil {try container.encode(location, forKey: .location)}
+    if self.tags != nil {try container.encode(tags as! [String:String?]?, forKey: .tags)}
+    if self.identity != nil {try container.encode(identity as! IdentityType?, forKey: .identity)}
+    if self.properties != nil {try container.encode(properties as! StorageAccountPropertiesCreateParametersType?, forKey: .properties)}
   }
 }

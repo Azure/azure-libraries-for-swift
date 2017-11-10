@@ -37,6 +37,6 @@ class StorageAccountsCreateCommand : BaseCommand {
     }
 
     override func returnFunc(decoder: ResponseDecoder, jsonString: String) throws -> Decodable? {
-        return try decoder.decode(StorageAccountListResultType?.self, from: jsonString)
+        return try decoder.decode(StorageAccountType?.self, from: jsonString)
     }
 }
