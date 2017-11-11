@@ -28,8 +28,8 @@ public struct RestrictionType : RestrictionTypeProtocol {
 
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
-    try container.encode(type, forKey: .type)
-    try container.encode(values as! [String?]?, forKey: .values)
-    try container.encode(reasonCode as! ReasonCodeEnum?, forKey: .reasonCode)
+    if self.type != nil {try container.encode(type, forKey: .type)}
+    if self.values != nil {try container.encode(values as! [String?]?, forKey: .values)}
+    if self.reasonCode != nil {try container.encode(reasonCode, forKey: .reasonCode)}
   }
 }

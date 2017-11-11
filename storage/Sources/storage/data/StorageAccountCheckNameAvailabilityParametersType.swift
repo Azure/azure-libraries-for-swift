@@ -23,7 +23,7 @@ public struct StorageAccountCheckNameAvailabilityParametersType : StorageAccount
 
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
-    try container.encode(name, forKey: .name)
-    try container.encode(type, forKey: .type)
+    if self.name != nil {try container.encode(name, forKey: .name)}
+    if self.type != nil {try container.encode(type, forKey: .type)}
   }
 }

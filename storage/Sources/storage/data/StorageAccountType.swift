@@ -58,14 +58,14 @@ public struct StorageAccountType : StorageAccountTypeProtocol, ResourceTypeProto
 
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
-    try container.encode(id, forKey: .id)
-    try container.encode(name, forKey: .name)
-    try container.encode(type, forKey: .type)
-    try container.encode(location, forKey: .location)
-    try container.encode(tags as! [String:String?]?, forKey: .tags)
-    try container.encode(sku as! SkuType?, forKey: .sku)
-    try container.encode(kind as! KindEnum?, forKey: .kind)
-    try container.encode(identity as! IdentityType?, forKey: .identity)
-    try container.encode(properties as! StorageAccountPropertiesType?, forKey: .properties)
+    if self.id != nil {try container.encode(id, forKey: .id)}
+    if self.name != nil {try container.encode(name, forKey: .name)}
+    if self.type != nil {try container.encode(type, forKey: .type)}
+    if self.location != nil {try container.encode(location, forKey: .location)}
+    if self.tags != nil {try container.encode(tags, forKey: .tags)}
+    if self.sku != nil {try container.encode(sku as! SkuType?, forKey: .sku)}
+    if self.kind != nil {try container.encode(kind, forKey: .kind)}
+    if self.identity != nil {try container.encode(identity as! IdentityType?, forKey: .identity)}
+    if self.properties != nil {try container.encode(properties as! StorageAccountPropertiesType?, forKey: .properties)}
   }
 }

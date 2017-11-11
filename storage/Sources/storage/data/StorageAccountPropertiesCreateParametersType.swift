@@ -45,3 +45,4 @@ public struct StorageAccountPropertiesCreateParametersType : StorageAccountPrope
     if self.supportsHttpsTrafficOnly != nil {try container.encode(supportsHttpsTrafficOnly, forKey: .supportsHttpsTrafficOnly)}
   }
 }
+

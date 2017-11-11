@@ -58,14 +58,14 @@ public struct MetricSpecificationType : MetricSpecificationTypeProtocol {
 
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
-    try container.encode(name, forKey: .name)
-    try container.encode(displayName, forKey: .displayName)
-    try container.encode(displayDescription, forKey: .displayDescription)
-    try container.encode(unit, forKey: .unit)
-    try container.encode(dimensions as! [DimensionType?]?, forKey: .dimensions)
-    try container.encode(aggregationType, forKey: .aggregationType)
-    try container.encode(fillGapWithZero, forKey: .fillGapWithZero)
-    try container.encode(category, forKey: .category)
-    try container.encode(resourceIdDimensionNameOverride, forKey: .resourceIdDimensionNameOverride)
+    if self.name != nil {try container.encode(name, forKey: .name)}
+    if self.displayName != nil {try container.encode(displayName, forKey: .displayName)}
+    if self.displayDescription != nil {try container.encode(displayDescription, forKey: .displayDescription)}
+    if self.unit != nil {try container.encode(unit, forKey: .unit)}
+    if self.dimensions != nil {try container.encode(dimensions as! [DimensionType?]?, forKey: .dimensions)}
+    if self.aggregationType != nil {try container.encode(aggregationType, forKey: .aggregationType)}
+    if self.fillGapWithZero != nil {try container.encode(fillGapWithZero, forKey: .fillGapWithZero)}
+    if self.category != nil {try container.encode(category, forKey: .category)}
+    if self.resourceIdDimensionNameOverride != nil {try container.encode(resourceIdDimensionNameOverride, forKey: .resourceIdDimensionNameOverride)}
   }
 }

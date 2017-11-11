@@ -33,9 +33,9 @@ public struct NetworkRuleSetType : NetworkRuleSetTypeProtocol {
 
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
-    try container.encode(bypass as! BypassEnum?, forKey: .bypass)
-    try container.encode(virtualNetworkRules as! [VirtualNetworkRuleType?]?, forKey: .virtualNetworkRules)
-    try container.encode(ipRules as! [IPRuleType?]?, forKey: .ipRules)
-    try container.encode(defaultAction as! DefaultActionEnum?, forKey: .defaultAction)
+    if self.bypass != nil {try container.encode(bypass, forKey: .bypass)}
+    if self.virtualNetworkRules != nil {try container.encode(virtualNetworkRules as! [VirtualNetworkRuleType?]?, forKey: .virtualNetworkRules)}
+    if self.ipRules != nil {try container.encode(ipRules as! [IPRuleType?]?, forKey: .ipRules)}
+    if self.defaultAction != nil {try container.encode(defaultAction, forKey: .defaultAction)}
   }
 }

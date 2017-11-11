@@ -53,13 +53,13 @@ public struct AccountSasParametersType : AccountSasParametersTypeProtocol {
 
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
-    try container.encode(signedServices as! ServicesEnum?, forKey: .signedServices)
-    try container.encode(signedResourceTypes as! SignedResourceTypesEnum?, forKey: .signedResourceTypes)
-    try container.encode(signedPermission as! PermissionsEnum?, forKey: .signedPermission)
-    try container.encode(signedIp, forKey: .signedIp)
-    try container.encode(signedProtocol as! HttpProtocolEnum?, forKey: .signedProtocol)
-    try container.encode(signedStart, forKey: .signedStart)
-    try container.encode(signedExpiry, forKey: .signedExpiry)
-    try container.encode(keyToSign, forKey: .keyToSign)
+    if self.signedServices != nil {try container.encode(signedServices, forKey: .signedServices)}
+    if self.signedResourceTypes != nil {try container.encode(signedResourceTypes, forKey: .signedResourceTypes)}
+    if self.signedPermission != nil {try container.encode(signedPermission, forKey: .signedPermission)}
+    if self.signedIp != nil {try container.encode(signedIp, forKey: .signedIp)}
+    if self.signedProtocol != nil {try container.encode(signedProtocol, forKey: .signedProtocol)}
+    if self.signedStart != nil {try container.encode(signedStart, forKey: .signedStart)}
+    if self.signedExpiry != nil {try container.encode(signedExpiry, forKey: .signedExpiry)}
+    if self.keyToSign != nil {try container.encode(keyToSign, forKey: .keyToSign)}
   }
 }

@@ -23,9 +23,6 @@ class StorageAccountsCheckNameAvailabilityCommand : BaseCommand {
     override func encodeBody() throws -> Data? {
         let jsonEncoder = JSONEncoder()
         let jsonData = try jsonEncoder.encode(accountName as! StorageAccountCheckNameAvailabilityParametersType?)
-        if let str = String(data: jsonData, encoding: .utf8) {
-            print("=== Json body:", str)
-        }
         return jsonData
     }
 

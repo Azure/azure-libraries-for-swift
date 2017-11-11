@@ -18,6 +18,6 @@ public struct ServiceSpecificationType : ServiceSpecificationTypeProtocol {
 
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
-    try container.encode(metricSpecifications as! [MetricSpecificationType?]?, forKey: .metricSpecifications)
+    if self.metricSpecifications != nil {try container.encode(metricSpecifications as! [MetricSpecificationType?]?, forKey: .metricSpecifications)}
   }
 }

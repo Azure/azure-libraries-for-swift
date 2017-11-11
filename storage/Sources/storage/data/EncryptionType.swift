@@ -28,8 +28,8 @@ public struct EncryptionType : EncryptionTypeProtocol {
 
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
-    try container.encode(services as! EncryptionServicesType?, forKey: .services)
-    try container.encode(keySource as! KeySourceEnum?, forKey: .keySource)
-    try container.encode(keyvaultproperties as! KeyVaultPropertiesType?, forKey: .keyvaultproperties)
+    if self.services != nil {try container.encode(services as! EncryptionServicesType?, forKey: .services)}
+    if self.keySource != nil {try container.encode(keySource, forKey: .keySource)}
+    if self.keyvaultproperties != nil {try container.encode(keyvaultproperties as! KeyVaultPropertiesType?, forKey: .keyvaultproperties)}
   }
 }

@@ -33,9 +33,9 @@ public struct EncryptionServicesType : EncryptionServicesTypeProtocol {
 
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
-    try container.encode(blob as! EncryptionServiceType?, forKey: .blob)
-    try container.encode(file as! EncryptionServiceType?, forKey: .file)
-    try container.encode(table as! EncryptionServiceType?, forKey: .table)
-    try container.encode(queue as! EncryptionServiceType?, forKey: .queue)
+    if self.blob != nil {try container.encode(blob as! EncryptionServiceType?, forKey: .blob)}
+    if self.file != nil {try container.encode(file as! EncryptionServiceType?, forKey: .file)}
+    if self.table != nil {try container.encode(table as! EncryptionServiceType?, forKey: .table)}
+    if self.queue != nil {try container.encode(queue as! EncryptionServiceType?, forKey: .queue)}
   }
 }

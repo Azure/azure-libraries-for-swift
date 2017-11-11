@@ -38,10 +38,10 @@ public struct ResourceType : ResourceTypeProtocol {
 
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
-    try container.encode(id, forKey: .id)
-    try container.encode(name, forKey: .name)
-    try container.encode(type, forKey: .type)
-    try container.encode(location, forKey: .location)
-    try container.encode(tags as! [String:String?]?, forKey: .tags)
+    if self.id != nil {try container.encode(id, forKey: .id)}
+    if self.name != nil {try container.encode(name, forKey: .name)}
+    if self.type != nil {try container.encode(type, forKey: .type)}
+    if self.location != nil {try container.encode(location, forKey: .location)}
+    if self.tags != nil {try container.encode(tags, forKey: .tags)}
   }
 }

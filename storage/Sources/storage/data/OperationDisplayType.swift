@@ -28,8 +28,8 @@ public struct OperationDisplayType : OperationDisplayTypeProtocol {
 
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
-    try container.encode(provider, forKey: .provider)
-    try container.encode(resource, forKey: .resource)
-    try container.encode(operation, forKey: .operation)
+    if self.provider != nil {try container.encode(provider, forKey: .provider)}
+    if self.resource != nil {try container.encode(resource, forKey: .resource)}
+    if self.operation != nil {try container.encode(operation, forKey: .operation)}
   }
 }
