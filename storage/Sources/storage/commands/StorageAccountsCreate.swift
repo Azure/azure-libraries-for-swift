@@ -5,21 +5,27 @@ import azureSwiftRuntime
 // account is already created and a subsequent create or update request is issued with the exact same set of
 // properties, the request will succeed. This method may poll for completion. Polling can be canceled by passing the
 // cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP requests.
-class StorageAccountsCreateCommand : BaseCommand {
-    var resourceGroupName : String?
-    var accountName : String?
-    var subscriptionId : String?
-    var apiVersion : String? = "2017-06-01"
-    var parameters :  StorageAccountCreateParametersTypeProtocol?
+public class StorageAccountsCreateCommand : BaseCommand {
+    public var resourceGroupName : String?
+    public var accountName : String?
+    public var subscriptionId : String?
+    public var apiVersion : String? = "2017-06-01"
+    public var parameters :  StorageAccountCreateParametersTypeProtocol?
 
-    override init() {
+    public init(test:String) {
+        super.init()
+        self.method = "Put"
+        self.isLongRunningOperation = true
+        self.path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}"
+    }
+    public override init() {
         super.init()
         self.method = "Put"
         self.isLongRunningOperation = true
         self.path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}"
     }
 
-    override func preCall()  {
+    public override func preCall()  {
         if self.resourceGroupName != nil { pathParameters["{resourceGroupName}"] = String(describing: self.resourceGroupName!) }
         if self.accountName != nil { pathParameters["{accountName}"] = String(describing: self.accountName!) }
         if self.subscriptionId != nil { pathParameters["{subscriptionId}"] = String(describing: self.subscriptionId!) }
@@ -27,13 +33,13 @@ class StorageAccountsCreateCommand : BaseCommand {
         self.body = parameters
     }
 
-    override func encodeBody() throws -> Data? {
+    public override func encodeBody() throws -> Data? {
         let jsonEncoder = JSONEncoder()
         let jsonData = try jsonEncoder.encode(parameters as! StorageAccountCreateParametersType?)
         return jsonData
     }
 
-    override func returnFunc(decoder: ResponseDecoder, jsonString: String) throws -> Decodable? {
+    public override func returnFunc(decoder: ResponseDecoder, jsonString: String) throws -> Decodable? {
         return try decoder.decode(StorageAccountType?.self, from: jsonString)
     }
     public func execute(client: RuntimeClient) throws -> StorageAccountTypeProtocol? {
