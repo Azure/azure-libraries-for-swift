@@ -41,7 +41,8 @@ public struct StorageAccountPropertiesCreateParametersType : StorageAccountPrope
     if self.customDomain != nil {try container.encode(customDomain as! CustomDomainType?, forKey: .customDomain)}
     if self.encryption != nil {try container.encode(encryption as! EncryptionType?, forKey: .encryption)}
     if self.networkAcls != nil {try container.encode(networkAcls as! NetworkRuleSetType?, forKey: .networkAcls)}
-    if self.accessTier != nil {try container.encode(accessTier, forKey: .accessTier)}
+    if self.accessTier != nil {try container.encode(accessTier as! AccessTierEnum?, forKey: .accessTier)}
     if self.supportsHttpsTrafficOnly != nil {try container.encode(supportsHttpsTrafficOnly, forKey: .supportsHttpsTrafficOnly)}
   }
 }
+

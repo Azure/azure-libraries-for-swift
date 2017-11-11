@@ -1,0 +1,43 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "Alamofire",
+        "repositoryURL": "https://github.com/Alamofire/Alamofire.git",
+        "state": {
+          "branch": null,
+          "revision": "b8995447518fd57af14c88a47f27434a16f60403",
+          "version": "4.5.1"
+        }
+      },
+      {
+        "package": "RxSwift",
+        "repositoryURL": "https://github.com/ReactiveX/RxSwift.git",
+        "state": {
+          "branch": null,
+          "revision": "80de9622b9bd1dca409b0e66e3ccc418676e571e",
+          "version": "3.6.1"
+        }
+      },
+      {
+        "package": "SwiftyJSON",
+        "repositoryURL": "https://github.com/SwiftyJSON/SwiftyJSON.git",
+        "state": {
+          "branch": null,
+          "revision": "dadbfcffd5f51e2b488a26e83f188d96755e5393",
+          "version": "3.1.4"
+        }
+      },
+      {
+        "package": "azureSwiftRuntime",
+        "repositoryURL": "git@github.com:alvadb/autorest-clientruntime-for-swift.git",
+        "state": {
+          "branch": "master",
+          "revision": "a3695a1a4cb1d1d475d4e99f7ec9c7124ad77527",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}
