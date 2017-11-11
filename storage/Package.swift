@@ -16,7 +16,7 @@ let package = Package(
         .package(url: "https://github.com/Alamofire/Alamofire.git", from: "4.0.10"),
         .package(url: "https://github.com/ReactiveX/RxSwift.git", from: "3.4.2"),
         .package(url: "https://github.com/SwiftyJSON/SwiftyJSON.git", from: "3.1.4"),
-        .package(url: "git@github.com:alvadb/autorest-clientruntime-for-swift.git", .branch("master"))
+        .package(url: "https://github.com/Azure/autorest-clientruntime-for-swift.git", .branch("master"))
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
