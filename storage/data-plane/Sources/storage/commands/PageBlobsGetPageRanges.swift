@@ -1,0 +1,212 @@
+import Foundation
+import azureSwiftRuntime
+public protocol PageBlobsGetPageRanges  {
+    var headerParameters: [String: String] { get set }
+    var accountName : String { get set }
+    var container : String { get set }
+    var blob : String { get set }
+    var snapshot : Date? { get set }
+    var timeout : Int32? { get set }
+    var prevsnapshot : Date? { get set }
+    var comp : String { get set }
+    var range : String?  { get set }
+    var leaseId : String?  { get set }
+    var ifModifiedSince : String?  { get set }
+    var ifUnmodifiedSince : String?  { get set }
+    var ifMatches : String?  { get set }
+    var ifNoneMatch : String?  { get set }
+    var version : String?  { get set }
+    var requestId : String?  { get set }
+    func execute(client: RuntimeClient,
+        completionHandler: @escaping ([String: String?]?, Error?) -> Void) -> Void ;
+}
+
+extension Commands.PageBlobs {
+// GetPageRanges the Get Page Ranges operation returns the list of valid page ranges for a page blob or snapshot of a
+// page blob
+internal class GetPageRangesCommand : BaseCommand, PageBlobsGetPageRanges {
+    public var accountName : String
+    public var container : String
+    public var blob : String
+    public var snapshot : Date?
+    public var timeout : Int32?
+    public var prevsnapshot : Date?
+    public var comp : String
+
+    public var range : String? {
+        set {
+            if newValue != nil {
+                headerParameters["x-ms-range"] = newValue!
+            }else {
+                headerParameters["x-ms-range"] = nil
+            }
+        }
+        get {
+            if headerParameters.contains(where: { $0.key == "x-ms-range" }) {
+                return headerParameters["x-ms-range"]
+            }else {
+                return nil
+            }
+        }
+    }
+
+    public var leaseId : String? {
+        set {
+            if newValue != nil {
+                headerParameters["x-ms-lease-id"] = newValue!
+            }else {
+                headerParameters["x-ms-lease-id"] = nil
+            }
+        }
+        get {
+            if headerParameters.contains(where: { $0.key == "x-ms-lease-id" }) {
+                return headerParameters["x-ms-lease-id"]
+            }else {
+                return nil
+            }
+        }
+    }
+
+    public var ifModifiedSince : String? {
+        set {
+            if newValue != nil {
+                headerParameters["If-Modified-Since"] = newValue!
+            }else {
+                headerParameters["If-Modified-Since"] = nil
+            }
+        }
+        get {
+            if headerParameters.contains(where: { $0.key == "If-Modified-Since" }) {
+                return headerParameters["If-Modified-Since"]
+            }else {
+                return nil
+            }
+        }
+    }
+
+    public var ifUnmodifiedSince : String? {
+        set {
+            if newValue != nil {
+                headerParameters["If-Unmodified-Since"] = newValue!
+            }else {
+                headerParameters["If-Unmodified-Since"] = nil
+            }
+        }
+        get {
+            if headerParameters.contains(where: { $0.key == "If-Unmodified-Since" }) {
+                return headerParameters["If-Unmodified-Since"]
+            }else {
+                return nil
+            }
+        }
+    }
+
+    public var ifMatches : String? {
+        set {
+            if newValue != nil {
+                headerParameters["If-Match"] = newValue!
+            }else {
+                headerParameters["If-Match"] = nil
+            }
+        }
+        get {
+            if headerParameters.contains(where: { $0.key == "If-Match" }) {
+                return headerParameters["If-Match"]
+            }else {
+                return nil
+            }
+        }
+    }
+
+    public var ifNoneMatch : String? {
+        set {
+            if newValue != nil {
+                headerParameters["If-None-Match"] = newValue!
+            }else {
+                headerParameters["If-None-Match"] = nil
+            }
+        }
+        get {
+            if headerParameters.contains(where: { $0.key == "If-None-Match" }) {
+                return headerParameters["If-None-Match"]
+            }else {
+                return nil
+            }
+        }
+    }
+
+    public var version : String? {
+        set {
+            if newValue != nil {
+                headerParameters["x-ms-version"] = newValue!
+            }else {
+                headerParameters["x-ms-version"] = nil
+            }
+        }
+        get {
+            if headerParameters.contains(where: { $0.key == "x-ms-version" }) {
+                return headerParameters["x-ms-version"]
+            }else {
+                return nil
+            }
+        }
+    }
+
+    public var requestId : String? {
+        set {
+            if newValue != nil {
+                headerParameters["x-ms-client-request-id"] = newValue!
+            }else {
+                headerParameters["x-ms-client-request-id"] = nil
+            }
+        }
+        get {
+            if headerParameters.contains(where: { $0.key == "x-ms-client-request-id" }) {
+                return headerParameters["x-ms-client-request-id"]
+            }else {
+                return nil
+            }
+        }
+    }
+
+    public init(accountName: String, container: String, blob: String, comp: String) {
+        self.accountName = accountName
+        self.container = container
+        self.blob = blob
+        self.comp = comp
+        super.init()
+        self.baseUrl = "https://{accountName}.blob.core.windows.net"
+        self.method = "Get"
+        self.isLongRunningOperation = false
+        self.path = "/{container}/{blob}"
+        self.headerParameters = ["Content-Type":"application/xml; charset=utf-8"]
+    }
+
+    public override func preCall()  {
+        self.pathParameters["{accountName}"] = String(describing: self.accountName)
+        self.pathParameters["{container}"] = String(describing: self.container)
+        self.pathParameters["{blob}"] = String(describing: self.blob)
+        if self.snapshot != nil { queryParameters["{snapshot}"] = String(describing: self.snapshot!) }
+        if self.timeout != nil { queryParameters["{timeout}"] = String(describing: self.timeout!) }
+        if self.prevsnapshot != nil { queryParameters["{prevsnapshot}"] = String(describing: self.prevsnapshot!) }
+        self.queryParameters["{comp}"] = String(describing: self.comp)
+}
+
+
+    public override func returnFunc(data: Data) throws -> Decodable? {
+        let contentType = "application/xml"
+        if let mimeType = MimeType.getType(forStr: contentType) {
+            let decoder = try CoderFactory.decoder(for: mimeType)
+            return try decoder.decode([String: String?]?.self, from: data)
+        }
+        throw DecodeError.unknownMimeType
+    }
+    public func execute(client: RuntimeClient,
+        completionHandler: @escaping ([String: String?]?, Error?) -> Void) -> Void {
+        client.executeAsync(command: self) {
+            (result: [String: String?]?, error: Error?) in
+            completionHandler(result, error)
+        }
+    }
+}
+}

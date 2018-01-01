@@ -1,0 +1,51 @@
+Compile Swift Module 'storage' (107 sources)
+/Users/alvab/Documents/Projects/Microsoft/azure-libraries-for-swift/storage/Sources/storage/commands/Operations.swift:35:42: error: extra argument 'command' in call
+            client.executeAsync(command: self) {
+                                         ^~~~
+/Users/alvab/Documents/Projects/Microsoft/azure-libraries-for-swift/storage/Sources/storage/commands/Usage.swift:37:42: error: extra argument 'command' in call
+            client.executeAsync(command: self) {
+                                         ^~~~
+/Users/alvab/Documents/Projects/Microsoft/azure-libraries-for-swift/storage/Sources/storage/commands/Skus.swift:37:42: error: extra argument 'command' in call
+            client.executeAsync(command: self) {
+                                         ^~~~
+/Users/alvab/Documents/Projects/Microsoft/azure-libraries-for-swift/storage/Sources/storage/commands/StorageAccounts.swift:48:42: error: extra argument 'command' in call
+            client.executeAsync(command: self) {
+                                         ^~~~
+/Users/alvab/Documents/Projects/Microsoft/azure-libraries-for-swift/storage/Sources/storage/commands/StorageAccounts.swift:135:49: error: extra argument 'command' in call
+            return client.executeAsync(command: self) {
+                                                ^~~~
+/Users/alvab/Documents/Projects/Microsoft/azure-libraries-for-swift/storage/Sources/storage/commands/StorageAccounts.swift:176:42: error: extra argument 'command' in call
+            client.executeAsync(command: self) {
+                                         ^~~~
+/Users/alvab/Documents/Projects/Microsoft/azure-libraries-for-swift/storage/Sources/storage/commands/StorageAccounts.swift:213:42: error: extra argument 'command' in call
+            client.executeAsync(command: self) {
+                                         ^~~~
+/Users/alvab/Documents/Projects/Microsoft/azure-libraries-for-swift/storage/Sources/storage/commands/StorageAccounts.swift:264:42: error: extra argument 'command' in call
+            client.executeAsync(command: self) {
+                                         ^~~~
+/Users/alvab/Documents/Projects/Microsoft/azure-libraries-for-swift/storage/Sources/storage/commands/StorageAccounts.swift:303:42: error: extra argument 'command' in call
+            client.executeAsync(command: self) {
+                                         ^~~~
+/Users/alvab/Documents/Projects/Microsoft/azure-libraries-for-swift/storage/Sources/storage/commands/StorageAccounts.swift:343:42: error: extra argument 'command' in call
+            client.executeAsync(command: self) {
+                                         ^~~~
+/Users/alvab/Documents/Projects/Microsoft/azure-libraries-for-swift/storage/Sources/storage/commands/StorageAccounts.swift:394:42: error: extra argument 'command' in call
+            client.executeAsync(command: self) {
+                                         ^~~~
+/Users/alvab/Documents/Projects/Microsoft/azure-libraries-for-swift/storage/Sources/storage/commands/StorageAccounts.swift:445:42: error: extra argument 'command' in call
+            client.executeAsync(command: self) {
+                                         ^~~~
+/Users/alvab/Documents/Projects/Microsoft/azure-libraries-for-swift/storage/Sources/storage/commands/StorageAccounts.swift:501:42: error: extra argument 'command' in call
+            client.executeAsync(command: self) {
+                                         ^~~~
+/Users/alvab/Documents/Projects/Microsoft/azure-libraries-for-swift/storage/Sources/storage/commands/StorageAccounts.swift:103:13: error: call can throw but is not marked with 'try'
+            client.executeAsyncLRO(command: self) {
+            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/alvab/Documents/Projects/Microsoft/azure-libraries-for-swift/storage/Sources/storage/data/RestrictionData.swift:31:56: warning: forced cast of '[String?]?' to same type has no effect
+    if self.values != nil {try container.encode(values as! [String?]?, forKey: .values)}
+                                                       ^~~~~~~~~~~~~~
+                                                       
+/Users/alvab/Documents/Projects/Microsoft/azure-libraries-for-swift/storage/Sources/storage/data/SkuData.swift:56:62: warning: forced cast of '[String?]?' to same type has no effect
+    if self.locations != nil {try container.encode(locations as! [String?]?, forKey: .locations)}
+                                                             ^~~~~~~~~~~~~~
+                                                             
