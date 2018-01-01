@@ -1,4 +1,0 @@
-module RxCocoaRuntime {
-    umbrella header "/Users/alvab/Documents/Projects/Microsoft/azure-libraries-for-swift/storage/data-plane/.build/checkouts/RxSwift.git--5214619868639177420/Sources/RxCocoaRuntime/include/RxCocoaRuntime.h"
-    export *
-}
