@@ -30,8 +30,8 @@ public struct Blobs {
     public static func Lease(accountName: String, container: String, blob: String, comp: String) -> BlobsLease {
         return LeaseCommand(accountName: accountName, container: container, blob: blob, comp: comp)
     }
-    public static func Put(accountName: String, container: String, blob: String) -> BlobsPut {
-        return PutCommand(accountName: accountName, container: container, blob: blob)
+    public static func Put(azureStorageKey: String, accountName: String, container: String, blob: String) -> BlobsPut {
+        return PutCommand(azureStorageKey: azureStorageKey, accountName: accountName, container: container, blob: blob)
     }
     public static func SetMetadata(accountName: String, container: String, blob: String, comp: String) -> BlobsSetMetadata {
         return SetMetadataCommand(accountName: accountName, container: container, blob: blob, comp: comp)
