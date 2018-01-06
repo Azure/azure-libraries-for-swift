@@ -380,8 +380,8 @@ internal class PutCommand : BaseCommand, BlobsPut {
                 storageAccountName: self.accountName,
                 method: self.method,
                 headers: &self.headerParameters,
-                contentLength: optionalbody?.bytes.count,
                 uriPath: uriPath,
+                contentLength: optionalbody?.bytes.count,
                 queryParamsMap: self.queryParameters)
         } catch {
             print("=== Error:", error)

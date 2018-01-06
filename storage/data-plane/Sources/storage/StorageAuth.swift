@@ -20,8 +20,8 @@ public class StorageAuth {
         storageAccountName: String,
         method: String,
         headers: inout [String:String],
-        contentLength: Int?,
         uriPath: String? = nil,
+        contentLength: Int? = nil,
         queryParamsMap: [String:String]? = nil) throws {
         
         let msVersion: String = "2015-02-21"
@@ -69,8 +69,8 @@ public class StorageAuth {
             throw RequestSignError.base64DecodeFailed
         }
         
-        let stringToSignBytes: [UInt8] = Array(stringToSign.data(using: .utf8)!)
-        let base64DecodedBytes: [UInt8] = Array(base64DecodedData)
+        let stringToSignBytes: [UInt8] = stringToSign.data(using: .utf8)!.bytes
+        let base64DecodedBytes: [UInt8] = base64DecodedData.bytes
         
         let signatureBytes = try HMAC(key: base64DecodedBytes, variant: .sha256).authenticate(stringToSignBytes)
         let signatureString = Data(bytes: signatureBytes).base64EncodedString()

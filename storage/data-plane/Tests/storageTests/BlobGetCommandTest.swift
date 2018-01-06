@@ -2,7 +2,6 @@ import XCTest
 import Foundation
 import azureSwiftRuntime
 import storage
-import CryptoSwift
 
 public class BlobGetCommandTest : XCTestCase {
     let envVarName = "AZURE_STORAGE_KEY"
