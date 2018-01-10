@@ -370,9 +370,12 @@ internal class PutCommand : BaseCommand, BlobsPut {
         if self.timeout != nil { queryParameters["timeout"] = String(describing: self.timeout!) }
         self.body = optionalbody
         
-        var uriPath = self.path // FIXME: what if the path empty?
-        for (key, value) in self.pathParameters {
-            uriPath = uriPath.replacingOccurrences(of: key, with: value)
+        var uriPath: String? = nil
+        if !self.path.isEmpty {
+            uriPath = self.path
+            for (key, value) in self.pathParameters {
+                uriPath = uriPath!.replacingOccurrences(of: key, with: value)
+            }
         }
         
         do {
@@ -381,7 +384,7 @@ internal class PutCommand : BaseCommand, BlobsPut {
                 method: self.method,
                 headers: &self.headerParameters,
                 uriPath: uriPath,
-                contentLength: optionalbody?.bytes.count,
+                contentLength: self.optionalbody?.bytes.count,
                 queryParamsMap: self.queryParameters)
         } catch {
             print("=== Error:", error)
