@@ -316,14 +316,14 @@ internal class PutCommand : BaseCommand, BlobsPut {
         set {
             if newValue != nil {
                 headerParameters["x-ms-version"] = newValue!
-            }else {
+            } else {
                 headerParameters["x-ms-version"] = nil
             }
         }
         get {
             if headerParameters.contains(where: { $0.key == "x-ms-version" }) {
                 return headerParameters["x-ms-version"]
-            }else {
+            } else {
                 return nil
             }
         }
@@ -333,21 +333,25 @@ internal class PutCommand : BaseCommand, BlobsPut {
         set {
             if newValue != nil {
                 headerParameters["x-ms-client-request-id"] = newValue!
-            }else {
+            } else {
                 headerParameters["x-ms-client-request-id"] = nil
             }
         }
         get {
             if headerParameters.contains(where: { $0.key == "x-ms-client-request-id" }) {
                 return headerParameters["x-ms-client-request-id"]
-            }else {
+            } else {
                 return nil
             }
         }
     }
+    
     public var optionalbody :  Data?
 
-    public init(accountName: String, container: String, blob: String) {
+    let azureStorageKey: String
+    
+    public init(azureStorageKey: String, accountName: String, container: String, blob: String) {
+        self.azureStorageKey = azureStorageKey
         self.accountName = accountName
         self.container = container
         self.blob = blob
@@ -363,9 +367,26 @@ internal class PutCommand : BaseCommand, BlobsPut {
         self.pathParameters["{accountName}"] = String(describing: self.accountName)
         self.pathParameters["{container}"] = String(describing: self.container)
         self.pathParameters["{blob}"] = String(describing: self.blob)
-        if self.timeout != nil { queryParameters["{timeout}"] = String(describing: self.timeout!) }
-    self.body = optionalbody
-}
+        if self.timeout != nil { queryParameters["timeout"] = String(describing: self.timeout!) }
+        self.body = optionalbody
+        
+        var uriPath = self.path // FIXME: what if the path empty?
+        for (key, value) in self.pathParameters {
+            uriPath = uriPath.replacingOccurrences(of: key, with: value)
+        }
+        
+        do {
+            try StorageAuth.signRequest(storageKey: self.azureStorageKey,
+                storageAccountName: self.accountName,
+                method: self.method,
+                headers: &self.headerParameters,
+                uriPath: uriPath,
+                contentLength: optionalbody?.bytes.count,
+                queryParamsMap: self.queryParameters)
+        } catch {
+            print("=== Error:", error)
+        }        
+    }
 
     public override func encodeBody() throws -> Data? {
         return self.optionalbody
