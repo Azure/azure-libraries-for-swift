@@ -56,37 +56,37 @@ internal struct BlobPropertiesData : BlobPropertiesProtocol {
   public init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
     if container.contains(.lastModified) {
-        lastModified = try container.decode(Date.self, forKey: .lastModified)
+        lastModified = try container.decode(Date?.self, forKey: .lastModified)
     }
     if container.contains(.etag) {
-        etag = try container.decode(String.self, forKey: .etag)
+        etag = try container.decode(String?.self, forKey: .etag)
     }
     if container.contains(.contentLength) {
-        contentLength = try container.decode(Int32.self, forKey: .contentLength)
+        contentLength = try container.decode(Int32?.self, forKey: .contentLength)
     }
     if container.contains(.contentType) {
-        contentType = try container.decode(String.self, forKey: .contentType)
+        contentType = try container.decode(String?.self, forKey: .contentType)
     }
     if container.contains(.contentEncoding) {
-        contentEncoding = try container.decode(String.self, forKey: .contentEncoding)
+        contentEncoding = try container.decode(String?.self, forKey: .contentEncoding)
     }
     if container.contains(.contentLanguage) {
-        contentLanguage = try container.decode(String.self, forKey: .contentLanguage)
+        contentLanguage = try container.decode(String?.self, forKey: .contentLanguage)
     }
     if container.contains(.contentMD5) {
-        contentMD5 = try container.decode(String.self, forKey: .contentMD5)
+        contentMD5 = try container.decode(String?.self, forKey: .contentMD5)
     }
     if container.contains(.contentDisposition) {
-        contentDisposition = try container.decode(String.self, forKey: .contentDisposition)
+        contentDisposition = try container.decode(String?.self, forKey: .contentDisposition)
     }
     if container.contains(.cacheControl) {
-        cacheControl = try container.decode(String.self, forKey: .cacheControl)
+        cacheControl = try container.decode(String?.self, forKey: .cacheControl)
     }
     if container.contains(.xMsBlobSequenceNumber) {
-        xMsBlobSequenceNumber = try container.decode(String.self, forKey: .xMsBlobSequenceNumber)
+        xMsBlobSequenceNumber = try container.decode(String?.self, forKey: .xMsBlobSequenceNumber)
     }
     if container.contains(.blobType) {
-        blobType = try container.decode(String.self, forKey: .blobType)
+        blobType = try container.decode(String?.self, forKey: .blobType)
     }
     if container.contains(.leaseStatus) {
         leaseStatus = try container.decode(LeaseStatusType?.self, forKey: .leaseStatus)
@@ -98,28 +98,28 @@ internal struct BlobPropertiesData : BlobPropertiesProtocol {
         leaseDuration = try container.decode(LeaseDurationType?.self, forKey: .leaseDuration)
     }
     if container.contains(.copyId) {
-        copyId = try container.decode(String.self, forKey: .copyId)
+        copyId = try container.decode(String?.self, forKey: .copyId)
     }
     if container.contains(.copyStatus) {
         copyStatus = try container.decode(CopyStatusType?.self, forKey: .copyStatus)
     }
     if container.contains(.copySource) {
-        copySource = try container.decode(String.self, forKey: .copySource)
+        copySource = try container.decode(String?.self, forKey: .copySource)
     }
     if container.contains(.copyProgress) {
-        copyProgress = try container.decode(String.self, forKey: .copyProgress)
+        copyProgress = try container.decode(String?.self, forKey: .copyProgress)
     }
     if container.contains(.copyCompletionTime) {
-        copyCompletionTime = try container.decode(Date.self, forKey: .copyCompletionTime)
+        copyCompletionTime = try container.decode(Date?.self, forKey: .copyCompletionTime)
     }
     if container.contains(.copyStatusDescription) {
-        copyStatusDescription = try container.decode(String.self, forKey: .copyStatusDescription)
+        copyStatusDescription = try container.decode(String?.self, forKey: .copyStatusDescription)
     }
     if container.contains(.serverEncrypted) {
-        serverEncrypted = try container.decode(Bool.self, forKey: .serverEncrypted)
+        serverEncrypted = try container.decode(Bool?.self, forKey: .serverEncrypted)
     }
     if container.contains(.incrementalCopy) {
-        incrementalCopy = try container.decode(Bool.self, forKey: .incrementalCopy)
+        incrementalCopy = try container.decode(Bool?.self, forKey: .incrementalCopy)
     }
   }
 

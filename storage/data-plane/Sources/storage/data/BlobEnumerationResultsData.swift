@@ -28,28 +28,28 @@ internal struct BlobEnumerationResultsData : BlobEnumerationResultsProtocol {
   public init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
     if container.contains(.serviceEndpoint) {
-        serviceEndpoint = try container.decode(String.self, forKey: .serviceEndpoint)
+        serviceEndpoint = try container.decode(String?.self, forKey: .serviceEndpoint)
     }
     if container.contains(.containerName) {
-        containerName = try container.decode(String.self, forKey: .containerName)
+        containerName = try container.decode(String?.self, forKey: .containerName)
     }
     if container.contains(.prefix) {
-        prefix = try container.decode(String.self, forKey: .prefix)
+        prefix = try container.decode(String?.self, forKey: .prefix)
     }
     if container.contains(.marker) {
-        marker = try container.decode(String.self, forKey: .marker)
+        marker = try container.decode(String?.self, forKey: .marker)
     }
     if container.contains(.maxResults) {
-        maxResults = try container.decode(Int32.self, forKey: .maxResults)
+        maxResults = try container.decode(Int32?.self, forKey: .maxResults)
     }
     if container.contains(.delimiter) {
-        delimiter = try container.decode(String.self, forKey: .delimiter)
+        delimiter = try container.decode(String?.self, forKey: .delimiter)
     }
     if container.contains(.blobs) {
         blobs = try container.decode([BlobData?]?.self, forKey: .blobs)
     }
     if container.contains(.nextMarker) {
-        nextMarker = try container.decode(String.self, forKey: .nextMarker)
+        nextMarker = try container.decode(String?.self, forKey: .nextMarker)
     }
   }
 

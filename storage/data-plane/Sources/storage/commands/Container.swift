@@ -24,8 +24,8 @@ public struct Container {
     public static func Lease(accountName: String, container: String, comp: String, restype: String) -> ContainerLease {
         return LeaseCommand(accountName: accountName, container: container, comp: comp, restype: restype)
     }
-    public static func ListBlobs(accountName: String, container: String, restype: String, comp: String) -> ContainerListBlobs {
-        return ListBlobsCommand(accountName: accountName, container: container, restype: restype, comp: comp)
+    public static func ListBlobs(azureStorageKey: String, accountName: String, container: String, restype: String, comp: String) -> ContainerListBlobs {
+        return ListBlobsCommand(azureStorageKey: azureStorageKey, accountName: accountName, container: container, restype: restype, comp: comp)
     }
     public static func SetAcl(accountName: String, container: String, restype: String, comp: String) -> ContainerSetAcl {
         return SetAclCommand(accountName: accountName, container: container, restype: restype, comp: comp)

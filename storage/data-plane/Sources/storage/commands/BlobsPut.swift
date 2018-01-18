@@ -369,26 +369,7 @@ internal class PutCommand : BaseCommand, BlobsPut {
         self.pathParameters["{blob}"] = String(describing: self.blob)
         if self.timeout != nil { queryParameters["timeout"] = String(describing: self.timeout!) }
         self.body = optionalbody
-        
-        var uriPath: String? = nil
-        if !self.path.isEmpty {
-            uriPath = self.path
-            for (key, value) in self.pathParameters {
-                uriPath = uriPath!.replacingOccurrences(of: key, with: value)
-            }
-        }
-        
-        do {
-            try StorageAuth.signRequest(storageKey: self.azureStorageKey,
-                storageAccountName: self.accountName,
-                method: self.method,
-                headers: &self.headerParameters,
-                uriPath: uriPath,
-                contentLength: self.optionalbody?.bytes.count,
-                queryParamsMap: self.queryParameters)
-        } catch {
-            print("=== Error:", error)
-        }        
+        self.signRequest(azureStorageKey: self.azureStorageKey, storageAccountName: self.accountName)
     }
 
     public override func encodeBody() throws -> Data? {
