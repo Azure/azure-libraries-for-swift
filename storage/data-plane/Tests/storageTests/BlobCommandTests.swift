@@ -1,7 +1,7 @@
 import XCTest
 import Foundation
 import azureSwiftRuntime
-@testable import storage
+import storage
 
 public class BlobCommandTests : StorageTestsBase {
     
@@ -12,10 +12,10 @@ public class BlobCommandTests : StorageTestsBase {
             azureStorageKey: self.azureStorageKey,
             accountName: "storageswifttest1",
             container: "container1",
-            blob: "TestName4")
+            blob: "helloworld1")
         
         command.blobType = "BlockBlob"
-        command.optionalbody = Data("Test".utf8);
+        command.optionalbody = Data("This is my text file! Hello world!".utf8);
         
         command.execute(client: self.azureClient) {
             (error) in

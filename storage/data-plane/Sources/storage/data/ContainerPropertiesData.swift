@@ -24,10 +24,10 @@ internal struct ContainerPropertiesData : ContainerPropertiesProtocol {
   public init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
     if container.contains(.lastModified) {
-        lastModified = try container.decode(Date.self, forKey: .lastModified)
+        lastModified = try container.decode(Date?.self, forKey: .lastModified)
     }
     if container.contains(.etag) {
-        etag = try container.decode(String.self, forKey: .etag)
+        etag = try container.decode(String?.self, forKey: .etag)
     }
     if container.contains(.leaseStatus) {
         leaseStatus = try container.decode(LeaseStatusType?.self, forKey: .leaseStatus)

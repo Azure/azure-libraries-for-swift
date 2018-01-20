@@ -8,7 +8,7 @@
 import Foundation
 import azureSwiftRuntime
 
-class AzureStorageDecoder {
+public class AzureStorageDecoder {
     public static func decode(error: Error) -> ErrorProtocol? {
         if case RuntimeError.errorStatusCode(_, let data) = error {
             let azureError = AzureErrorDecoder<ErrorData>(mimeType: .xml).decode(data: data)

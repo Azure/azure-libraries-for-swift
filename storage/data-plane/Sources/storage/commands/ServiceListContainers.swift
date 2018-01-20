@@ -59,9 +59,12 @@ internal class ListContainersCommand : BaseCommand, ServiceListContainers {
             }
         }
     }
+    
+    let azureStorageKey: String
 
-    public init(accountName: String, comp: String) {
+    public init(azureStorageKey: String, accountName: String, comp: String) {
         self.accountName = accountName
+        self.azureStorageKey = azureStorageKey
         self.comp = comp
         super.init()
         self.baseUrl = "https://{accountName}.blob.core.windows.net"
@@ -78,8 +81,9 @@ internal class ListContainersCommand : BaseCommand, ServiceListContainers {
         if self.maxresults != nil { queryParameters["{maxresults}"] = String(describing: self.maxresults!) }
         if self.include != nil { queryParameters["{include}"] = String(describing: self.include!) }
         if self.timeout != nil { queryParameters["{timeout}"] = String(describing: self.timeout!) }
-        self.queryParameters["{comp}"] = String(describing: self.comp)
-}
+        self.queryParameters["comp"] = String(describing: self.comp)
+        self.signRequest(azureStorageKey: self.azureStorageKey, storageAccountName: self.accountName)
+    }
 
 
     public override func returnFunc(data: Data) throws -> Decodable? {

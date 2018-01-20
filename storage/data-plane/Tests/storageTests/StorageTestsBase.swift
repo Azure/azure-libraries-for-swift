@@ -8,7 +8,7 @@
 import XCTest
 import Foundation
 import azureSwiftRuntime
-@testable import storage
+import storage
 
 public class StorageTestsBase : XCTestCase {
     let envVarName = "AZURE_STORAGE_KEY"

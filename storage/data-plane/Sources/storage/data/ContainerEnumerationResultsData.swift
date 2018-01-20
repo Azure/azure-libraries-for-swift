@@ -24,22 +24,22 @@ internal struct ContainerEnumerationResultsData : ContainerEnumerationResultsPro
   public init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
     if container.contains(.serviceEndpoint) {
-        serviceEndpoint = try container.decode(String.self, forKey: .serviceEndpoint)
+        serviceEndpoint = try container.decode(String?.self, forKey: .serviceEndpoint)
     }
     if container.contains(.prefix) {
-        prefix = try container.decode(String.self, forKey: .prefix)
+        prefix = try container.decode(String?.self, forKey: .prefix)
     }
     if container.contains(.marker) {
-        marker = try container.decode(String.self, forKey: .marker)
+        marker = try container.decode(String?.self, forKey: .marker)
     }
     if container.contains(.maxResults) {
-        maxResults = try container.decode(Int32.self, forKey: .maxResults)
+        maxResults = try container.decode(Int32?.self, forKey: .maxResults)
     }
     if container.contains(.containers) {
         containers = try container.decode([ContainerData?]?.self, forKey: .containers)
     }
     if container.contains(.nextMarker) {
-        nextMarker = try container.decode(String.self, forKey: .nextMarker)
+        nextMarker = try container.decode(String?.self, forKey: .nextMarker)
     }
   }
 

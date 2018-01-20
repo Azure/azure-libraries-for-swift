@@ -18,7 +18,7 @@ internal struct ContainerData : ContainerProtocol {
   public init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
     if container.contains(.name) {
-        name = try container.decode(String.self, forKey: .name)
+        name = try container.decode(String?.self, forKey: .name)
     }
     if container.contains(.properties) {
         properties = try container.decode(ContainerPropertiesData?.self, forKey: .properties)

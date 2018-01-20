@@ -12,8 +12,8 @@ public struct Service {
     public static func GetStats(accountName: String, restype: String, comp: String) -> ServiceGetStats {
         return GetStatsCommand(accountName: accountName, restype: restype, comp: comp)
     }
-    public static func ListContainers(accountName: String, comp: String) -> ServiceListContainers {
-        return ListContainersCommand(accountName: accountName, comp: comp)
+    public static func ListContainers(azureStorageKey: String, accountName: String, comp: String) -> ServiceListContainers {
+        return ListContainersCommand(azureStorageKey: azureStorageKey, accountName: accountName, comp: comp)
     }
     public static func SetProperties(accountName: String, restype: String, comp: String, storageServiceProperties: StorageServicePropertiesProtocol) -> ServiceSetProperties {
         return SetPropertiesCommand(accountName: accountName, restype: restype, comp: comp, storageServiceProperties: storageServiceProperties)
