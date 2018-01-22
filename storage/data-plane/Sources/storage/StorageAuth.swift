@@ -24,7 +24,7 @@ public class StorageAuth {
         contentLength: Int? = nil,
         queryParamsMap: [String:String]? = nil) throws {
         
-        let msVersion: String = "2015-02-21"
+        let msVersion: String = "2016-05-31"
         headers["x-ms-version"] = msVersion
         
         let date = Date()

@@ -43,7 +43,7 @@ public class ContainerCommandTests : StorageTestsBase {
                         let properties = blob.properties,
                         let blobType = properties.blobType,
                         let contentLength = properties.contentLength {
-                        print("\t", "name: \(name), blobType: \(blobType), contentLength: \(contentLength)")
+                        print("\t", "name: \(name), blobType: \(blobType), contentLength: \(contentLength), xMsBlobSequenceNumber: \(properties.xMsBlobSequenceNumber ?? "-")")
                     }
                 }
                 
