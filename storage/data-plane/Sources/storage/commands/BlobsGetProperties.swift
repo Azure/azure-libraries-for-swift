@@ -1,5 +1,35 @@
 import Foundation
 import azureSwiftRuntime
+
+public struct BlobProperties {
+    public let contentLength : Int
+    public let xMsServerEncrypted : Bool
+    public let eTag : String
+    public let lastModified : Date
+    public let contentType : String
+    public let date : Date
+}
+
+extension BlobProperties: Decodable {
+    enum CodingKeys: String, CodingKey {
+        case contentLength = "Content-Length"
+        case xMsServerEncrypted = "x-ms-server-encrypted"
+        case eTag = "Etag"
+        case lastModified = "Last-Modified"
+        case contentType = "Content-Type"
+        case date = "Date"
+    }
+    
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        contentLength = try container.decode(Int.self, forKey: .contentLength)
+        xMsServerEncrypted = try container.decode(Bool.self, forKey: .xMsServerEncrypted)
+        eTag = try container.decode(String.self, forKey: .eTag)
+        lastModified = try container.decode(Date.self, forKey: .lastModified)
+        contentType = try container.decode(String.self, forKey: .contentType)
+        date = try container.decode(Date.self, forKey: .date)
+    }
+}
 public protocol BlobsGetProperties  {
     var headerParameters: [String: String] { get set }
     var accountName : String { get set }
@@ -14,14 +44,16 @@ public protocol BlobsGetProperties  {
     var ifNoneMatch : String?  { get set }
     var version : String?  { get set }
     var requestId : String?  { get set }
-    func execute(client: RuntimeClient,
-        completionHandler: @escaping (Error?) -> Void) -> Void;
+    func execute (client: StorageRuntimeClient, completionHandler: @escaping (BlobProperties?, Error?)->Void)
+    func execute (client: StorageRuntimeClient) throws -> BlobProperties
 }
 
 extension Commands.Blobs {
 // GetProperties the Get Blob Properties operation returns all user-defined metadata, standard HTTP properties, and
 // system properties for the blob. It does not return the content of the blob.
-internal class GetPropertiesCommand : BaseCommand, BlobsGetProperties {
+    internal class GetPropertiesCommand : BaseCommand, BlobsGetProperties {
+        
+        
     public var accountName : String
     public var container : String
     public var blob : String
@@ -146,8 +178,11 @@ internal class GetPropertiesCommand : BaseCommand, BlobsGetProperties {
             }
         }
     }
+    
+    let azureStorageKey: String
 
-    public init(accountName: String, container: String, blob: String) {
+    public init(azureStorageKey: String, accountName: String, container: String, blob: String) {
+        self.azureStorageKey = azureStorageKey
         self.accountName = accountName
         self.container = container
         self.blob = blob
@@ -163,17 +198,20 @@ internal class GetPropertiesCommand : BaseCommand, BlobsGetProperties {
         self.pathParameters["{accountName}"] = String(describing: self.accountName)
         self.pathParameters["{container}"] = String(describing: self.container)
         self.pathParameters["{blob}"] = String(describing: self.blob)
-        if self.snapshot != nil { queryParameters["{snapshot}"] = String(describing: self.snapshot!) }
-        if self.timeout != nil { queryParameters["{timeout}"] = String(describing: self.timeout!) }
-}
-
-
-    public func execute(client: RuntimeClient,
-        completionHandler: @escaping (Error?) -> Void) -> Void {
-        client.executeAsync(command: self) {
-            (error) in
-            completionHandler(error)
+        if self.snapshot != nil { queryParameters["snapshot"] = String(describing: self.snapshot!) }
+        if self.timeout != nil { queryParameters["timeout"] = String(describing: self.timeout!) }
+        self.signRequest(azureStorageKey: self.azureStorageKey, storageAccountName: self.accountName)
+    }
+        
+    public func execute(client: StorageRuntimeClient, completionHandler: @escaping (BlobProperties?, Error?) -> Void) {
+        client.executeAsyncHead(command: self) {
+            (res, error) in
+            completionHandler(res, error)
         }
+    }
+        
+    public func execute(client: StorageRuntimeClient) throws -> BlobProperties {
+        return try client.executeHead(command: self)
     }
 }
 }

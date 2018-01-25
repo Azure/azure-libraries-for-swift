@@ -18,14 +18,14 @@ public struct Blobs {
     public static func Delete(accountName: String, container: String, blob: String) -> BlobsDelete {
         return DeleteCommand(accountName: accountName, container: container, blob: blob)
     }
-    public static func Get(accountName: String, container: String, blob: String) -> BlobsGet {
-        return GetCommand(accountName: accountName, container: container, blob: blob)
+    public static func Get(azureStorageKey: String, accountName: String, container: String, blob: String) -> BlobsGet {
+        return GetCommand(azureStorageKey: azureStorageKey, accountName: accountName, container: container, blob: blob)
     }
     public static func GetMetadata(accountName: String, container: String, blob: String, comp: String) -> BlobsGetMetadata {
         return GetMetadataCommand(accountName: accountName, container: container, blob: blob, comp: comp)
     }
-    public static func GetProperties(accountName: String, container: String, blob: String) -> BlobsGetProperties {
-        return GetPropertiesCommand(accountName: accountName, container: container, blob: blob)
+    public static func GetProperties(azureStorageKey: String, accountName: String, container: String, blob: String) -> BlobsGetProperties {
+        return GetPropertiesCommand(azureStorageKey: azureStorageKey, accountName: accountName, container: container, blob: blob)
     }
     public static func Lease(accountName: String, container: String, blob: String, comp: String) -> BlobsLease {
         return LeaseCommand(accountName: accountName, container: container, blob: blob, comp: comp)

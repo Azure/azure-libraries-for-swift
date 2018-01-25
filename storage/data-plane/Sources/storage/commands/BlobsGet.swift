@@ -182,8 +182,11 @@ internal class GetCommand : BaseCommand, BlobsGet {
             }
         }
     }
+    
+    let azureStorageKey: String
 
-    public init(accountName: String, container: String, blob: String) {
+    public init(azureStorageKey: String, accountName: String, container: String, blob: String) {
+        self.azureStorageKey = azureStorageKey
         self.accountName = accountName
         self.container = container
         self.blob = blob
@@ -199,21 +202,22 @@ internal class GetCommand : BaseCommand, BlobsGet {
         self.pathParameters["{accountName}"] = String(describing: self.accountName)
         self.pathParameters["{container}"] = String(describing: self.container)
         self.pathParameters["{blob}"] = String(describing: self.blob)
-        if self.snapshot != nil { queryParameters["{snapshot}"] = String(describing: self.snapshot!) }
-        if self.timeout != nil { queryParameters["{timeout}"] = String(describing: self.timeout!) }
-}
+        if self.snapshot != nil { queryParameters["snapshot"] = String(describing: self.snapshot!) }
+        if self.timeout != nil { queryParameters["timeout"] = String(describing: self.timeout!) }
+        self.signRequest(azureStorageKey: self.azureStorageKey, storageAccountName: self.accountName)
+    }
 
 
     public override func returnFunc(data: Data) throws -> Decodable? {
         return DataWrapper(data: data);
     }
+    
     public func execute(client: RuntimeClient,
         completionHandler: @escaping (Data?, Error?) -> Void) -> Void {
         client.executeAsync(command: self) {
             (result: DataWrapper?, error: Error?) in
             let data = result?.data as Data?
-            completionHandler(data!, error)
+            completionHandler(data, error)
         }
     }
-}
-}
+}}

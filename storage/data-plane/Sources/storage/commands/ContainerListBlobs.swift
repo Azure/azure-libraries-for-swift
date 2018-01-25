@@ -96,7 +96,6 @@ internal class ListBlobsCommand : BaseCommand, ContainerListBlobs {
         self.signRequest(azureStorageKey: self.azureStorageKey, storageAccountName: self.accountName)
     }
 
-
     public override func returnFunc(data: Data) throws -> Decodable? {
         let contentType = "application/xml"
         if let mimeType = MimeType.getType(forStr: contentType) {
@@ -110,6 +109,7 @@ internal class ListBlobsCommand : BaseCommand, ContainerListBlobs {
                 print("=== returnFunc error:", error)
             }
         }
+        
         throw DecodeError.unknownMimeType
     }
     public func execute(client: RuntimeClient,
