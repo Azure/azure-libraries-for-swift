@@ -165,8 +165,11 @@ internal class SetAclCommand : BaseCommand, ContainerSetAcl {
         }
     }
     public var containerAcl :  [SignedIdentifierProtocol?]?
+    
+    let azureStorageKey: String
 
-    public init(accountName: String, container: String, restype: String, comp: String) {
+    public init(azureStorageKey: String, accountName: String, container: String, restype: String, comp: String) {
+        self.azureStorageKey = azureStorageKey
         self.accountName = accountName
         self.container = container
         self.restype = restype
@@ -183,10 +186,11 @@ internal class SetAclCommand : BaseCommand, ContainerSetAcl {
         self.pathParameters["{accountName}"] = String(describing: self.accountName)
         self.pathParameters["{container}"] = String(describing: self.container)
         if self.timeout != nil { queryParameters["{timeout}"] = String(describing: self.timeout!) }
-        self.queryParameters["{restype}"] = String(describing: self.restype)
-        self.queryParameters["{comp}"] = String(describing: self.comp)
-    self.body = containerAcl
-}
+        self.queryParameters["restype"] = String(describing: self.restype)
+        self.queryParameters["comp"] = String(describing: self.comp)
+        self.body = containerAcl
+        self.signRequest(azureStorageKey: self.azureStorageKey, storageAccountName: self.accountName)
+    }
 
     public override func encodeBody() throws -> Data? {
         let contentType = "application/xml"
@@ -195,6 +199,7 @@ internal class SetAclCommand : BaseCommand, ContainerSetAcl {
             let encodedValue = try encoder.encode(containerAcl)
             return encodedValue
         }
+        
         throw DecodeError.unknownMimeType
     }
 

@@ -46,7 +46,7 @@ public class StorageAuth {
         if let _ = queryParamsMap {
             let queryParamsKeysSorted = Array(queryParamsMap!.keys).sorted{$0<$1}
             for key in queryParamsKeysSorted {
-                queryParamString += "\n" + key.lowercased() + ":" + queryParamsMap![key]!.lowercased()
+                queryParamString += "\n" + key.lowercased() + ":" + queryParamsMap![key]!
             }
         }
         

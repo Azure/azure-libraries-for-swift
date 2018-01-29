@@ -1,5 +1,6 @@
 import Foundation
 import azureSwiftRuntime
+
 public protocol ContainerGetAcl  {
     var headerParameters: [String: String] { get set }
     var accountName : String { get set }
@@ -73,8 +74,11 @@ internal class GetAclCommand : BaseCommand, ContainerGetAcl {
             }
         }
     }
+    
+    let azureStorageKey: String
 
-    public init(accountName: String, container: String, restype: String, comp: String) {
+    public init(azureStorageKey: String, accountName: String, container: String, restype: String, comp: String) {
+        self.azureStorageKey = azureStorageKey
         self.accountName = accountName
         self.container = container
         self.restype = restype
@@ -87,27 +91,32 @@ internal class GetAclCommand : BaseCommand, ContainerGetAcl {
         self.headerParameters = ["Content-Type":"application/xml; charset=utf-8"]
     }
 
-    public override func preCall()  {
+    public override func preCall() {
         self.pathParameters["{accountName}"] = String(describing: self.accountName)
         self.pathParameters["{container}"] = String(describing: self.container)
         if self.timeout != nil { queryParameters["{timeout}"] = String(describing: self.timeout!) }
-        self.queryParameters["{restype}"] = String(describing: self.restype)
-        self.queryParameters["{comp}"] = String(describing: self.comp)
-}
-
+        self.queryParameters["restype"] = String(describing: self.restype)
+        self.queryParameters["comp"] = String(describing: self.comp)
+        self.signRequest(azureStorageKey: self.azureStorageKey, storageAccountName: self.accountName)
+    }
 
     public override func returnFunc(data: Data) throws -> Decodable? {
-        let contentType = "application/xml"
-        if let mimeType = MimeType.getType(forStr: contentType) {
-            let decoder = try CoderFactory.decoder(for: mimeType)
-            return try decoder.decode([SignedIdentifierData?]?.self, from: data)
+        let decoder = XMLDecoder().withDateFormatString(DateFormat.iso8601DateTimeMs.rawValue)
+        do {
+            let res = try decoder.decode([SignedIdentifierData?]?.self, from: data)
+            return res
+            
+        } catch {
+            print("=== returnFunc error:", error)
         }
-        throw DecodeError.unknownMimeType
+        
+        return nil
     }
+    
     public func execute(client: RuntimeClient,
         completionHandler: @escaping ([SignedIdentifierProtocol?]?, Error?) -> Void) -> Void {
         client.executeAsync(command: self) {
-            (result: [SignedIdentifierData?]?, error: Error?) in
+            (result, error) in
             completionHandler(result, error)
         }
     }

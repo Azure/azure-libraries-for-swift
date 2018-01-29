@@ -6,16 +6,16 @@ import Foundation
 import azureSwiftRuntime
 extension Commands {
 public struct Service {
-    public static func GetProperties(accountName: String, restype: String, comp: String) -> ServiceGetProperties {
+    public static func GetProperties(accountName: String, restype: String = "service", comp: String = "properties") -> ServiceGetProperties {
         return GetPropertiesCommand(accountName: accountName, restype: restype, comp: comp)
     }
-    public static func GetStats(accountName: String, restype: String, comp: String) -> ServiceGetStats {
+    public static func GetStats(accountName: String, restype: String = "service", comp: String = "stats") -> ServiceGetStats {
         return GetStatsCommand(accountName: accountName, restype: restype, comp: comp)
     }
-    public static func ListContainers(azureStorageKey: String, accountName: String, comp: String) -> ServiceListContainers {
+    public static func ListContainers(azureStorageKey: String, accountName: String, comp: String = "list") -> ServiceListContainers {
         return ListContainersCommand(azureStorageKey: azureStorageKey, accountName: accountName, comp: comp)
     }
-    public static func SetProperties(accountName: String, restype: String, comp: String, storageServiceProperties: StorageServicePropertiesProtocol) -> ServiceSetProperties {
+    public static func SetProperties(accountName: String, restype: String  = "service", comp: String = "properties", storageServiceProperties: StorageServicePropertiesProtocol) -> ServiceSetProperties {
         return SetPropertiesCommand(accountName: accountName, restype: restype, comp: comp, storageServiceProperties: storageServiceProperties)
     }
 }

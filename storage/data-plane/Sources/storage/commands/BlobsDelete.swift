@@ -165,8 +165,11 @@ internal class DeleteCommand : BaseCommand, BlobsDelete {
             }
         }
     }
+    
+    let azureStorageKey: String
 
-    public init(accountName: String, container: String, blob: String) {
+    public init(azureStorageKey: String, accountName: String, container: String, blob: String) {
+        self.azureStorageKey = azureStorageKey
         self.accountName = accountName
         self.container = container
         self.blob = blob
@@ -182,11 +185,11 @@ internal class DeleteCommand : BaseCommand, BlobsDelete {
         self.pathParameters["{accountName}"] = String(describing: self.accountName)
         self.pathParameters["{container}"] = String(describing: self.container)
         self.pathParameters["{blob}"] = String(describing: self.blob)
-        if self.snapshot != nil { queryParameters["{snapshot}"] = String(describing: self.snapshot!) }
-        if self.timeout != nil { queryParameters["{timeout}"] = String(describing: self.timeout!) }
-}
-
-
+        if self.snapshot != nil { queryParameters["snapshot"] = String(describing: self.snapshot!) }
+        if self.timeout != nil { queryParameters["timeout"] = String(describing: self.timeout!) }
+        self.signRequest(azureStorageKey: self.azureStorageKey, storageAccountName: self.accountName)
+    }
+    
     public func execute(client: RuntimeClient,
         completionHandler: @escaping (Error?) -> Void) -> Void {
         client.executeAsync(command: self) {

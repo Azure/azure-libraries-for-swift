@@ -6,31 +6,31 @@ import Foundation
 import azureSwiftRuntime
 extension Commands {
 public struct Container {
-    public static func Create(accountName: String, container: String, restype: String) -> ContainerCreate {
-        return CreateCommand(accountName: accountName, container: container, restype: restype)
+    public static func Create(azureStorageKey: String, accountName: String, container: String, restype: String = "container") -> ContainerCreate {
+        return CreateCommand(azureStorageKey: azureStorageKey, accountName: accountName, container: container, restype: restype)
     }
-    public static func Delete(accountName: String, container: String, restype: String) -> ContainerDelete {
-        return DeleteCommand(accountName: accountName, container: container, restype: restype)
+    public static func Delete(azureStorageKey: String, accountName: String, container: String, restype: String = "container") -> ContainerDelete {
+        return DeleteCommand(azureStorageKey: azureStorageKey, accountName: accountName, container: container, restype: restype)
     }
-    public static func GetAcl(accountName: String, container: String, restype: String, comp: String) -> ContainerGetAcl {
-        return GetAclCommand(accountName: accountName, container: container, restype: restype, comp: comp)
+    public static func GetAcl(azureStorageKey: String, accountName: String, container: String, restype: String = "container", comp: String = "acl") -> ContainerGetAcl {
+        return GetAclCommand(azureStorageKey: azureStorageKey, accountName: accountName, container: container, restype: restype, comp: comp)
     }
-    public static func GetMetadata(accountName: String, container: String, restype: String, comp: String) -> ContainerGetMetadata {
+    public static func GetMetadata(accountName: String, container: String, restype: String = "container", comp: String = "metadata") -> ContainerGetMetadata {
         return GetMetadataCommand(accountName: accountName, container: container, restype: restype, comp: comp)
     }
-    public static func GetProperties(accountName: String, container: String, restype: String) -> ContainerGetProperties {
-        return GetPropertiesCommand(accountName: accountName, container: container, restype: restype)
+    public static func GetProperties(azureStorageKey: String, accountName: String, container: String, restype: String = "container") -> ContainerGetProperties {
+        return GetPropertiesCommand(azureStorageKey: azureStorageKey, accountName: accountName, container: container, restype: restype)
     }
-    public static func Lease(accountName: String, container: String, comp: String, restype: String) -> ContainerLease {
+    public static func Lease(accountName: String, container: String, comp: String = "lease", restype: String = "container") -> ContainerLease {
         return LeaseCommand(accountName: accountName, container: container, comp: comp, restype: restype)
     }
-    public static func ListBlobs(azureStorageKey: String, accountName: String, container: String, restype: String, comp: String) -> ContainerListBlobs {
+    public static func ListBlobs(azureStorageKey: String, accountName: String, container: String, restype: String = "container", comp: String = "list") -> ContainerListBlobs {
         return ListBlobsCommand(azureStorageKey: azureStorageKey, accountName: accountName, container: container, restype: restype, comp: comp)
     }
-    public static func SetAcl(accountName: String, container: String, restype: String, comp: String) -> ContainerSetAcl {
-        return SetAclCommand(accountName: accountName, container: container, restype: restype, comp: comp)
+    public static func SetAcl(azureStorageKey: String, accountName: String, container: String, restype: String = "container", comp: String = "acl") -> ContainerSetAcl {
+        return SetAclCommand(azureStorageKey: azureStorageKey, accountName: accountName, container: container, restype: restype, comp: comp)
     }
-    public static func SetMetadata(accountName: String, container: String, restype: String, comp: String) -> ContainerSetMetadata {
+    public static func SetMetadata(accountName: String, container: String, restype: String = "container", comp: String = "metadata") -> ContainerSetMetadata {
         return SetMetadataCommand(accountName: accountName, container: container, restype: restype, comp: comp)
     }
 }

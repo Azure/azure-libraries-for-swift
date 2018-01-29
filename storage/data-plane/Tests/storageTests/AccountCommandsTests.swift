@@ -10,26 +10,20 @@ import Foundation
 import azureSwiftRuntime
 import storage
 
-public class AccountCommandTests : StorageTestsBase {
+public class AccountCommandsTests : StorageTestsBase {
     
     func test_AccountListContainers() {
         let e = expectation(description: "Wait for HTTP request to complete")
         
         var command = Commands.Service.ListContainers (
             azureStorageKey: self.azureStorageKey,
-            accountName: "storageswifttest1",
-            comp: "list")
+            accountName: "storageswifttest1")
         
         command.execute(client: self.azureClient) {
             (res, error) in
             defer { e.fulfill() }
+            self.checkError(error: error)
             
-            if let e = error,
-                let azureError = AzureStorageDecoder.decode(error: e) {
-                print("=== AzureError:", azureError.message)
-            }
-            
-            XCTAssertNil(error)
             XCTAssertNotNil(res)
             
             if let containers = res!.containers,

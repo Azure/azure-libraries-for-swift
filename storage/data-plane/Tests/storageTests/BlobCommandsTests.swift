@@ -50,62 +50,24 @@ struct RangeBuilder {
     }
 }
 
-public class BlobCommandTests : StorageTestsBase {
+public class BlobCommandsTests : StorageTestsBase {
     
-    func test_BlobsPut() {
+    func test1_BlobsPut() {
         let e = expectation(description: "Wait for HTTP request to complete")
         
         var command = storage.Commands.Blobs.Put(
             azureStorageKey: self.azureStorageKey,
             accountName: "storageswifttest1",
-            container: "container1",
-            blob: "helloworld")
-        command.blobType = "BlockBlob"
+            containerName: "container1",
+            blobName: "test1",
+            blobType: BlobType.BlockBlob)
+        
         command.optionalbody = Data("This is my text file! Hello world!".utf8)
         
         command.execute(client: self.azureClient) {
             (error) in
             defer { e.fulfill() }
-            if let e = error,
-                let azureError = AzureStorageDecoder.decode(error: e) {
-                print("=== AzureError:", azureError.message)
-            }
-            
-            XCTAssertNil(error)
-        }
-        
-        waitForExpectations(timeout: timeout, handler: nil)
-    }
-    
-    func test_BlobsGetProperties() {
-        let blobName = "bytes256mb"
-        let accountName = "storageswifttest1"
-        let container = "container1"
-        
-        let e = self.expectation(description: "Wait for HTTP request to complete")
-        
-        let cmd = Commands.Blobs.GetProperties(azureStorageKey: self.azureStorageKey, accountName: accountName, container: container, blob: blobName)
-        
-        cmd.execute(client: self.azureClient) {
-            (res, error) in
-            defer { e.fulfill() }
-            
-            if let e = error {
-                if let azureError = AzureStorageDecoder.decode(error: e) {
-                    print("=== AzureError:", azureError.message)
-                    XCTFail(azureError.message)
-                } else {
-                    print ("=== Error:", e)
-                    XCTFail(e.localizedDescription)
-                }
-            }
-            
-            guard let blobProperties = res else {
-                XCTFail("nil result")
-                return
-            }
-            
-            print("=== props:", blobProperties)
+            self.checkError(error: error)
         }
         
         waitForExpectations(timeout: timeout, handler: nil)
@@ -114,17 +76,16 @@ public class BlobCommandTests : StorageTestsBase {
     let helloString = "Hello world!"
     let byeString = "Bye world."
     
-    func test_BlobsPutBytes() {
+    func test2_BlobsPutBytes() {
         let e = expectation(description: "Wait for HTTP request to complete")
         
         var command =
             storage.Commands.Blobs.Put(
                 azureStorageKey: self.azureStorageKey,
                 accountName: "storageswifttest1",
-                container: "container1",
-                blob: "bytes256mb")
-        
-        command.blobType = "BlockBlob"
+                containerName: "container1",
+                blobName: "bytes256mb",
+                blobType: BlobType.BlockBlob)
         
         var testBytes = [UInt8]()
         let helloBytes = helloString.data(using: .utf8)!.bytes
@@ -140,10 +101,7 @@ public class BlobCommandTests : StorageTestsBase {
         command.execute(client: self.azureClient) {
             (error) in
             defer { e.fulfill() }
-            if let e = error,
-                let azureError = AzureStorageDecoder.decode(error: e) {
-                print("=== AzureError:", azureError.message)
-            }
+            self.checkError(error: error)
             
             XCTAssertNil(error)
         }
@@ -151,13 +109,57 @@ public class BlobCommandTests : StorageTestsBase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_BlobsGetBytesInParallel() {
+    func test3_BlobsGetProperties() {
+        let blobName = "test1"
+        let accountName = "storageswifttest1"
+        let container = "container1"
+        
+        let e = self.expectation(description: "Wait for HTTP request to complete")
+        
+        let cmd = Commands.Blobs.GetProperties(azureStorageKey: self.azureStorageKey, accountName: accountName, containerName: container, blobName: blobName)
+        
+        cmd.execute(client: self.azureClient) {
+            (res, error) in
+            defer { e.fulfill() }
+            self.checkError(error: error)
+            
+            guard let blobProperties = res else {
+                XCTFail("nil result")
+                return
+            }
+            
+            print("=== props:", blobProperties)
+        }
+        
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    func test4_BlobsGet() {
+        let e = expectation(description: "Wait for HTTP request to complete")
+        
+        var command =
+            storage.Commands.Blobs.Get (
+                azureStorageKey: self.azureStorageKey,
+                accountName: "storageswifttest1",
+                containerName: "container1",
+                blobName: "test1")
+        
+        command.execute(client: self.azureClient) {
+            (result, error) in
+            defer { e.fulfill() }
+            self.checkError(error: error)
+        }
+        
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    func test5_BlobsGetBytesInParallel() {
         
         let blobName = "bytes256mb"
         let accountName = "storageswifttest1"
         let container = "container1"
         
-        let cmd = Commands.Blobs.GetProperties(azureStorageKey: self.azureStorageKey, accountName: accountName, container: container, blob: blobName)
+        let cmd = Commands.Blobs.GetProperties(azureStorageKey: self.azureStorageKey, accountName: accountName, containerName: container, blobName: blobName)
         guard let bp = try? cmd.execute(client: self.azureClient) else {
             XCTFail("nil result")
             return
@@ -169,7 +171,6 @@ public class BlobCommandTests : StorageTestsBase {
         
         XCTAssertTrue(blobLength > readRange)
         XCTAssertTrue(blobLength/readRange <= threadsQnty)
-        
         
         var rb = RangeBuilder(size: blobLength, step: readRange)
         var map = [Int:Data]()
@@ -193,29 +194,19 @@ public class BlobCommandTests : StorageTestsBase {
                     storage.Commands.Blobs.Get(
                         azureStorageKey: self.azureStorageKey,
                         accountName: "storageswifttest1",
-                        container: "container1",
-                        blob: blobName)
+                        containerName: "container1",
+                        blobName: blobName)
                 
                 command.range = range
                 
                 command.execute(client: self.azureClient) {
                     (result, error) in
                     defer { e.fulfill() }
-                    
-                    if let e = error {
-                        if let azureError = AzureStorageDecoder.decode(error: e) {
-                            print("=== AzureError:", azureError.message)
-                            XCTFail(azureError.message)
-                        } else {
-                            print ("=== Error:", e)
-                            XCTFail(e.localizedDescription)
-                        }
-                    }
+                    self.checkError(error: error)
                     
                     if let data = result {
                         map[first] = data
                     }
-                    
                 }
             }
         }
@@ -242,33 +233,20 @@ public class BlobCommandTests : StorageTestsBase {
         print("=== receivedByeString", receivedByeString!)
     }
     
-    func test_BlobsGetBytes() {
+    func test_BlobsDelete() {
         let e = expectation(description: "Wait for HTTP request to complete")
         
         var command =
-            storage.Commands.Blobs.Get (
+            storage.Commands.Blobs.Delete (
                 azureStorageKey: self.azureStorageKey,
                 accountName: "storageswifttest1",
-                container: "container1",
-                blob: "helloworld")
+                containerName: "container1",
+                blobName: "test1")
         
         command.execute(client: self.azureClient) {
-            (result, error) in
+            error in
             defer { e.fulfill() }
-            if let e = error,
-                let azureError = AzureStorageDecoder.decode(error: e) {
-                print("=== AzureError:", azureError.message)
-            }
-            
-            if let e = error {
-                if let azureError = AzureStorageDecoder.decode(error: e) {
-                    print("=== AzureError:", azureError.message)
-                    XCTFail(azureError.message)
-                } else {
-                    print ("=== Error:", e)
-                    XCTFail(e.localizedDescription)
-                }
-            }
+            self.checkError(error: error)
         }
         
         waitForExpectations(timeout: timeout, handler: nil)

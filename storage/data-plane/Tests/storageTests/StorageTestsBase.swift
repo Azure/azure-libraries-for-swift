@@ -38,4 +38,16 @@ public class StorageTestsBase : XCTestCase {
         guard let rawValue = getenv(name) else { return nil }
         return String(utf8String: rawValue)
     }
+    
+    func checkError(error: Error?) {
+        if let e = error {
+            if let azureError = AzureStorageDecoder.decode(error: e) {
+                print("=== AzureError:", azureError.message)
+                XCTFail(azureError.message)
+            } else {
+                print ("=== Error:", e)
+                XCTFail(e.localizedDescription)
+            }
+        }
+    }
 }

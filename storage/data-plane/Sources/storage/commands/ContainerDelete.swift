@@ -144,8 +144,11 @@ internal class DeleteCommand : BaseCommand, ContainerDelete {
             }
         }
     }
+    
+    let azureStorageKey: String
 
-    public init(accountName: String, container: String, restype: String) {
+    public init(azureStorageKey: String, accountName: String, container: String, restype: String) {
+        self.azureStorageKey = azureStorageKey
         self.accountName = accountName
         self.container = container
         self.restype = restype
@@ -161,9 +164,9 @@ internal class DeleteCommand : BaseCommand, ContainerDelete {
         self.pathParameters["{accountName}"] = String(describing: self.accountName)
         self.pathParameters["{container}"] = String(describing: self.container)
         if self.timeout != nil { queryParameters["{timeout}"] = String(describing: self.timeout!) }
-        self.queryParameters["{restype}"] = String(describing: self.restype)
-}
-
+        self.queryParameters["restype"] = String(describing: self.restype)
+        self.signRequest(azureStorageKey: self.azureStorageKey, storageAccountName: self.accountName)
+    }
 
     public func execute(client: RuntimeClient,
         completionHandler: @escaping (Error?) -> Void) -> Void {
