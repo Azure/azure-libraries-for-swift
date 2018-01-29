@@ -10,14 +10,14 @@ import Foundation
 import azureSwiftRuntime
 import storage
 
-public class AccountCommandsTests : StorageTestsBase {
+public class o4AccountCommandsTests : StorageTestsBase {
     
     func test_AccountListContainers() {
         let e = expectation(description: "Wait for HTTP request to complete")
         
         var command = Commands.Service.ListContainers (
             azureStorageKey: self.azureStorageKey,
-            accountName: "storageswifttest1")
+            accountName: self.accountName)
         
         command.execute(client: self.azureClient) {
             (res, error) in

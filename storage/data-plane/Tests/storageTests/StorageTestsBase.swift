@@ -18,6 +18,12 @@ public class StorageTestsBase : XCTestCase {
     var applicationTokenCredentials: ApplicationTokenCredentials!
     var azureClient: AzureClient!
     
+    let accountName = "swiftazurestoragesdktest"
+    static let uuid = UUID().uuidString
+    static let rnd = String(uuid[uuid.startIndex...uuid.index(uuid.startIndex, offsetBy: 7)]).lowercased()
+    let containerName = "testcontainer" + rnd
+    let blobName = "testblob" + rnd
+    
     override public func setUp() {
         continueAfterFailure = false
         super.setUp()
@@ -49,5 +55,18 @@ public class StorageTestsBase : XCTestCase {
                 XCTFail(e.localizedDescription)
             }
         }
+    }
+    
+    func pause() {
+        let e = expectation(description: "Wait for HTTP request to complete")
+        let queue = DispatchQueue(label: "com.azure.storage.sleep", qos: .userInitiated)
+        queue.async {
+            print("sleep...")
+            defer { e.fulfill() }
+            Thread.sleep(forTimeInterval: 2.0)
+        }
+        
+        waitForExpectations(timeout: timeout, handler: nil)
+        print("wakeUp!")
     }
 }
