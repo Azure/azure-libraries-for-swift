@@ -63,7 +63,7 @@ public class o5ScenarioTests : StorageTestsBase {
     let byeString = "Bye world."
     let bigBlobName = "bigBlob"
     
-    func BlobsPutBytes() {
+    func test1_BlobsPutBytes() {
         let e = expectation(description: "Wait for HTTP request to complete")
         
         var command =
@@ -96,7 +96,7 @@ public class o5ScenarioTests : StorageTestsBase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func BlobsGetBytesInParallel() {
+    func test2_BlobsGetBytesInParallel() {
         
         let cmd = Commands.Blobs.GetProperties(azureStorageKey: self.azureStorageKey, accountName: accountName, containerName: self.containerName, blobName: self.bigBlobName)
         guard let bp = try? cmd.execute(client: self.azureClient) else {
@@ -126,26 +126,22 @@ public class o5ScenarioTests : StorageTestsBase {
             let e = self.expectation(description: "Wait for HTTP request to complete")
             exp.append(e)
             
-            let worker = DispatchQueue(label: "com.azure.storage #\(i)", qos: .userInitiated)
+            var command =
+                storage.Commands.Blobs.Get(
+                    azureStorageKey: self.azureStorageKey,
+                    accountName: self.accountName,
+                    containerName: self.containerName,
+                    blobName: self.bigBlobName)
             
-            worker.async {
-                var command =
-                    storage.Commands.Blobs.Get(
-                        azureStorageKey: self.azureStorageKey,
-                        accountName: self.accountName,
-                        containerName: self.containerName,
-                        blobName: self.bigBlobName)
+            command.range = range
+            
+            command.execute(client: self.azureClient) {
+                (result, error) in
+                defer { e.fulfill() }
+                self.checkError(error: error)
                 
-                command.range = range
-                
-                command.execute(client: self.azureClient) {
-                    (result, error) in
-                    defer { e.fulfill() }
-                    self.checkError(error: error)
-                    
-                    if let data = result {
-                        map[first] = data
-                    }
+                if let data = result {
+                    map[first] = data
                 }
             }
         }
