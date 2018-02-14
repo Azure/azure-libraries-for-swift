@@ -1,8 +1,6 @@
 // swift-tools-version:4.0
 // The swift-tools-version declares the minimum version of Swift required to build this package.
-
 import PackageDescription
-
 let package = Package(
     name: "storage",
     products: [
@@ -23,9 +21,6 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages which this package depends on.
         .target(
             name: "storage",
-            dependencies: ["Alamofire", "RxSwift", "SwiftyJSON", "azureSwiftRuntime"]),
-        .testTarget(
-            name: "storageTests",
-            dependencies: ["storage"]),
+            dependencies: ["Alamofire", "RxSwift", "SwiftyJSON", "azureSwiftRuntime"])
     ]
 )

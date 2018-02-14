@@ -21,14 +21,13 @@ internal class CreateCommand : BaseCommand, StorageAccountsCreate {
     public var resourceGroupName : String
     public var accountName : String
     public var subscriptionId : String
-    public var apiVersion : String = "2017-06-01"
+    public var apiVersion = "2017-10-01"
     public var parameters :  StorageAccountCreateParametersProtocol?
 
-    public init(resourceGroupName: String, accountName: String, subscriptionId: String, apiVersion: String, parameters: StorageAccountCreateParametersProtocol) {
+    public init(resourceGroupName: String, accountName: String, subscriptionId: String, parameters: StorageAccountCreateParametersProtocol) {
         self.resourceGroupName = resourceGroupName
         self.accountName = accountName
         self.subscriptionId = subscriptionId
-        self.apiVersion = apiVersion
         self.parameters = parameters
         super.init()
         self.method = "Put"
@@ -41,7 +40,7 @@ internal class CreateCommand : BaseCommand, StorageAccountsCreate {
         self.pathParameters["{resourceGroupName}"] = String(describing: self.resourceGroupName)
         self.pathParameters["{accountName}"] = String(describing: self.accountName)
         self.pathParameters["{subscriptionId}"] = String(describing: self.subscriptionId)
-        self.queryParameters["{api-version}"] = String(describing: self.apiVersion)
+        self.queryParameters["api-version"] = String(describing: self.apiVersion)
     self.body = parameters
 }
 
@@ -59,7 +58,8 @@ internal class CreateCommand : BaseCommand, StorageAccountsCreate {
         let contentType = "application/json"
         if let mimeType = MimeType.getType(forStr: contentType) {
             let decoder = try CoderFactory.decoder(for: mimeType)
-            return try decoder.decode(StorageAccountData?.self, from: data)
+            let result = try decoder.decode(StorageAccountData?.self, from: data)
+            return result;
         }
         throw DecodeError.unknownMimeType
     }

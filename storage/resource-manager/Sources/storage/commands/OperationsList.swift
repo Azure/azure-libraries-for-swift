@@ -1,6 +1,8 @@
 import Foundation
 import azureSwiftRuntime
 public protocol OperationsList  {
+    var nextLink: String? { get }
+    var hasAdditionalPages : Bool { get }
     var headerParameters: [String: String] { get set }
     var apiVersion : String { get set }
     func execute(client: RuntimeClient,
@@ -10,10 +12,15 @@ public protocol OperationsList  {
 extension Commands.Operations {
 // List lists all of the available Storage Rest API operations.
 internal class ListCommand : BaseCommand, OperationsList {
-    public var apiVersion : String = "2017-06-01"
+    var nextLink: String?
+    public var hasAdditionalPages : Bool {
+        get {
+            return nextLink != nil
+        }
+    }
+    public var apiVersion = "2017-10-01"
 
-    public init(apiVersion: String) {
-        self.apiVersion = apiVersion
+    public override init() {
         super.init()
         self.method = "Get"
         self.isLongRunningOperation = false
@@ -22,7 +29,7 @@ internal class ListCommand : BaseCommand, OperationsList {
     }
 
     public override func preCall()  {
-        self.queryParameters["{api-version}"] = String(describing: self.apiVersion)
+        self.queryParameters["api-version"] = String(describing: self.apiVersion)
 }
 
 
@@ -30,12 +37,25 @@ internal class ListCommand : BaseCommand, OperationsList {
         let contentType = "application/json"
         if let mimeType = MimeType.getType(forStr: contentType) {
             let decoder = try CoderFactory.decoder(for: mimeType)
-            return try decoder.decode(OperationListResultData?.self, from: data)
+            if var pageDecoder = decoder as? PageDecoder {
+                pageDecoder.isPagedData = true
+                pageDecoder.nextLinkName = "nil"
+            }
+            let result = try decoder.decode(OperationListResultData?.self, from: data)
+            if var pageDecoder = decoder as? PageDecoder {
+                self.nextLink = pageDecoder.nextLink
+            }
+            return result;
         }
         throw DecodeError.unknownMimeType
     }
     public func execute(client: RuntimeClient,
         completionHandler: @escaping (OperationListResultProtocol?, Error?) -> Void) -> Void {
+        if self.nextLink != nil {
+            self.path = nextLink!
+            self.nextLink = nil;
+            self.pathType = .absolute
+        }
         client.executeAsync(command: self) {
             (result: OperationListResultData?, error: Error?) in
             completionHandler(result, error)

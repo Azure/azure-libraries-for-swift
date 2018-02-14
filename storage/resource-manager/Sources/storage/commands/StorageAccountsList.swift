@@ -1,6 +1,8 @@
 import Foundation
 import azureSwiftRuntime
 public protocol StorageAccountsList  {
+    var nextLink: String? { get }
+    var hasAdditionalPages : Bool { get }
     var headerParameters: [String: String] { get set }
     var subscriptionId : String { get set }
     var apiVersion : String { get set }
@@ -12,12 +14,17 @@ extension Commands.StorageAccounts {
 // List lists all the storage accounts available under the subscription. Note that storage keys are not returned; use
 // the ListKeys operation for this.
 internal class ListCommand : BaseCommand, StorageAccountsList {
+    var nextLink: String?
+    public var hasAdditionalPages : Bool {
+        get {
+            return nextLink != nil
+        }
+    }
     public var subscriptionId : String
-    public var apiVersion : String = "2017-06-01"
+    public var apiVersion = "2017-10-01"
 
-    public init(subscriptionId: String, apiVersion: String) {
+    public init(subscriptionId: String) {
         self.subscriptionId = subscriptionId
-        self.apiVersion = apiVersion
         super.init()
         self.method = "Get"
         self.isLongRunningOperation = false
@@ -27,7 +34,7 @@ internal class ListCommand : BaseCommand, StorageAccountsList {
 
     public override func preCall()  {
         self.pathParameters["{subscriptionId}"] = String(describing: self.subscriptionId)
-        self.queryParameters["{api-version}"] = String(describing: self.apiVersion)
+        self.queryParameters["api-version"] = String(describing: self.apiVersion)
 }
 
 
@@ -35,12 +42,25 @@ internal class ListCommand : BaseCommand, StorageAccountsList {
         let contentType = "application/json"
         if let mimeType = MimeType.getType(forStr: contentType) {
             let decoder = try CoderFactory.decoder(for: mimeType)
-            return try decoder.decode(StorageAccountListResultData?.self, from: data)
+            if var pageDecoder = decoder as? PageDecoder {
+                pageDecoder.isPagedData = true
+                pageDecoder.nextLinkName = "nil"
+            }
+            let result = try decoder.decode(StorageAccountListResultData?.self, from: data)
+            if var pageDecoder = decoder as? PageDecoder {
+                self.nextLink = pageDecoder.nextLink
+            }
+            return result;
         }
         throw DecodeError.unknownMimeType
     }
     public func execute(client: RuntimeClient,
         completionHandler: @escaping (StorageAccountListResultProtocol?, Error?) -> Void) -> Void {
+        if self.nextLink != nil {
+            self.path = nextLink!
+            self.nextLink = nil;
+            self.pathType = .absolute
+        }
         client.executeAsync(command: self) {
             (result: StorageAccountListResultData?, error: Error?) in
             completionHandler(result, error)

@@ -13,12 +13,11 @@ extension Commands.StorageAccounts {
 // CheckNameAvailability checks that the storage account name is valid and is not already in use.
 internal class CheckNameAvailabilityCommand : BaseCommand, StorageAccountsCheckNameAvailability {
     public var subscriptionId : String
-    public var apiVersion : String = "2017-06-01"
+    public var apiVersion = "2017-10-01"
     public var accountName :  StorageAccountCheckNameAvailabilityParametersProtocol?
 
-    public init(subscriptionId: String, apiVersion: String, accountName: StorageAccountCheckNameAvailabilityParametersProtocol) {
+    public init(subscriptionId: String, accountName: StorageAccountCheckNameAvailabilityParametersProtocol) {
         self.subscriptionId = subscriptionId
-        self.apiVersion = apiVersion
         self.accountName = accountName
         super.init()
         self.method = "Post"
@@ -29,7 +28,7 @@ internal class CheckNameAvailabilityCommand : BaseCommand, StorageAccountsCheckN
 
     public override func preCall()  {
         self.pathParameters["{subscriptionId}"] = String(describing: self.subscriptionId)
-        self.queryParameters["{api-version}"] = String(describing: self.apiVersion)
+        self.queryParameters["api-version"] = String(describing: self.apiVersion)
     self.body = accountName
 }
 
@@ -47,7 +46,8 @@ internal class CheckNameAvailabilityCommand : BaseCommand, StorageAccountsCheckN
         let contentType = "application/json"
         if let mimeType = MimeType.getType(forStr: contentType) {
             let decoder = try CoderFactory.decoder(for: mimeType)
-            return try decoder.decode(CheckNameAvailabilityResultData?.self, from: data)
+            let result = try decoder.decode(CheckNameAvailabilityResultData?.self, from: data)
+            return result;
         }
         throw DecodeError.unknownMimeType
     }
