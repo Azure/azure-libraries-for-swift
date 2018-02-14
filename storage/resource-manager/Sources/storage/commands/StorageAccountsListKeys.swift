@@ -16,13 +16,12 @@ internal class ListKeysCommand : BaseCommand, StorageAccountsListKeys {
     public var resourceGroupName : String
     public var accountName : String
     public var subscriptionId : String
-    public var apiVersion : String = "2017-06-01"
+    public var apiVersion = "2017-10-01"
 
-    public init(resourceGroupName: String, accountName: String, subscriptionId: String, apiVersion: String) {
+    public init(resourceGroupName: String, accountName: String, subscriptionId: String) {
         self.resourceGroupName = resourceGroupName
         self.accountName = accountName
         self.subscriptionId = subscriptionId
-        self.apiVersion = apiVersion
         super.init()
         self.method = "Post"
         self.isLongRunningOperation = false
@@ -34,7 +33,7 @@ internal class ListKeysCommand : BaseCommand, StorageAccountsListKeys {
         self.pathParameters["{resourceGroupName}"] = String(describing: self.resourceGroupName)
         self.pathParameters["{accountName}"] = String(describing: self.accountName)
         self.pathParameters["{subscriptionId}"] = String(describing: self.subscriptionId)
-        self.queryParameters["{api-version}"] = String(describing: self.apiVersion)
+        self.queryParameters["api-version"] = String(describing: self.apiVersion)
 }
 
 
@@ -42,7 +41,8 @@ internal class ListKeysCommand : BaseCommand, StorageAccountsListKeys {
         let contentType = "application/json"
         if let mimeType = MimeType.getType(forStr: contentType) {
             let decoder = try CoderFactory.decoder(for: mimeType)
-            return try decoder.decode(StorageAccountListKeysResultData?.self, from: data)
+            let result = try decoder.decode(StorageAccountListKeysResultData?.self, from: data)
+            return result;
         }
         throw DecodeError.unknownMimeType
     }

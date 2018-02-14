@@ -16,13 +16,12 @@ internal class DeleteCommand : BaseCommand, StorageAccountsDelete {
     public var resourceGroupName : String
     public var accountName : String
     public var subscriptionId : String
-    public var apiVersion : String = "2017-06-01"
+    public var apiVersion = "2017-10-01"
 
-    public init(resourceGroupName: String, accountName: String, subscriptionId: String, apiVersion: String) {
+    public init(resourceGroupName: String, accountName: String, subscriptionId: String) {
         self.resourceGroupName = resourceGroupName
         self.accountName = accountName
         self.subscriptionId = subscriptionId
-        self.apiVersion = apiVersion
         super.init()
         self.method = "Delete"
         self.isLongRunningOperation = false
@@ -34,7 +33,7 @@ internal class DeleteCommand : BaseCommand, StorageAccountsDelete {
         self.pathParameters["{resourceGroupName}"] = String(describing: self.resourceGroupName)
         self.pathParameters["{accountName}"] = String(describing: self.accountName)
         self.pathParameters["{subscriptionId}"] = String(describing: self.subscriptionId)
-        self.queryParameters["{api-version}"] = String(describing: self.apiVersion)
+        self.queryParameters["api-version"] = String(describing: self.apiVersion)
 }
 
 

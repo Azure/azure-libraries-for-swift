@@ -17,14 +17,13 @@ internal class ListAccountSASCommand : BaseCommand, StorageAccountsListAccountSA
     public var resourceGroupName : String
     public var accountName : String
     public var subscriptionId : String
-    public var apiVersion : String = "2017-06-01"
+    public var apiVersion = "2017-10-01"
     public var parameters :  AccountSasParametersProtocol?
 
-    public init(resourceGroupName: String, accountName: String, subscriptionId: String, apiVersion: String, parameters: AccountSasParametersProtocol) {
+    public init(resourceGroupName: String, accountName: String, subscriptionId: String, parameters: AccountSasParametersProtocol) {
         self.resourceGroupName = resourceGroupName
         self.accountName = accountName
         self.subscriptionId = subscriptionId
-        self.apiVersion = apiVersion
         self.parameters = parameters
         super.init()
         self.method = "Post"
@@ -37,7 +36,7 @@ internal class ListAccountSASCommand : BaseCommand, StorageAccountsListAccountSA
         self.pathParameters["{resourceGroupName}"] = String(describing: self.resourceGroupName)
         self.pathParameters["{accountName}"] = String(describing: self.accountName)
         self.pathParameters["{subscriptionId}"] = String(describing: self.subscriptionId)
-        self.queryParameters["{api-version}"] = String(describing: self.apiVersion)
+        self.queryParameters["api-version"] = String(describing: self.apiVersion)
     self.body = parameters
 }
 
@@ -55,7 +54,8 @@ internal class ListAccountSASCommand : BaseCommand, StorageAccountsListAccountSA
         let contentType = "application/json"
         if let mimeType = MimeType.getType(forStr: contentType) {
             let decoder = try CoderFactory.decoder(for: mimeType)
-            return try decoder.decode(ListAccountSasResponseData?.self, from: data)
+            let result = try decoder.decode(ListAccountSasResponseData?.self, from: data)
+            return result;
         }
         throw DecodeError.unknownMimeType
     }
