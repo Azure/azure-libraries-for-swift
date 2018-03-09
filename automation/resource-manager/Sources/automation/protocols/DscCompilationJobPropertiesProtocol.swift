@@ -9,6 +9,8 @@ public protocol DscCompilationJobPropertiesProtocol : Codable {
      var startedBy: String? { get set }
      var jobId: String? { get set }
      var creationTime: Date? { get set }
+     var provisioningState: JobProvisioningStatePropertyProtocol? { get set }
+     var runOn: String? { get set }
      var status: JobStatusEnum? { get set }
      var statusDetails: String? { get set }
      var startTime: Date? { get set }

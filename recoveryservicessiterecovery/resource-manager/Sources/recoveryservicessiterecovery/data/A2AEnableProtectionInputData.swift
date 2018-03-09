@@ -12,6 +12,8 @@ internal struct A2AEnableProtectionInputData : A2AEnableProtectionInputProtocol,
     public var recoveryAvailabilitySetId: String?
     public var vmDisks: [A2AVmDiskInputDetailsProtocol?]?
     public var vmManagedDisks: [A2AVmManagedDiskInputDetailsProtocol?]?
+    public var multiVmGroupName: String?
+    public var recoveryBootDiagStorageAccountId: String?
 
         enum CodingKeys: String, CodingKey {case fabricObjectId = "fabricObjectId"
         case recoveryContainerId = "recoveryContainerId"
@@ -20,6 +22,8 @@ internal struct A2AEnableProtectionInputData : A2AEnableProtectionInputProtocol,
         case recoveryAvailabilitySetId = "recoveryAvailabilitySetId"
         case vmDisks = "vmDisks"
         case vmManagedDisks = "vmManagedDisks"
+        case multiVmGroupName = "multiVmGroupName"
+        case recoveryBootDiagStorageAccountId = "recoveryBootDiagStorageAccountId"
         }
 
   public init()  {
@@ -48,6 +52,12 @@ internal struct A2AEnableProtectionInputData : A2AEnableProtectionInputProtocol,
     if container.contains(.vmManagedDisks) {
         self.vmManagedDisks = try container.decode([A2AVmManagedDiskInputDetailsData?]?.self, forKey: .vmManagedDisks)
     }
+    if container.contains(.multiVmGroupName) {
+        self.multiVmGroupName = try container.decode(String?.self, forKey: .multiVmGroupName)
+    }
+    if container.contains(.recoveryBootDiagStorageAccountId) {
+        self.recoveryBootDiagStorageAccountId = try container.decode(String?.self, forKey: .recoveryBootDiagStorageAccountId)
+    }
     if var pageDecoder = decoder as? PageDecoder  {
       if pageDecoder.isPagedData,
         let nextLinkName = pageDecoder.nextLinkName {
@@ -65,6 +75,8 @@ internal struct A2AEnableProtectionInputData : A2AEnableProtectionInputProtocol,
     if self.recoveryAvailabilitySetId != nil {try container.encode(self.recoveryAvailabilitySetId, forKey: .recoveryAvailabilitySetId)}
     if self.vmDisks != nil {try container.encode(self.vmDisks as! [A2AVmDiskInputDetailsData?]?, forKey: .vmDisks)}
     if self.vmManagedDisks != nil {try container.encode(self.vmManagedDisks as! [A2AVmManagedDiskInputDetailsData?]?, forKey: .vmManagedDisks)}
+    if self.multiVmGroupName != nil {try container.encode(self.multiVmGroupName, forKey: .multiVmGroupName)}
+    if self.recoveryBootDiagStorageAccountId != nil {try container.encode(self.recoveryBootDiagStorageAccountId, forKey: .recoveryBootDiagStorageAccountId)}
   }
 }
 

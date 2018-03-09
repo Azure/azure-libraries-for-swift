@@ -5,13 +5,9 @@
 import Foundation
 import azureSwiftRuntime
 internal struct InMageAzureV2RecoveryPointDetailsData : InMageAzureV2RecoveryPointDetailsProtocol, ProviderSpecificRecoveryPointDetailsProtocol {
-    public var type: String?
-    public var instanceType: String?
     public var isMultiVmSyncPoint: String?
 
-        enum CodingKeys: String, CodingKey {case type = "Type"
-        case instanceType = "instanceType"
-        case isMultiVmSyncPoint = "isMultiVmSyncPoint"
+        enum CodingKeys: String, CodingKey {case isMultiVmSyncPoint = "isMultiVmSyncPoint"
         }
 
   public init()  {
@@ -19,13 +15,7 @@ internal struct InMageAzureV2RecoveryPointDetailsData : InMageAzureV2RecoveryPoi
 
   public init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
-      if container.contains(.type) {
-        self.type = try container.decode(String?.self, forKey: .type)
-    }
-    if container.contains(.instanceType) {
-        self.instanceType = try container.decode(String?.self, forKey: .instanceType)
-    }
-    if container.contains(.isMultiVmSyncPoint) {
+      if container.contains(.isMultiVmSyncPoint) {
         self.isMultiVmSyncPoint = try container.decode(String?.self, forKey: .isMultiVmSyncPoint)
     }
     if var pageDecoder = decoder as? PageDecoder  {
@@ -38,8 +28,6 @@ internal struct InMageAzureV2RecoveryPointDetailsData : InMageAzureV2RecoveryPoi
 
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
-    if self.type != nil {try container.encode(self.type, forKey: .type)}
-    if self.instanceType != nil {try container.encode(self.instanceType, forKey: .instanceType)}
     if self.isMultiVmSyncPoint != nil {try container.encode(self.isMultiVmSyncPoint, forKey: .isMultiVmSyncPoint)}
   }
 }

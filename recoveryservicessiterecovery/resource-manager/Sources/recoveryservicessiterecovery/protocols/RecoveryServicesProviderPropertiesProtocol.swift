@@ -19,4 +19,5 @@ public protocol RecoveryServicesProviderPropertiesProtocol : Codable {
      var healthErrorDetails: [HealthErrorProtocol?]? { get set }
      var draIdentifier: String? { get set }
      var identityDetails: IdentityInformationProtocol? { get set }
+     var providerVersionDetails: VersionDetailsProtocol? { get set }
 }

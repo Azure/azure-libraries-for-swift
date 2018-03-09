@@ -30,4 +30,7 @@ public protocol ProcessServerProtocol : Codable {
      var sslCertExpiryDate: Date? { get set }
      var sslCertExpiryRemainingDays: Int32? { get set }
      var osVersion: String? { get set }
+     var healthErrors: [HealthErrorProtocol?]? { get set }
+     var agentExpiryDate: Date? { get set }
+     var agentVersionDetails: VersionDetailsProtocol? { get set }
 }

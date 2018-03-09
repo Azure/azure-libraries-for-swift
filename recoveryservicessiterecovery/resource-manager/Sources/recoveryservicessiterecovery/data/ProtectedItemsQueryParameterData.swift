@@ -8,10 +8,14 @@ internal struct ProtectedItemsQueryParameterData : ProtectedItemsQueryParameterP
     public var sourceFabricName: String?
     public var recoveryPlanName: String?
     public var vCenterName: String?
+    public var instanceType: String?
+    public var multiVmGroupCreateOption: MultiVmGroupCreateOptionEnum?
 
         enum CodingKeys: String, CodingKey {case sourceFabricName = "sourceFabricName"
         case recoveryPlanName = "recoveryPlanName"
         case vCenterName = "vCenterName"
+        case instanceType = "instanceType"
+        case multiVmGroupCreateOption = "multiVmGroupCreateOption"
         }
 
   public init()  {
@@ -28,6 +32,12 @@ internal struct ProtectedItemsQueryParameterData : ProtectedItemsQueryParameterP
     if container.contains(.vCenterName) {
         self.vCenterName = try container.decode(String?.self, forKey: .vCenterName)
     }
+    if container.contains(.instanceType) {
+        self.instanceType = try container.decode(String?.self, forKey: .instanceType)
+    }
+    if container.contains(.multiVmGroupCreateOption) {
+        self.multiVmGroupCreateOption = try container.decode(MultiVmGroupCreateOptionEnum?.self, forKey: .multiVmGroupCreateOption)
+    }
     if var pageDecoder = decoder as? PageDecoder  {
       if pageDecoder.isPagedData,
         let nextLinkName = pageDecoder.nextLinkName {
@@ -41,6 +51,8 @@ internal struct ProtectedItemsQueryParameterData : ProtectedItemsQueryParameterP
     if self.sourceFabricName != nil {try container.encode(self.sourceFabricName, forKey: .sourceFabricName)}
     if self.recoveryPlanName != nil {try container.encode(self.recoveryPlanName, forKey: .recoveryPlanName)}
     if self.vCenterName != nil {try container.encode(self.vCenterName, forKey: .vCenterName)}
+    if self.instanceType != nil {try container.encode(self.instanceType, forKey: .instanceType)}
+    if self.multiVmGroupCreateOption != nil {try container.encode(self.multiVmGroupCreateOption, forKey: .multiVmGroupCreateOption)}
   }
 }
 

@@ -6,7 +6,4 @@ import Foundation
 // JobCreateParametersProtocol is the parameters supplied to the create job operation.
 public protocol JobCreateParametersProtocol : Codable {
      var properties: JobCreatePropertiesProtocol { get set }
-     var name: String? { get set }
-     var location: String? { get set }
-     var tags: [String:String]? { get set }
 }

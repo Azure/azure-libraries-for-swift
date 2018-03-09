@@ -9,7 +9,7 @@ public protocol EndpointsUpdate  {
     var apiVersion : String { get set }
     var endpointUpdateProperties :  EndpointUpdateParametersProtocol?  { get set }
     func execute(client: RuntimeClient,
-        completionHandler: @escaping (EndpointProtocol?, Error?) -> Void) -> Void ;
+    completionHandler: @escaping (EndpointProtocol?, Error?) -> Void) -> Void ;
 }
 
 extension Commands.Endpoints {
@@ -18,61 +18,61 @@ extension Commands.Endpoints {
 // the Update Origin operation. To update custom domains, use the Update Custom Domain operation. This method may poll
 // for completion. Polling can be canceled by passing the cancel channel argument. The channel will be used to cancel
 // polling and any outstanding HTTP requests.
-internal class UpdateCommand : BaseCommand, EndpointsUpdate {
-    public var resourceGroupName : String
-    public var profileName : String
-    public var endpointName : String
-    public var subscriptionId : String
-    public var apiVersion = "2017-04-02"
+    internal class UpdateCommand : BaseCommand, EndpointsUpdate {
+        public var resourceGroupName : String
+        public var profileName : String
+        public var endpointName : String
+        public var subscriptionId : String
+        public var apiVersion = "2017-04-02"
     public var endpointUpdateProperties :  EndpointUpdateParametersProtocol?
 
-    public init(resourceGroupName: String, profileName: String, endpointName: String, subscriptionId: String, endpointUpdateProperties: EndpointUpdateParametersProtocol) {
-        self.resourceGroupName = resourceGroupName
-        self.profileName = profileName
-        self.endpointName = endpointName
-        self.subscriptionId = subscriptionId
-        self.endpointUpdateProperties = endpointUpdateProperties
-        super.init()
-        self.method = "Patch"
-        self.isLongRunningOperation = true
-        self.path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}"
-        self.headerParameters = ["Content-Type":"application/json; charset=utf-8"]
-    }
-
-    public override func preCall()  {
-        self.pathParameters["{resourceGroupName}"] = String(describing: self.resourceGroupName)
-        self.pathParameters["{profileName}"] = String(describing: self.profileName)
-        self.pathParameters["{endpointName}"] = String(describing: self.endpointName)
-        self.pathParameters["{subscriptionId}"] = String(describing: self.subscriptionId)
-        self.queryParameters["api-version"] = String(describing: self.apiVersion)
-    self.body = endpointUpdateProperties
-}
-
-    public override func encodeBody() throws -> Data? {
-        let contentType = "application/json"
-        if let mimeType = MimeType.getType(forStr: contentType) {
-            let encoder = try CoderFactory.encoder(for: mimeType)
-            let encodedValue = try encoder.encode(endpointUpdateProperties)
-            return encodedValue
+        public init(resourceGroupName: String, profileName: String, endpointName: String, subscriptionId: String, endpointUpdateProperties: EndpointUpdateParametersProtocol) {
+            self.resourceGroupName = resourceGroupName
+            self.profileName = profileName
+            self.endpointName = endpointName
+            self.subscriptionId = subscriptionId
+            self.endpointUpdateProperties = endpointUpdateProperties
+            super.init()
+            self.method = "Patch"
+            self.isLongRunningOperation = true
+            self.path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}"
+            self.headerParameters = ["Content-Type":"application/json; charset=utf-8"]
         }
-        throw DecodeError.unknownMimeType
-    }
 
-    public override func returnFunc(data: Data) throws -> Decodable? {
-        let contentType = "application/json"
-        if let mimeType = MimeType.getType(forStr: contentType) {
-            let decoder = try CoderFactory.decoder(for: mimeType)
-            let result = try decoder.decode(EndpointData?.self, from: data)
-            return result;
+        public override func preCall()  {
+            self.pathParameters["{resourceGroupName}"] = String(describing: self.resourceGroupName)
+            self.pathParameters["{profileName}"] = String(describing: self.profileName)
+            self.pathParameters["{endpointName}"] = String(describing: self.endpointName)
+            self.pathParameters["{subscriptionId}"] = String(describing: self.subscriptionId)
+            self.queryParameters["api-version"] = String(describing: self.apiVersion)
+            self.body = endpointUpdateProperties
+
         }
-        throw DecodeError.unknownMimeType
-    }
-    public func execute(client: RuntimeClient,
-        completionHandler: @escaping (EndpointProtocol?, Error?) -> Void) -> Void {
-        client.executeAsyncLRO(command: self) {
-            (result: EndpointData?, error: Error?) in
-            completionHandler(result, error)
+        public override func encodeBody() throws -> Data? {
+            let contentType = "application/json"
+            if let mimeType = MimeType.getType(forStr: contentType) {
+                let encoder = try CoderFactory.encoder(for: mimeType)
+                let encodedValue = try encoder.encode(endpointUpdateProperties as? EndpointUpdateParametersData)
+                return encodedValue
+            }
+            throw DecodeError.unknownMimeType
+        }
+
+        public override func returnFunc(data: Data) throws -> Decodable? {
+            let contentType = "application/json"
+            if let mimeType = MimeType.getType(forStr: contentType) {
+                let decoder = try CoderFactory.decoder(for: mimeType)
+                let result = try decoder.decode(EndpointData?.self, from: data)
+                return result;
+            }
+            throw DecodeError.unknownMimeType
+        }
+        public func execute(client: RuntimeClient,
+            completionHandler: @escaping (EndpointProtocol?, Error?) -> Void) -> Void {
+            client.executeAsyncLRO(command: self) {
+                (result: EndpointData?, error: Error?) in
+                completionHandler(result, error)
+            }
         }
     }
-}
 }

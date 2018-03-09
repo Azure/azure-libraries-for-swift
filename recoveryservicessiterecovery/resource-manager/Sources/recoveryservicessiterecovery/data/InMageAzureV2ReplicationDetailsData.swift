@@ -17,6 +17,7 @@ internal struct InMageAzureV2ReplicationDetailsData : InMageAzureV2ReplicationDe
     public var uncompressedDataRateInMB: Double?
     public var ipAddress: String?
     public var agentVersion: String?
+    public var agentExpiryDate: Date?
     public var isAgentUpdateRequired: String?
     public var isRebootAfterUpdateRequired: String?
     public var lastHeartbeat: Date?
@@ -27,8 +28,8 @@ internal struct InMageAzureV2ReplicationDetailsData : InMageAzureV2ReplicationDe
     public var protectedDisks: [InMageAzureV2ProtectedDiskDetailsProtocol?]?
     public var diskResized: String?
     public var masterTargetId: String?
-    public var sourceVmCPUCount: Int32?
-    public var sourceVmRAMSizeInMB: Int32?
+    public var sourceVmCpuCount: Int32?
+    public var sourceVmRamSizeInMB: Int32?
     public var osType: String?
     public var vhdName: String?
     public var osDiskId: String?
@@ -39,8 +40,9 @@ internal struct InMageAzureV2ReplicationDetailsData : InMageAzureV2ReplicationDe
     public var recoveryAzureLogStorageAccountId: String?
     public var vmNics: [VMNicDetailsProtocol?]?
     public var selectedRecoveryAzureNetworkId: String?
+    public var selectedSourceNicId: String?
     public var discoveryType: String?
-    public var enableRDPOnTargetOption: String?
+    public var enableRdpOnTargetOption: String?
     public var datastores: [String]?
     public var targetVmId: String?
     public var recoveryAzureResourceGroupId: String?
@@ -65,6 +67,7 @@ internal struct InMageAzureV2ReplicationDetailsData : InMageAzureV2ReplicationDe
         case uncompressedDataRateInMB = "uncompressedDataRateInMB"
         case ipAddress = "ipAddress"
         case agentVersion = "agentVersion"
+        case agentExpiryDate = "agentExpiryDate"
         case isAgentUpdateRequired = "isAgentUpdateRequired"
         case isRebootAfterUpdateRequired = "isRebootAfterUpdateRequired"
         case lastHeartbeat = "lastHeartbeat"
@@ -75,8 +78,8 @@ internal struct InMageAzureV2ReplicationDetailsData : InMageAzureV2ReplicationDe
         case protectedDisks = "protectedDisks"
         case diskResized = "diskResized"
         case masterTargetId = "masterTargetId"
-        case sourceVmCPUCount = "sourceVmCPUCount"
-        case sourceVmRAMSizeInMB = "sourceVmRAMSizeInMB"
+        case sourceVmCpuCount = "sourceVmCpuCount"
+        case sourceVmRamSizeInMB = "sourceVmRamSizeInMB"
         case osType = "osType"
         case vhdName = "vhdName"
         case osDiskId = "osDiskId"
@@ -87,8 +90,9 @@ internal struct InMageAzureV2ReplicationDetailsData : InMageAzureV2ReplicationDe
         case recoveryAzureLogStorageAccountId = "recoveryAzureLogStorageAccountId"
         case vmNics = "vmNics"
         case selectedRecoveryAzureNetworkId = "selectedRecoveryAzureNetworkId"
+        case selectedSourceNicId = "selectedSourceNicId"
         case discoveryType = "discoveryType"
-        case enableRDPOnTargetOption = "enableRDPOnTargetOption"
+        case enableRdpOnTargetOption = "enableRdpOnTargetOption"
         case datastores = "datastores"
         case targetVmId = "targetVmId"
         case recoveryAzureResourceGroupId = "recoveryAzureResourceGroupId"
@@ -143,6 +147,9 @@ internal struct InMageAzureV2ReplicationDetailsData : InMageAzureV2ReplicationDe
     if container.contains(.agentVersion) {
         self.agentVersion = try container.decode(String?.self, forKey: .agentVersion)
     }
+    if container.contains(.agentExpiryDate) {
+        self.agentExpiryDate = DateConverter.fromString(dateStr: (try container.decode(String?.self, forKey: .agentExpiryDate)), format: .dateTime)
+    }
     if container.contains(.isAgentUpdateRequired) {
         self.isAgentUpdateRequired = try container.decode(String?.self, forKey: .isAgentUpdateRequired)
     }
@@ -173,11 +180,11 @@ internal struct InMageAzureV2ReplicationDetailsData : InMageAzureV2ReplicationDe
     if container.contains(.masterTargetId) {
         self.masterTargetId = try container.decode(String?.self, forKey: .masterTargetId)
     }
-    if container.contains(.sourceVmCPUCount) {
-        self.sourceVmCPUCount = try container.decode(Int32?.self, forKey: .sourceVmCPUCount)
+    if container.contains(.sourceVmCpuCount) {
+        self.sourceVmCpuCount = try container.decode(Int32?.self, forKey: .sourceVmCpuCount)
     }
-    if container.contains(.sourceVmRAMSizeInMB) {
-        self.sourceVmRAMSizeInMB = try container.decode(Int32?.self, forKey: .sourceVmRAMSizeInMB)
+    if container.contains(.sourceVmRamSizeInMB) {
+        self.sourceVmRamSizeInMB = try container.decode(Int32?.self, forKey: .sourceVmRamSizeInMB)
     }
     if container.contains(.osType) {
         self.osType = try container.decode(String?.self, forKey: .osType)
@@ -209,11 +216,14 @@ internal struct InMageAzureV2ReplicationDetailsData : InMageAzureV2ReplicationDe
     if container.contains(.selectedRecoveryAzureNetworkId) {
         self.selectedRecoveryAzureNetworkId = try container.decode(String?.self, forKey: .selectedRecoveryAzureNetworkId)
     }
+    if container.contains(.selectedSourceNicId) {
+        self.selectedSourceNicId = try container.decode(String?.self, forKey: .selectedSourceNicId)
+    }
     if container.contains(.discoveryType) {
         self.discoveryType = try container.decode(String?.self, forKey: .discoveryType)
     }
-    if container.contains(.enableRDPOnTargetOption) {
-        self.enableRDPOnTargetOption = try container.decode(String?.self, forKey: .enableRDPOnTargetOption)
+    if container.contains(.enableRdpOnTargetOption) {
+        self.enableRdpOnTargetOption = try container.decode(String?.self, forKey: .enableRdpOnTargetOption)
     }
     if container.contains(.datastores) {
         self.datastores = try container.decode([String]?.self, forKey: .datastores)
@@ -270,6 +280,9 @@ internal struct InMageAzureV2ReplicationDetailsData : InMageAzureV2ReplicationDe
     if self.uncompressedDataRateInMB != nil {try container.encode(self.uncompressedDataRateInMB, forKey: .uncompressedDataRateInMB)}
     if self.ipAddress != nil {try container.encode(self.ipAddress, forKey: .ipAddress)}
     if self.agentVersion != nil {try container.encode(self.agentVersion, forKey: .agentVersion)}
+    if self.agentExpiryDate != nil {
+        try container.encode(DateConverter.toString(date: self.agentExpiryDate!, format: .dateTime), forKey: .agentExpiryDate)
+    }
     if self.isAgentUpdateRequired != nil {try container.encode(self.isAgentUpdateRequired, forKey: .isAgentUpdateRequired)}
     if self.isRebootAfterUpdateRequired != nil {try container.encode(self.isRebootAfterUpdateRequired, forKey: .isRebootAfterUpdateRequired)}
     if self.lastHeartbeat != nil {
@@ -282,8 +295,8 @@ internal struct InMageAzureV2ReplicationDetailsData : InMageAzureV2ReplicationDe
     if self.protectedDisks != nil {try container.encode(self.protectedDisks as! [InMageAzureV2ProtectedDiskDetailsData?]?, forKey: .protectedDisks)}
     if self.diskResized != nil {try container.encode(self.diskResized, forKey: .diskResized)}
     if self.masterTargetId != nil {try container.encode(self.masterTargetId, forKey: .masterTargetId)}
-    if self.sourceVmCPUCount != nil {try container.encode(self.sourceVmCPUCount, forKey: .sourceVmCPUCount)}
-    if self.sourceVmRAMSizeInMB != nil {try container.encode(self.sourceVmRAMSizeInMB, forKey: .sourceVmRAMSizeInMB)}
+    if self.sourceVmCpuCount != nil {try container.encode(self.sourceVmCpuCount, forKey: .sourceVmCpuCount)}
+    if self.sourceVmRamSizeInMB != nil {try container.encode(self.sourceVmRamSizeInMB, forKey: .sourceVmRamSizeInMB)}
     if self.osType != nil {try container.encode(self.osType, forKey: .osType)}
     if self.vhdName != nil {try container.encode(self.vhdName, forKey: .vhdName)}
     if self.osDiskId != nil {try container.encode(self.osDiskId, forKey: .osDiskId)}
@@ -294,8 +307,9 @@ internal struct InMageAzureV2ReplicationDetailsData : InMageAzureV2ReplicationDe
     if self.recoveryAzureLogStorageAccountId != nil {try container.encode(self.recoveryAzureLogStorageAccountId, forKey: .recoveryAzureLogStorageAccountId)}
     if self.vmNics != nil {try container.encode(self.vmNics as! [VMNicDetailsData?]?, forKey: .vmNics)}
     if self.selectedRecoveryAzureNetworkId != nil {try container.encode(self.selectedRecoveryAzureNetworkId, forKey: .selectedRecoveryAzureNetworkId)}
+    if self.selectedSourceNicId != nil {try container.encode(self.selectedSourceNicId, forKey: .selectedSourceNicId)}
     if self.discoveryType != nil {try container.encode(self.discoveryType, forKey: .discoveryType)}
-    if self.enableRDPOnTargetOption != nil {try container.encode(self.enableRDPOnTargetOption, forKey: .enableRDPOnTargetOption)}
+    if self.enableRdpOnTargetOption != nil {try container.encode(self.enableRdpOnTargetOption, forKey: .enableRdpOnTargetOption)}
     if self.datastores != nil {try container.encode(self.datastores as! [String]?, forKey: .datastores)}
     if self.targetVmId != nil {try container.encode(self.targetVmId, forKey: .targetVmId)}
     if self.recoveryAzureResourceGroupId != nil {try container.encode(self.recoveryAzureResourceGroupId, forKey: .recoveryAzureResourceGroupId)}

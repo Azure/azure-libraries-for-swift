@@ -8,23 +8,23 @@ import Foundation
 import azureSwiftRuntime
 extension Commands {
 public struct Runbook {
-    public static func CreateOrUpdate(resourceGroupName: String, automationAccountName: String, runbookName: String, subscriptionId: String, parameters: RunbookCreateOrUpdateParametersProtocol) -> RunbookCreateOrUpdate {
-        return CreateOrUpdateCommand(resourceGroupName: resourceGroupName, automationAccountName: automationAccountName, runbookName: runbookName, subscriptionId: subscriptionId, parameters: parameters)
+    public static func CreateOrUpdate(subscriptionId: String, resourceGroupName: String, automationAccountName: String, runbookName: String, parameters: RunbookCreateOrUpdateParametersProtocol) -> RunbookCreateOrUpdate {
+        return CreateOrUpdateCommand(subscriptionId: subscriptionId, resourceGroupName: resourceGroupName, automationAccountName: automationAccountName, runbookName: runbookName, parameters: parameters)
     }
-    public static func Delete(resourceGroupName: String, automationAccountName: String, runbookName: String, subscriptionId: String) -> RunbookDelete {
-        return DeleteCommand(resourceGroupName: resourceGroupName, automationAccountName: automationAccountName, runbookName: runbookName, subscriptionId: subscriptionId)
+    public static func Delete(subscriptionId: String, resourceGroupName: String, automationAccountName: String, runbookName: String) -> RunbookDelete {
+        return DeleteCommand(subscriptionId: subscriptionId, resourceGroupName: resourceGroupName, automationAccountName: automationAccountName, runbookName: runbookName)
     }
-    public static func Get(resourceGroupName: String, automationAccountName: String, runbookName: String, subscriptionId: String) -> RunbookGet {
-        return GetCommand(resourceGroupName: resourceGroupName, automationAccountName: automationAccountName, runbookName: runbookName, subscriptionId: subscriptionId)
+    public static func Get(subscriptionId: String, resourceGroupName: String, automationAccountName: String, runbookName: String) -> RunbookGet {
+        return GetCommand(subscriptionId: subscriptionId, resourceGroupName: resourceGroupName, automationAccountName: automationAccountName, runbookName: runbookName)
     }
-    public static func GetContent(resourceGroupName: String, automationAccountName: String, runbookName: String, subscriptionId: String) -> RunbookGetContent {
-        return GetContentCommand(resourceGroupName: resourceGroupName, automationAccountName: automationAccountName, runbookName: runbookName, subscriptionId: subscriptionId)
+    public static func GetContent(subscriptionId: String, resourceGroupName: String, automationAccountName: String, runbookName: String) -> RunbookGetContent {
+        return GetContentCommand(subscriptionId: subscriptionId, resourceGroupName: resourceGroupName, automationAccountName: automationAccountName, runbookName: runbookName)
     }
-    public static func ListByAutomationAccount(resourceGroupName: String, automationAccountName: String, subscriptionId: String) -> RunbookListByAutomationAccount {
-        return ListByAutomationAccountCommand(resourceGroupName: resourceGroupName, automationAccountName: automationAccountName, subscriptionId: subscriptionId)
+    public static func ListByAutomationAccount(subscriptionId: String, resourceGroupName: String, automationAccountName: String) -> RunbookListByAutomationAccount {
+        return ListByAutomationAccountCommand(subscriptionId: subscriptionId, resourceGroupName: resourceGroupName, automationAccountName: automationAccountName)
     }
-    public static func Update(resourceGroupName: String, automationAccountName: String, runbookName: String, subscriptionId: String, parameters: RunbookUpdateParametersProtocol) -> RunbookUpdate {
-        return UpdateCommand(resourceGroupName: resourceGroupName, automationAccountName: automationAccountName, runbookName: runbookName, subscriptionId: subscriptionId, parameters: parameters)
+    public static func Update(subscriptionId: String, resourceGroupName: String, automationAccountName: String, runbookName: String, parameters: RunbookUpdateParametersProtocol) -> RunbookUpdate {
+        return UpdateCommand(subscriptionId: subscriptionId, resourceGroupName: resourceGroupName, automationAccountName: automationAccountName, runbookName: runbookName, parameters: parameters)
     }
 }
 }

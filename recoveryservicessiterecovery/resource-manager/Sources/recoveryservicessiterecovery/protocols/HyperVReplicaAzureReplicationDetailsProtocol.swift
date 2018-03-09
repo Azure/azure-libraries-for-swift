@@ -5,23 +5,26 @@
 import Foundation
 // HyperVReplicaAzureReplicationDetailsProtocol is hyper V Replica Azure provider specific settings.
 public protocol HyperVReplicaAzureReplicationDetailsProtocol : ReplicationProviderSpecificSettingsProtocol {
-     var azureVMDiskDetails: [AzureVmDiskDetailsProtocol?]? { get set }
-     var recoveryAzureVMName: String? { get set }
+     var azureVmDiskDetails: [AzureVmDiskDetailsProtocol?]? { get set }
+     var recoveryAzureVmName: String? { get set }
      var recoveryAzureVMSize: String? { get set }
      var recoveryAzureStorageAccount: String? { get set }
      var recoveryAzureLogStorageAccountId: String? { get set }
      var lastReplicatedTime: Date? { get set }
+     var rpoInSeconds: Int64? { get set }
+     var lastRpoCalculatedTime: Date? { get set }
      var vmId: String? { get set }
      var vmProtectionState: String? { get set }
      var vmProtectionStateDescription: String? { get set }
      var initialReplicationDetails: InitialReplicationDetailsProtocol? { get set }
      var vmNics: [VMNicDetailsProtocol?]? { get set }
      var selectedRecoveryAzureNetworkId: String? { get set }
+     var selectedSourceNicId: String? { get set }
      var encryption: String? { get set }
      var oSDetails: OSDetailsProtocol? { get set }
-     var sourceVmRAMSizeInMB: Int32? { get set }
-     var sourceVmCPUCount: Int32? { get set }
-     var enableRDPOnTargetOption: String? { get set }
+     var sourceVmRamSizeInMB: Int32? { get set }
+     var sourceVmCpuCount: Int32? { get set }
+     var enableRdpOnTargetOption: String? { get set }
      var recoveryAzureResourceGroupId: String? { get set }
      var recoveryAvailabilitySetId: String? { get set }
      var useManagedDisks: String? { get set }

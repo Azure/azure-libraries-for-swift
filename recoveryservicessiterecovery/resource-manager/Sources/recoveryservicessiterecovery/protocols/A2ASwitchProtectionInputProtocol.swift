@@ -12,4 +12,5 @@ public protocol A2ASwitchProtectionInputProtocol : SwitchProtectionProviderSpeci
      var recoveryCloudServiceId: String? { get set }
      var recoveryAvailabilitySetId: String? { get set }
      var policyId: String? { get set }
+     var recoveryBootDiagStorageAccountId: String? { get set }
 }

@@ -35,4 +35,6 @@ public protocol VMwareDetailsProtocol : FabricSpecificDetailsProtocol {
      var sslCertExpiryDate: Date? { get set }
      var sslCertExpiryRemainingDays: Int32? { get set }
      var psTemplateVersion: String? { get set }
+     var agentExpiryDate: Date? { get set }
+     var agentVersionDetails: VersionDetailsProtocol? { get set }
 }

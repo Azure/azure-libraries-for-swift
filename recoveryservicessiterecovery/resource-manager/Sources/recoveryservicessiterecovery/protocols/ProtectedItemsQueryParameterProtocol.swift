@@ -8,4 +8,6 @@ public protocol ProtectedItemsQueryParameterProtocol : Codable {
      var sourceFabricName: String? { get set }
      var recoveryPlanName: String? { get set }
      var vCenterName: String? { get set }
+     var instanceType: String? { get set }
+     var multiVmGroupCreateOption: MultiVmGroupCreateOptionEnum? { get set }
 }

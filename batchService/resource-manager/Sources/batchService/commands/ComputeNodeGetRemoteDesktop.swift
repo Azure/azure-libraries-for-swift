@@ -10,53 +10,53 @@ public protocol ComputeNodeGetRemoteDesktop  {
     var returnClientRequestId : Bool? { get set }
     var ocpDate : Date? { get set }
     func execute(client: RuntimeClient,
-        completionHandler: @escaping (Data?, Error?) -> Void) -> Void ;
+    completionHandler: @escaping (Data?, Error?) -> Void) -> Void ;
 }
 
 extension Commands.ComputeNode {
 // GetRemoteDesktop before you can access a node by using the RDP file, you must create a user account on the node.
 // This API can only be invoked on pools created with a cloud service configuration. For pools created with a virtual
 // machine configuration, see the GetRemoteLoginSettings API.
-internal class GetRemoteDesktopCommand : BaseCommand, ComputeNodeGetRemoteDesktop {
-    public var poolId : String
-    public var nodeId : String
-    public var timeout : Int32?
-    public var apiVersion = "2017-09-01.6.0"
-    public var clientRequestId : String?
-    public var returnClientRequestId : Bool?
-    public var ocpDate : Date?
+    internal class GetRemoteDesktopCommand : BaseCommand, ComputeNodeGetRemoteDesktop {
+        public var poolId : String
+        public var nodeId : String
+        public var timeout : Int32?
+        public var apiVersion = "2017-09-01.6.0"
+        public var clientRequestId : String?
+        public var returnClientRequestId : Bool?
+        public var ocpDate : Date?
 
-    public init(poolId: String, nodeId: String) {
-        self.poolId = poolId
-        self.nodeId = nodeId
-        super.init()
-        self.method = "Get"
-        self.isLongRunningOperation = false
-        self.path = "/pools/{poolId}/nodes/{nodeId}/rdp"
-        self.headerParameters = ["Content-Type":"application/json; odata=minimalmetadata; charset=utf-8"]
-    }
+        public init(poolId: String, nodeId: String) {
+            self.poolId = poolId
+            self.nodeId = nodeId
+            super.init()
+            self.method = "Get"
+            self.isLongRunningOperation = false
+            self.path = "/pools/{poolId}/nodes/{nodeId}/rdp"
+            self.headerParameters = ["Content-Type":"application/json; odata=minimalmetadata; charset=utf-8"]
+        }
 
-    public override func preCall()  {
-        self.pathParameters["{poolId}"] = String(describing: self.poolId)
-        self.pathParameters["{nodeId}"] = String(describing: self.nodeId)
-        if self.timeout != nil { queryParameters["timeout"] = String(describing: self.timeout!) }
-        self.queryParameters["api-version"] = String(describing: self.apiVersion)
-        if self.clientRequestId != nil { headerParameters["client-request-id"] = String(describing: self.clientRequestId!) }
-        if self.returnClientRequestId != nil { headerParameters["return-client-request-id"] = String(describing: self.returnClientRequestId!) }
-        if self.ocpDate != nil { headerParameters["ocp-date"] = String(describing: self.ocpDate!) }
-}
+        public override func preCall()  {
+            self.pathParameters["{poolId}"] = String(describing: self.poolId)
+            self.pathParameters["{nodeId}"] = String(describing: self.nodeId)
+            if self.timeout != nil { queryParameters["timeout"] = String(describing: self.timeout!) }
+            self.queryParameters["api-version"] = String(describing: self.apiVersion)
+            if self.clientRequestId != nil { headerParameters["client-request-id"] = String(describing: self.clientRequestId!) }
+            if self.returnClientRequestId != nil { headerParameters["return-client-request-id"] = String(describing: self.returnClientRequestId!) }
+            if self.ocpDate != nil { headerParameters["ocp-date"] = String(describing: self.ocpDate!) }
 
+        }
 
-    public override func returnFunc(data: Data) throws -> Decodable? {
-        return DataWrapper(data: data);
-    }
-    public func execute(client: RuntimeClient,
-        completionHandler: @escaping (Data?, Error?) -> Void) -> Void {
-        client.executeAsync(command: self) {
-            (result: DataWrapper?, error: Error?) in
-            let data = result?.data as Data?
-            completionHandler(data!, error)
+        public override func returnFunc(data: Data) throws -> Decodable? {
+            return DataWrapper(data: data);
+        }
+        public func execute(client: RuntimeClient,
+            completionHandler: @escaping (Data?, Error?) -> Void) -> Void {
+            client.executeAsync(command: self) {
+                (result: DataWrapper?, error: Error?) in
+                let data = result?.data as Data?
+                completionHandler(data!, error)
+            }
         }
     }
-}
 }

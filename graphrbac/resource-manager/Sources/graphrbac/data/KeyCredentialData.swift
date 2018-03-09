@@ -12,6 +12,7 @@ internal struct KeyCredentialData : KeyCredentialProtocol {
     public var keyId: String?
     public var usage: String?
     public var type: String?
+    public var customKeyIdentifier: [UInt8]?
 
         enum CodingKeys: String, CodingKey {case additionalProperties = ""
         case startDate = "startDate"
@@ -20,6 +21,7 @@ internal struct KeyCredentialData : KeyCredentialProtocol {
         case keyId = "keyId"
         case usage = "usage"
         case type = "type"
+        case customKeyIdentifier = "customKeyIdentifier"
         }
 
   public init()  {
@@ -48,6 +50,9 @@ internal struct KeyCredentialData : KeyCredentialProtocol {
     if container.contains(.type) {
         self.type = try container.decode(String?.self, forKey: .type)
     }
+    if container.contains(.customKeyIdentifier) {
+        self.customKeyIdentifier = try container.decode([UInt8]?.self, forKey: .customKeyIdentifier)
+    }
     if var pageDecoder = decoder as? PageDecoder  {
       if pageDecoder.isPagedData,
         let nextLinkName = pageDecoder.nextLinkName {
@@ -69,6 +74,7 @@ internal struct KeyCredentialData : KeyCredentialProtocol {
     if self.keyId != nil {try container.encode(self.keyId, forKey: .keyId)}
     if self.usage != nil {try container.encode(self.usage, forKey: .usage)}
     if self.type != nil {try container.encode(self.type, forKey: .type)}
+    if self.customKeyIdentifier != nil {try container.encode(self.customKeyIdentifier, forKey: .customKeyIdentifier)}
   }
 }
 

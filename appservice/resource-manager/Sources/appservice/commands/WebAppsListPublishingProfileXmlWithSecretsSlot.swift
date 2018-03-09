@@ -9,61 +9,61 @@ public protocol WebAppsListPublishingProfileXmlWithSecretsSlot  {
     var apiVersion : String { get set }
     var publishingProfileOptions :  CsmPublishingProfileOptionsProtocol?  { get set }
     func execute(client: RuntimeClient,
-        completionHandler: @escaping (Data?, Error?) -> Void) -> Void ;
+    completionHandler: @escaping (Data?, Error?) -> Void) -> Void ;
 }
 
 extension Commands.WebApps {
 // ListPublishingProfileXmlWithSecretsSlot gets the publishing profile for an app (or deployment slot, if specified).
-internal class ListPublishingProfileXmlWithSecretsSlotCommand : BaseCommand, WebAppsListPublishingProfileXmlWithSecretsSlot {
-    public var resourceGroupName : String
-    public var name : String
-    public var slot : String
-    public var subscriptionId : String
-    public var apiVersion = "2016-08-01"
+    internal class ListPublishingProfileXmlWithSecretsSlotCommand : BaseCommand, WebAppsListPublishingProfileXmlWithSecretsSlot {
+        public var resourceGroupName : String
+        public var name : String
+        public var slot : String
+        public var subscriptionId : String
+        public var apiVersion = "2016-08-01"
     public var publishingProfileOptions :  CsmPublishingProfileOptionsProtocol?
 
-    public init(resourceGroupName: String, name: String, slot: String, subscriptionId: String, publishingProfileOptions: CsmPublishingProfileOptionsProtocol) {
-        self.resourceGroupName = resourceGroupName
-        self.name = name
-        self.slot = slot
-        self.subscriptionId = subscriptionId
-        self.publishingProfileOptions = publishingProfileOptions
-        super.init()
-        self.method = "Post"
-        self.isLongRunningOperation = false
-        self.path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/publishxml"
-        self.headerParameters = ["Content-Type":"application/json; charset=utf-8"]
-    }
-
-    public override func preCall()  {
-        self.pathParameters["{resourceGroupName}"] = String(describing: self.resourceGroupName)
-        self.pathParameters["{name}"] = String(describing: self.name)
-        self.pathParameters["{slot}"] = String(describing: self.slot)
-        self.pathParameters["{subscriptionId}"] = String(describing: self.subscriptionId)
-        self.queryParameters["api-version"] = String(describing: self.apiVersion)
-    self.body = publishingProfileOptions
-}
-
-    public override func encodeBody() throws -> Data? {
-        let contentType = "application/octet-stream"
-        if let mimeType = MimeType.getType(forStr: contentType) {
-            let encoder = try CoderFactory.encoder(for: mimeType)
-            let encodedValue = try encoder.encode(publishingProfileOptions)
-            return encodedValue
+        public init(resourceGroupName: String, name: String, slot: String, subscriptionId: String, publishingProfileOptions: CsmPublishingProfileOptionsProtocol) {
+            self.resourceGroupName = resourceGroupName
+            self.name = name
+            self.slot = slot
+            self.subscriptionId = subscriptionId
+            self.publishingProfileOptions = publishingProfileOptions
+            super.init()
+            self.method = "Post"
+            self.isLongRunningOperation = false
+            self.path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/publishxml"
+            self.headerParameters = ["Content-Type":"application/json; charset=utf-8"]
         }
-        throw DecodeError.unknownMimeType
-    }
 
-    public override func returnFunc(data: Data) throws -> Decodable? {
-        return DataWrapper(data: data);
-    }
-    public func execute(client: RuntimeClient,
-        completionHandler: @escaping (Data?, Error?) -> Void) -> Void {
-        client.executeAsync(command: self) {
-            (result: DataWrapper?, error: Error?) in
-            let data = result?.data as Data?
-            completionHandler(data!, error)
+        public override func preCall()  {
+            self.pathParameters["{resourceGroupName}"] = String(describing: self.resourceGroupName)
+            self.pathParameters["{name}"] = String(describing: self.name)
+            self.pathParameters["{slot}"] = String(describing: self.slot)
+            self.pathParameters["{subscriptionId}"] = String(describing: self.subscriptionId)
+            self.queryParameters["api-version"] = String(describing: self.apiVersion)
+            self.body = publishingProfileOptions
+
+        }
+        public override func encodeBody() throws -> Data? {
+            let contentType = "application/octet-stream"
+            if let mimeType = MimeType.getType(forStr: contentType) {
+                let encoder = try CoderFactory.encoder(for: mimeType)
+                let encodedValue = try encoder.encode(publishingProfileOptions as? CsmPublishingProfileOptionsData)
+                return encodedValue
+            }
+            throw DecodeError.unknownMimeType
+        }
+
+        public override func returnFunc(data: Data) throws -> Decodable? {
+            return DataWrapper(data: data);
+        }
+        public func execute(client: RuntimeClient,
+            completionHandler: @escaping (Data?, Error?) -> Void) -> Void {
+            client.executeAsync(command: self) {
+                (result: DataWrapper?, error: Error?) in
+                let data = result?.data as Data?
+                completionHandler(data!, error)
+            }
         }
     }
-}
 }

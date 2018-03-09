@@ -17,6 +17,7 @@ public protocol InMageAzureV2ReplicationDetailsProtocol : ReplicationProviderSpe
      var uncompressedDataRateInMB: Double? { get set }
      var ipAddress: String? { get set }
      var agentVersion: String? { get set }
+     var agentExpiryDate: Date? { get set }
      var isAgentUpdateRequired: String? { get set }
      var isRebootAfterUpdateRequired: String? { get set }
      var lastHeartbeat: Date? { get set }
@@ -27,8 +28,8 @@ public protocol InMageAzureV2ReplicationDetailsProtocol : ReplicationProviderSpe
      var protectedDisks: [InMageAzureV2ProtectedDiskDetailsProtocol?]? { get set }
      var diskResized: String? { get set }
      var masterTargetId: String? { get set }
-     var sourceVmCPUCount: Int32? { get set }
-     var sourceVmRAMSizeInMB: Int32? { get set }
+     var sourceVmCpuCount: Int32? { get set }
+     var sourceVmRamSizeInMB: Int32? { get set }
      var osType: String? { get set }
      var vhdName: String? { get set }
      var osDiskId: String? { get set }
@@ -39,8 +40,9 @@ public protocol InMageAzureV2ReplicationDetailsProtocol : ReplicationProviderSpe
      var recoveryAzureLogStorageAccountId: String? { get set }
      var vmNics: [VMNicDetailsProtocol?]? { get set }
      var selectedRecoveryAzureNetworkId: String? { get set }
+     var selectedSourceNicId: String? { get set }
      var discoveryType: String? { get set }
-     var enableRDPOnTargetOption: String? { get set }
+     var enableRdpOnTargetOption: String? { get set }
      var datastores: [String]? { get set }
      var targetVmId: String? { get set }
      var recoveryAzureResourceGroupId: String? { get set }

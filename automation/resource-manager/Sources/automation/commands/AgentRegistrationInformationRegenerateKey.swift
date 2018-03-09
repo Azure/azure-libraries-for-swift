@@ -8,63 +8,63 @@ public protocol AgentRegistrationInformationRegenerateKey  {
     var apiVersion : String { get set }
     var parameters :  AgentRegistrationRegenerateKeyParameterProtocol?  { get set }
     func execute(client: RuntimeClient,
-        completionHandler: @escaping (AgentRegistrationProtocol?, Error?) -> Void) -> Void ;
+    completionHandler: @escaping (AgentRegistrationProtocol?, Error?) -> Void) -> Void ;
 }
 
 extension Commands.AgentRegistrationInformation {
 // RegenerateKey regenerate a primary or secondary agent registration key
-internal class RegenerateKeyCommand : BaseCommand, AgentRegistrationInformationRegenerateKey {
-    public var resourceGroupName : String
-    public var automationAccountName : String
-    public var subscriptionId : String
-    public var apiVersion = "2015-10-31"
+    internal class RegenerateKeyCommand : BaseCommand, AgentRegistrationInformationRegenerateKey {
+        public var resourceGroupName : String
+        public var automationAccountName : String
+        public var subscriptionId : String
+        public var apiVersion = "2015-10-31"
     public var parameters :  AgentRegistrationRegenerateKeyParameterProtocol?
 
-    public init(resourceGroupName: String, automationAccountName: String, subscriptionId: String, parameters: AgentRegistrationRegenerateKeyParameterProtocol) {
-        self.resourceGroupName = resourceGroupName
-        self.automationAccountName = automationAccountName
-        self.subscriptionId = subscriptionId
-        self.parameters = parameters
-        super.init()
-        self.method = "Post"
-        self.isLongRunningOperation = false
-        self.path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/agentRegistrationInformation/regenerateKey"
-        self.headerParameters = ["Content-Type":"application/json; charset=utf-8"]
-    }
-
-    public override func preCall()  {
-        self.pathParameters["{resourceGroupName}"] = String(describing: self.resourceGroupName)
-        self.pathParameters["{automationAccountName}"] = String(describing: self.automationAccountName)
-        self.pathParameters["{subscriptionId}"] = String(describing: self.subscriptionId)
-        self.queryParameters["api-version"] = String(describing: self.apiVersion)
-    self.body = parameters
-}
-
-    public override func encodeBody() throws -> Data? {
-        let contentType = "application/json"
-        if let mimeType = MimeType.getType(forStr: contentType) {
-            let encoder = try CoderFactory.encoder(for: mimeType)
-            let encodedValue = try encoder.encode(parameters)
-            return encodedValue
+        public init(resourceGroupName: String, automationAccountName: String, subscriptionId: String, parameters: AgentRegistrationRegenerateKeyParameterProtocol) {
+            self.resourceGroupName = resourceGroupName
+            self.automationAccountName = automationAccountName
+            self.subscriptionId = subscriptionId
+            self.parameters = parameters
+            super.init()
+            self.method = "Post"
+            self.isLongRunningOperation = false
+            self.path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/agentRegistrationInformation/regenerateKey"
+            self.headerParameters = ["Content-Type":"application/json; charset=utf-8"]
         }
-        throw DecodeError.unknownMimeType
-    }
 
-    public override func returnFunc(data: Data) throws -> Decodable? {
-        let contentType = "application/json"
-        if let mimeType = MimeType.getType(forStr: contentType) {
-            let decoder = try CoderFactory.decoder(for: mimeType)
-            let result = try decoder.decode(AgentRegistrationData?.self, from: data)
-            return result;
+        public override func preCall()  {
+            self.pathParameters["{resourceGroupName}"] = String(describing: self.resourceGroupName)
+            self.pathParameters["{automationAccountName}"] = String(describing: self.automationAccountName)
+            self.pathParameters["{subscriptionId}"] = String(describing: self.subscriptionId)
+            self.queryParameters["api-version"] = String(describing: self.apiVersion)
+            self.body = parameters
+
         }
-        throw DecodeError.unknownMimeType
-    }
-    public func execute(client: RuntimeClient,
-        completionHandler: @escaping (AgentRegistrationProtocol?, Error?) -> Void) -> Void {
-        client.executeAsync(command: self) {
-            (result: AgentRegistrationData?, error: Error?) in
-            completionHandler(result, error)
+        public override func encodeBody() throws -> Data? {
+            let contentType = "application/json"
+            if let mimeType = MimeType.getType(forStr: contentType) {
+                let encoder = try CoderFactory.encoder(for: mimeType)
+                let encodedValue = try encoder.encode(parameters as? AgentRegistrationRegenerateKeyParameterData)
+                return encodedValue
+            }
+            throw DecodeError.unknownMimeType
+        }
+
+        public override func returnFunc(data: Data) throws -> Decodable? {
+            let contentType = "application/json"
+            if let mimeType = MimeType.getType(forStr: contentType) {
+                let decoder = try CoderFactory.decoder(for: mimeType)
+                let result = try decoder.decode(AgentRegistrationData?.self, from: data)
+                return result;
+            }
+            throw DecodeError.unknownMimeType
+        }
+        public func execute(client: RuntimeClient,
+            completionHandler: @escaping (AgentRegistrationProtocol?, Error?) -> Void) -> Void {
+            client.executeAsync(command: self) {
+                (result: AgentRegistrationData?, error: Error?) in
+                completionHandler(result, error)
+            }
         }
     }
-}
 }

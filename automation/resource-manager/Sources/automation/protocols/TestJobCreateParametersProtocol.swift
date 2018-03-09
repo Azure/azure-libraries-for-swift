@@ -5,7 +5,6 @@
 import Foundation
 // TestJobCreateParametersProtocol is the parameters supplied to the create test job operation.
 public protocol TestJobCreateParametersProtocol : Codable {
-     var runbookName: String { get set }
      var parameters: [String:String]? { get set }
      var runOn: String? { get set }
 }

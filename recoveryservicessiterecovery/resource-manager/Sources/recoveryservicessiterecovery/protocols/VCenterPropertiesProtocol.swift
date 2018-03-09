@@ -15,4 +15,5 @@ public protocol VCenterPropertiesProtocol : Codable {
      var port: String? { get set }
      var runAsAccountId: String? { get set }
      var fabricArmResourceName: String? { get set }
+     var healthErrors: [HealthErrorProtocol?]? { get set }
 }

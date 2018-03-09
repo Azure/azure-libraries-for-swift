@@ -5,6 +5,6 @@
 import Foundation
 // WebhookUpdateParametersProtocol is the parameters supplied to the update webhook operation.
 public protocol WebhookUpdateParametersProtocol : Codable {
-     var name: String { get set }
+     var name: String? { get set }
      var properties: WebhookUpdatePropertiesProtocol? { get set }
 }

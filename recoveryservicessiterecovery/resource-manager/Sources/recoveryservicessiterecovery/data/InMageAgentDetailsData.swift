@@ -8,10 +8,12 @@ internal struct InMageAgentDetailsData : InMageAgentDetailsProtocol {
     public var agentVersion: String?
     public var agentUpdateStatus: String?
     public var postUpdateRebootStatus: String?
+    public var agentExpiryDate: Date?
 
         enum CodingKeys: String, CodingKey {case agentVersion = "agentVersion"
         case agentUpdateStatus = "agentUpdateStatus"
         case postUpdateRebootStatus = "postUpdateRebootStatus"
+        case agentExpiryDate = "agentExpiryDate"
         }
 
   public init()  {
@@ -28,6 +30,9 @@ internal struct InMageAgentDetailsData : InMageAgentDetailsProtocol {
     if container.contains(.postUpdateRebootStatus) {
         self.postUpdateRebootStatus = try container.decode(String?.self, forKey: .postUpdateRebootStatus)
     }
+    if container.contains(.agentExpiryDate) {
+        self.agentExpiryDate = DateConverter.fromString(dateStr: (try container.decode(String?.self, forKey: .agentExpiryDate)), format: .dateTime)
+    }
     if var pageDecoder = decoder as? PageDecoder  {
       if pageDecoder.isPagedData,
         let nextLinkName = pageDecoder.nextLinkName {
@@ -41,6 +46,9 @@ internal struct InMageAgentDetailsData : InMageAgentDetailsProtocol {
     if self.agentVersion != nil {try container.encode(self.agentVersion, forKey: .agentVersion)}
     if self.agentUpdateStatus != nil {try container.encode(self.agentUpdateStatus, forKey: .agentUpdateStatus)}
     if self.postUpdateRebootStatus != nil {try container.encode(self.postUpdateRebootStatus, forKey: .postUpdateRebootStatus)}
+    if self.agentExpiryDate != nil {
+        try container.encode(DateConverter.toString(date: self.agentExpiryDate!, format: .dateTime), forKey: .agentExpiryDate)
+    }
   }
 }
 

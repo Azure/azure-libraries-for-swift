@@ -8,9 +8,11 @@ public protocol A2AReplicationDetailsProtocol : ReplicationProviderSpecificSetti
      var fabricObjectId: String? { get set }
      var multiVmGroupId: String? { get set }
      var multiVmGroupName: String? { get set }
+     var multiVmGroupCreateOption: MultiVmGroupCreateOptionEnum? { get set }
      var managementId: String? { get set }
      var protectedDisks: [A2AProtectedDiskDetailsProtocol?]? { get set }
      var protectedManagedDisks: [A2AProtectedManagedDiskDetailsProtocol?]? { get set }
+     var recoveryBootDiagStorageAccountId: String? { get set }
      var primaryFabricLocation: String? { get set }
      var recoveryFabricLocation: String? { get set }
      var osType: String? { get set }

@@ -7,11 +7,13 @@ import azureSwiftRuntime
 internal struct PacketCaptureResultData : PacketCaptureResultProtocol {
     public var name: String?
     public var id: String?
+    public var type: String?
     public var etag: String?
     public var properties: PacketCaptureResultPropertiesProtocol?
 
         enum CodingKeys: String, CodingKey {case name = "name"
         case id = "id"
+        case type = "type"
         case etag = "etag"
         case properties = "properties"
         }
@@ -26,6 +28,9 @@ internal struct PacketCaptureResultData : PacketCaptureResultProtocol {
     }
     if container.contains(.id) {
         self.id = try container.decode(String?.self, forKey: .id)
+    }
+    if container.contains(.type) {
+        self.type = try container.decode(String?.self, forKey: .type)
     }
     if container.contains(.etag) {
         self.etag = try container.decode(String?.self, forKey: .etag)
@@ -45,6 +50,7 @@ internal struct PacketCaptureResultData : PacketCaptureResultProtocol {
     var container = encoder.container(keyedBy: CodingKeys.self)
     if self.name != nil {try container.encode(self.name, forKey: .name)}
     if self.id != nil {try container.encode(self.id, forKey: .id)}
+    if self.type != nil {try container.encode(self.type, forKey: .type)}
     if self.etag != nil {try container.encode(self.etag, forKey: .etag)}
     if self.properties != nil {try container.encode(self.properties as! PacketCaptureResultPropertiesData?, forKey: .properties)}
   }

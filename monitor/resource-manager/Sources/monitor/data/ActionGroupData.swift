@@ -13,7 +13,6 @@ internal struct ActionGroupData : ActionGroupProtocol {
     public var itsmReceivers: [ItsmReceiverProtocol?]?
     public var azureAppPushReceivers: [AzureAppPushReceiverProtocol?]?
     public var automationRunbookReceivers: [AutomationRunbookReceiverProtocol?]?
-    public var voiceReceivers: [VoiceReceiverProtocol?]?
 
         enum CodingKeys: String, CodingKey {case groupShortName = "groupShortName"
         case enabled = "enabled"
@@ -23,7 +22,6 @@ internal struct ActionGroupData : ActionGroupProtocol {
         case itsmReceivers = "itsmReceivers"
         case azureAppPushReceivers = "azureAppPushReceivers"
         case automationRunbookReceivers = "automationRunbookReceivers"
-        case voiceReceivers = "voiceReceivers"
         }
 
   public init(groupShortName: String, enabled: Bool)  {
@@ -53,9 +51,6 @@ internal struct ActionGroupData : ActionGroupProtocol {
     if container.contains(.automationRunbookReceivers) {
         self.automationRunbookReceivers = try container.decode([AutomationRunbookReceiverData?]?.self, forKey: .automationRunbookReceivers)
     }
-    if container.contains(.voiceReceivers) {
-        self.voiceReceivers = try container.decode([VoiceReceiverData?]?.self, forKey: .voiceReceivers)
-    }
     if var pageDecoder = decoder as? PageDecoder  {
       if pageDecoder.isPagedData,
         let nextLinkName = pageDecoder.nextLinkName {
@@ -74,7 +69,6 @@ internal struct ActionGroupData : ActionGroupProtocol {
     if self.itsmReceivers != nil {try container.encode(self.itsmReceivers as! [ItsmReceiverData?]?, forKey: .itsmReceivers)}
     if self.azureAppPushReceivers != nil {try container.encode(self.azureAppPushReceivers as! [AzureAppPushReceiverData?]?, forKey: .azureAppPushReceivers)}
     if self.automationRunbookReceivers != nil {try container.encode(self.automationRunbookReceivers as! [AutomationRunbookReceiverData?]?, forKey: .automationRunbookReceivers)}
-    if self.voiceReceivers != nil {try container.encode(self.voiceReceivers as! [VoiceReceiverData?]?, forKey: .voiceReceivers)}
   }
 }
 

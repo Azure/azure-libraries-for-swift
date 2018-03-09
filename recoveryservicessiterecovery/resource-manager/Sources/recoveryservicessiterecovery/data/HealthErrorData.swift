@@ -5,29 +5,33 @@
 import Foundation
 import azureSwiftRuntime
 internal struct HealthErrorData : HealthErrorProtocol {
+    public var innerHealthErrors: [InnerHealthErrorProtocol?]?
     public var errorSource: String?
     public var errorType: String?
     public var errorLevel: String?
+    public var errorCategory: String?
     public var errorCode: String?
+    public var summaryMessage: String?
     public var errorMessage: String?
     public var possibleCauses: String?
     public var recommendedAction: String?
     public var creationTimeUtc: Date?
     public var recoveryProviderErrorMessage: String?
     public var entityId: String?
-    public var childErrors: [HealthErrorProtocol?]?
 
-        enum CodingKeys: String, CodingKey {case errorSource = "errorSource"
+        enum CodingKeys: String, CodingKey {case innerHealthErrors = "innerHealthErrors"
+        case errorSource = "errorSource"
         case errorType = "errorType"
         case errorLevel = "errorLevel"
+        case errorCategory = "errorCategory"
         case errorCode = "errorCode"
+        case summaryMessage = "summaryMessage"
         case errorMessage = "errorMessage"
         case possibleCauses = "possibleCauses"
         case recommendedAction = "recommendedAction"
         case creationTimeUtc = "creationTimeUtc"
         case recoveryProviderErrorMessage = "recoveryProviderErrorMessage"
         case entityId = "entityId"
-        case childErrors = "childErrors"
         }
 
   public init()  {
@@ -35,7 +39,10 @@ internal struct HealthErrorData : HealthErrorProtocol {
 
   public init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
-      if container.contains(.errorSource) {
+      if container.contains(.innerHealthErrors) {
+        self.innerHealthErrors = try container.decode([InnerHealthErrorData?]?.self, forKey: .innerHealthErrors)
+    }
+    if container.contains(.errorSource) {
         self.errorSource = try container.decode(String?.self, forKey: .errorSource)
     }
     if container.contains(.errorType) {
@@ -44,8 +51,14 @@ internal struct HealthErrorData : HealthErrorProtocol {
     if container.contains(.errorLevel) {
         self.errorLevel = try container.decode(String?.self, forKey: .errorLevel)
     }
+    if container.contains(.errorCategory) {
+        self.errorCategory = try container.decode(String?.self, forKey: .errorCategory)
+    }
     if container.contains(.errorCode) {
         self.errorCode = try container.decode(String?.self, forKey: .errorCode)
+    }
+    if container.contains(.summaryMessage) {
+        self.summaryMessage = try container.decode(String?.self, forKey: .summaryMessage)
     }
     if container.contains(.errorMessage) {
         self.errorMessage = try container.decode(String?.self, forKey: .errorMessage)
@@ -65,9 +78,6 @@ internal struct HealthErrorData : HealthErrorProtocol {
     if container.contains(.entityId) {
         self.entityId = try container.decode(String?.self, forKey: .entityId)
     }
-    if container.contains(.childErrors) {
-        self.childErrors = try container.decode([HealthErrorData?]?.self, forKey: .childErrors)
-    }
     if var pageDecoder = decoder as? PageDecoder  {
       if pageDecoder.isPagedData,
         let nextLinkName = pageDecoder.nextLinkName {
@@ -78,10 +88,13 @@ internal struct HealthErrorData : HealthErrorProtocol {
 
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
+    if self.innerHealthErrors != nil {try container.encode(self.innerHealthErrors as! [InnerHealthErrorData?]?, forKey: .innerHealthErrors)}
     if self.errorSource != nil {try container.encode(self.errorSource, forKey: .errorSource)}
     if self.errorType != nil {try container.encode(self.errorType, forKey: .errorType)}
     if self.errorLevel != nil {try container.encode(self.errorLevel, forKey: .errorLevel)}
+    if self.errorCategory != nil {try container.encode(self.errorCategory, forKey: .errorCategory)}
     if self.errorCode != nil {try container.encode(self.errorCode, forKey: .errorCode)}
+    if self.summaryMessage != nil {try container.encode(self.summaryMessage, forKey: .summaryMessage)}
     if self.errorMessage != nil {try container.encode(self.errorMessage, forKey: .errorMessage)}
     if self.possibleCauses != nil {try container.encode(self.possibleCauses, forKey: .possibleCauses)}
     if self.recommendedAction != nil {try container.encode(self.recommendedAction, forKey: .recommendedAction)}
@@ -90,7 +103,6 @@ internal struct HealthErrorData : HealthErrorProtocol {
     }
     if self.recoveryProviderErrorMessage != nil {try container.encode(self.recoveryProviderErrorMessage, forKey: .recoveryProviderErrorMessage)}
     if self.entityId != nil {try container.encode(self.entityId, forKey: .entityId)}
-    if self.childErrors != nil {try container.encode(self.childErrors as! [HealthErrorData?]?, forKey: .childErrors)}
   }
 }
 

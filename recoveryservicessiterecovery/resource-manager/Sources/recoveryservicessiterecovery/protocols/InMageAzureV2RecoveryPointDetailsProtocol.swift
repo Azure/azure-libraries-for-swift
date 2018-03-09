@@ -5,6 +5,5 @@
 import Foundation
 // InMageAzureV2RecoveryPointDetailsProtocol is inMage Azure V2 provider specific recovery point details.
 public protocol InMageAzureV2RecoveryPointDetailsProtocol : ProviderSpecificRecoveryPointDetailsProtocol {
-     var instanceType: String? { get set }
      var isMultiVmSyncPoint: String? { get set }
 }

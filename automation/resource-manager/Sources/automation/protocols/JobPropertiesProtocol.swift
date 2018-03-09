@@ -18,4 +18,5 @@ public protocol JobPropertiesProtocol : Codable {
      var lastModifiedTime: Date? { get set }
      var lastStatusModifiedTime: Date? { get set }
      var parameters: [String:String]? { get set }
+     var provisioningState: JobProvisioningStatePropertyProtocol? { get set }
 }

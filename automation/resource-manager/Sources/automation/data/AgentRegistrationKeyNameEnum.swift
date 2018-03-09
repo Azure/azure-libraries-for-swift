@@ -7,7 +7,7 @@
 public enum AgentRegistrationKeyNameEnum: String, Codable
 {
 // Primary specifies the primary state for agent registration key name.
-    case Primary = "Primary"
+    case Primary = "primary"
 // Secondary specifies the secondary state for agent registration key name.
-    case Secondary = "Secondary"
+    case Secondary = "secondary"
 }

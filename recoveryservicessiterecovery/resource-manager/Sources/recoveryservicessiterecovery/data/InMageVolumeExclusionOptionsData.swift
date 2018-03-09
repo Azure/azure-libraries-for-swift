@@ -9,7 +9,7 @@ internal struct InMageVolumeExclusionOptionsData : InMageVolumeExclusionOptionsP
     public var onlyExcludeIfSingleVolume: String?
 
         enum CodingKeys: String, CodingKey {case volumeLabel = "volumeLabel"
-        case onlyExcludeIfSingleVolume = "OnlyExcludeIfSingleVolume"
+        case onlyExcludeIfSingleVolume = "onlyExcludeIfSingleVolume"
         }
 
   public init()  {

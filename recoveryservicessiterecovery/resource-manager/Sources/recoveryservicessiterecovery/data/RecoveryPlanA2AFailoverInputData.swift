@@ -7,9 +7,11 @@ import azureSwiftRuntime
 internal struct RecoveryPlanA2AFailoverInputData : RecoveryPlanA2AFailoverInputProtocol, RecoveryPlanProviderSpecificFailoverInputProtocol {
     public var recoveryPointType: A2ARpRecoveryPointTypeEnum
     public var cloudServiceCreationOption: String?
+    public var multiVmSyncPointOption: MultiVmSyncPointOptionEnum?
 
         enum CodingKeys: String, CodingKey {case recoveryPointType = "recoveryPointType"
         case cloudServiceCreationOption = "cloudServiceCreationOption"
+        case multiVmSyncPointOption = "multiVmSyncPointOption"
         }
 
   public init(recoveryPointType: A2ARpRecoveryPointTypeEnum)  {
@@ -21,6 +23,9 @@ internal struct RecoveryPlanA2AFailoverInputData : RecoveryPlanA2AFailoverInputP
       self.recoveryPointType = try container.decode(A2ARpRecoveryPointTypeEnum.self, forKey: .recoveryPointType)
     if container.contains(.cloudServiceCreationOption) {
         self.cloudServiceCreationOption = try container.decode(String?.self, forKey: .cloudServiceCreationOption)
+    }
+    if container.contains(.multiVmSyncPointOption) {
+        self.multiVmSyncPointOption = try container.decode(MultiVmSyncPointOptionEnum?.self, forKey: .multiVmSyncPointOption)
     }
     if var pageDecoder = decoder as? PageDecoder  {
       if pageDecoder.isPagedData,
@@ -34,6 +39,7 @@ internal struct RecoveryPlanA2AFailoverInputData : RecoveryPlanA2AFailoverInputP
     var container = encoder.container(keyedBy: CodingKeys.self)
     try container.encode(self.recoveryPointType, forKey: .recoveryPointType)
     if self.cloudServiceCreationOption != nil {try container.encode(self.cloudServiceCreationOption, forKey: .cloudServiceCreationOption)}
+    if self.multiVmSyncPointOption != nil {try container.encode(self.multiVmSyncPointOption, forKey: .multiVmSyncPointOption)}
   }
 }
 

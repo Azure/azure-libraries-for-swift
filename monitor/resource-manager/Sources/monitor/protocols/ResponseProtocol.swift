@@ -8,5 +8,7 @@ public protocol ResponseProtocol : Codable {
      var cost: Double? { get set }
      var timespan: String { get set }
      var interval: String? { get set }
+     var namespace: String? { get set }
+     var resourceregion: String? { get set }
      var value: [MetricProtocol] { get set }
 }

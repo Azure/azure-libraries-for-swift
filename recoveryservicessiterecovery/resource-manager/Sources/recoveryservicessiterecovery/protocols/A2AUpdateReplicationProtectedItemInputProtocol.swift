@@ -7,4 +7,6 @@ import Foundation
 public protocol A2AUpdateReplicationProtectedItemInputProtocol : UpdateReplicationProtectedItemProviderInputProtocol {
      var recoveryCloudServiceId: String? { get set }
      var recoveryResourceGroupId: String? { get set }
+     var managedDiskUpdateDetails: [A2AVmManagedDiskUpdateDetailsProtocol?]? { get set }
+     var recoveryBootDiagStorageAccountId: String? { get set }
 }

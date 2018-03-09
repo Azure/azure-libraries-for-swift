@@ -12,7 +12,7 @@ public protocol HyperVReplicaAzureEnableProtectionInputProtocol : EnableProtecti
      var targetStorageAccountId: String? { get set }
      var targetAzureNetworkId: String? { get set }
      var targetAzureSubnetId: String? { get set }
-     var enableRDPOnTargetOption: String? { get set }
+     var enableRdpOnTargetOption: String? { get set }
      var targetAzureVmName: String? { get set }
      var logStorageAccountId: String? { get set }
      var disksToInclude: [String]? { get set }

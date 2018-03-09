@@ -8,4 +8,6 @@ public protocol A2AVmManagedDiskInputDetailsProtocol : Codable {
      var diskId: String? { get set }
      var primaryStagingAzureStorageAccountId: String? { get set }
      var recoveryResourceGroupId: String? { get set }
+     var recoveryReplicaDiskAccountType: String? { get set }
+     var recoveryTargetDiskAccountType: String? { get set }
 }

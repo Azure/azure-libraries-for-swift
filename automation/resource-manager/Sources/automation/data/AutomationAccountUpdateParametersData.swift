@@ -5,7 +5,7 @@
 import Foundation
 import azureSwiftRuntime
 internal struct AutomationAccountUpdateParametersData : AutomationAccountUpdateParametersProtocol {
-    public var properties: AutomationAccountUpdatePropertiesProtocol
+    public var properties: AutomationAccountUpdatePropertiesProtocol?
     public var name: String?
     public var location: String?
     public var tags: [String:String]?
@@ -16,13 +16,14 @@ internal struct AutomationAccountUpdateParametersData : AutomationAccountUpdateP
         case tags = "tags"
         }
 
-  public init(properties: AutomationAccountUpdatePropertiesProtocol)  {
-    self.properties = properties
+  public init()  {
   }
 
   public init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
-      self.properties = try container.decode(AutomationAccountUpdatePropertiesData.self, forKey: .properties)
+      if container.contains(.properties) {
+        self.properties = try container.decode(AutomationAccountUpdatePropertiesData?.self, forKey: .properties)
+    }
     if container.contains(.name) {
         self.name = try container.decode(String?.self, forKey: .name)
     }
@@ -42,7 +43,7 @@ internal struct AutomationAccountUpdateParametersData : AutomationAccountUpdateP
 
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
-    try container.encode(self.properties as! AutomationAccountUpdatePropertiesData, forKey: .properties)
+    if self.properties != nil {try container.encode(self.properties as! AutomationAccountUpdatePropertiesData?, forKey: .properties)}
     if self.name != nil {try container.encode(self.name, forKey: .name)}
     if self.location != nil {try container.encode(self.location, forKey: .location)}
     if self.tags != nil {try container.encode(self.tags, forKey: .tags)}
@@ -50,7 +51,7 @@ internal struct AutomationAccountUpdateParametersData : AutomationAccountUpdateP
 }
 
 extension DataFactory {
-  public static func createAutomationAccountUpdateParametersProtocol(properties: AutomationAccountUpdatePropertiesProtocol) -> AutomationAccountUpdateParametersProtocol {
-    return AutomationAccountUpdateParametersData(properties: properties)
+  public static func createAutomationAccountUpdateParametersProtocol() -> AutomationAccountUpdateParametersProtocol {
+    return AutomationAccountUpdateParametersData()
   }
 }

@@ -12,4 +12,5 @@ public protocol KeyCredentialProtocol : Codable {
      var keyId: String? { get set }
      var usage: String? { get set }
      var type: String? { get set }
+     var customKeyIdentifier: [UInt8]? { get set }
 }

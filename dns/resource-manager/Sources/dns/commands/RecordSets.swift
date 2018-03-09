@@ -17,6 +17,9 @@ public struct RecordSets {
     public static func Get(resourceGroupName: String, zoneName: String, relativeRecordSetName: String, recordType: RecordTypeEnum, subscriptionId: String) -> RecordSetsGet {
         return GetCommand(resourceGroupName: resourceGroupName, zoneName: zoneName, relativeRecordSetName: relativeRecordSetName, recordType: recordType, subscriptionId: subscriptionId)
     }
+    public static func ListAllByDnsZone(resourceGroupName: String, zoneName: String, subscriptionId: String) -> RecordSetsListAllByDnsZone {
+        return ListAllByDnsZoneCommand(resourceGroupName: resourceGroupName, zoneName: zoneName, subscriptionId: subscriptionId)
+    }
     public static func ListByDnsZone(resourceGroupName: String, zoneName: String, subscriptionId: String) -> RecordSetsListByDnsZone {
         return ListByDnsZoneCommand(resourceGroupName: resourceGroupName, zoneName: zoneName, subscriptionId: subscriptionId)
     }

@@ -10,69 +10,69 @@ public protocol WebAppsCreateOrUpdatePublicCertificateSlot  {
     var apiVersion : String { get set }
     var publicCertificate :  PublicCertificateProtocol?  { get set }
     func execute(client: RuntimeClient,
-        completionHandler: @escaping (PublicCertificateProtocol?, Error?) -> Void) -> Void ;
+    completionHandler: @escaping (PublicCertificateProtocol?, Error?) -> Void) -> Void ;
 }
 
 extension Commands.WebApps {
 // CreateOrUpdatePublicCertificateSlot creates a hostname binding for an app.
-internal class CreateOrUpdatePublicCertificateSlotCommand : BaseCommand, WebAppsCreateOrUpdatePublicCertificateSlot {
-    public var resourceGroupName : String
-    public var name : String
-    public var publicCertificateName : String
-    public var slot : String
-    public var subscriptionId : String
-    public var apiVersion = "2016-08-01"
+    internal class CreateOrUpdatePublicCertificateSlotCommand : BaseCommand, WebAppsCreateOrUpdatePublicCertificateSlot {
+        public var resourceGroupName : String
+        public var name : String
+        public var publicCertificateName : String
+        public var slot : String
+        public var subscriptionId : String
+        public var apiVersion = "2016-08-01"
     public var publicCertificate :  PublicCertificateProtocol?
 
-    public init(resourceGroupName: String, name: String, publicCertificateName: String, slot: String, subscriptionId: String, publicCertificate: PublicCertificateProtocol) {
-        self.resourceGroupName = resourceGroupName
-        self.name = name
-        self.publicCertificateName = publicCertificateName
-        self.slot = slot
-        self.subscriptionId = subscriptionId
-        self.publicCertificate = publicCertificate
-        super.init()
-        self.method = "Put"
-        self.isLongRunningOperation = false
-        self.path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/publicCertificates/{publicCertificateName}"
-        self.headerParameters = ["Content-Type":"application/json; charset=utf-8"]
-    }
-
-    public override func preCall()  {
-        self.pathParameters["{resourceGroupName}"] = String(describing: self.resourceGroupName)
-        self.pathParameters["{name}"] = String(describing: self.name)
-        self.pathParameters["{publicCertificateName}"] = String(describing: self.publicCertificateName)
-        self.pathParameters["{slot}"] = String(describing: self.slot)
-        self.pathParameters["{subscriptionId}"] = String(describing: self.subscriptionId)
-        self.queryParameters["api-version"] = String(describing: self.apiVersion)
-    self.body = publicCertificate
-}
-
-    public override func encodeBody() throws -> Data? {
-        let contentType = "application/json"
-        if let mimeType = MimeType.getType(forStr: contentType) {
-            let encoder = try CoderFactory.encoder(for: mimeType)
-            let encodedValue = try encoder.encode(publicCertificate)
-            return encodedValue
+        public init(resourceGroupName: String, name: String, publicCertificateName: String, slot: String, subscriptionId: String, publicCertificate: PublicCertificateProtocol) {
+            self.resourceGroupName = resourceGroupName
+            self.name = name
+            self.publicCertificateName = publicCertificateName
+            self.slot = slot
+            self.subscriptionId = subscriptionId
+            self.publicCertificate = publicCertificate
+            super.init()
+            self.method = "Put"
+            self.isLongRunningOperation = false
+            self.path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/publicCertificates/{publicCertificateName}"
+            self.headerParameters = ["Content-Type":"application/json; charset=utf-8"]
         }
-        throw DecodeError.unknownMimeType
-    }
 
-    public override func returnFunc(data: Data) throws -> Decodable? {
-        let contentType = "application/json"
-        if let mimeType = MimeType.getType(forStr: contentType) {
-            let decoder = try CoderFactory.decoder(for: mimeType)
-            let result = try decoder.decode(PublicCertificateData?.self, from: data)
-            return result;
+        public override func preCall()  {
+            self.pathParameters["{resourceGroupName}"] = String(describing: self.resourceGroupName)
+            self.pathParameters["{name}"] = String(describing: self.name)
+            self.pathParameters["{publicCertificateName}"] = String(describing: self.publicCertificateName)
+            self.pathParameters["{slot}"] = String(describing: self.slot)
+            self.pathParameters["{subscriptionId}"] = String(describing: self.subscriptionId)
+            self.queryParameters["api-version"] = String(describing: self.apiVersion)
+            self.body = publicCertificate
+
         }
-        throw DecodeError.unknownMimeType
-    }
-    public func execute(client: RuntimeClient,
-        completionHandler: @escaping (PublicCertificateProtocol?, Error?) -> Void) -> Void {
-        client.executeAsync(command: self) {
-            (result: PublicCertificateData?, error: Error?) in
-            completionHandler(result, error)
+        public override func encodeBody() throws -> Data? {
+            let contentType = "application/json"
+            if let mimeType = MimeType.getType(forStr: contentType) {
+                let encoder = try CoderFactory.encoder(for: mimeType)
+                let encodedValue = try encoder.encode(publicCertificate as? PublicCertificateData)
+                return encodedValue
+            }
+            throw DecodeError.unknownMimeType
+        }
+
+        public override func returnFunc(data: Data) throws -> Decodable? {
+            let contentType = "application/json"
+            if let mimeType = MimeType.getType(forStr: contentType) {
+                let decoder = try CoderFactory.decoder(for: mimeType)
+                let result = try decoder.decode(PublicCertificateData?.self, from: data)
+                return result;
+            }
+            throw DecodeError.unknownMimeType
+        }
+        public func execute(client: RuntimeClient,
+            completionHandler: @escaping (PublicCertificateProtocol?, Error?) -> Void) -> Void {
+            client.executeAsync(command: self) {
+                (result: PublicCertificateData?, error: Error?) in
+                completionHandler(result, error)
+            }
         }
     }
-}
 }

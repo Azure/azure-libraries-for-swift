@@ -8,7 +8,7 @@ internal struct ZoneData : ZoneProtocol, ResourceProtocol {
     public var id: String?
     public var name: String?
     public var type: String?
-    public var location: String
+    public var location: String?
     public var tags: [String:String]?
     public var etag: String?
     public var properties: ZonePropertiesProtocol?
@@ -22,8 +22,7 @@ internal struct ZoneData : ZoneProtocol, ResourceProtocol {
         case properties = "properties"
         }
 
-  public init(location: String)  {
-    self.location = location
+  public init()  {
   }
 
   public init(from decoder: Decoder) throws {
@@ -37,7 +36,9 @@ internal struct ZoneData : ZoneProtocol, ResourceProtocol {
     if container.contains(.type) {
         self.type = try container.decode(String?.self, forKey: .type)
     }
-    self.location = try container.decode(String.self, forKey: .location)
+    if container.contains(.location) {
+        self.location = try container.decode(String?.self, forKey: .location)
+    }
     if container.contains(.tags) {
         self.tags = try container.decode([String:String]?.self, forKey: .tags)
     }
@@ -60,7 +61,7 @@ internal struct ZoneData : ZoneProtocol, ResourceProtocol {
     if self.id != nil {try container.encode(self.id, forKey: .id)}
     if self.name != nil {try container.encode(self.name, forKey: .name)}
     if self.type != nil {try container.encode(self.type, forKey: .type)}
-    try container.encode(self.location, forKey: .location)
+    if self.location != nil {try container.encode(self.location, forKey: .location)}
     if self.tags != nil {try container.encode(self.tags, forKey: .tags)}
     if self.etag != nil {try container.encode(self.etag, forKey: .etag)}
     if self.properties != nil {try container.encode(self.properties as! ZonePropertiesData?, forKey: .properties)}
@@ -68,7 +69,7 @@ internal struct ZoneData : ZoneProtocol, ResourceProtocol {
 }
 
 extension DataFactory {
-  public static func createZoneProtocol(location: String) -> ZoneProtocol {
-    return ZoneData(location: location)
+  public static func createZoneProtocol() -> ZoneProtocol {
+    return ZoneData()
   }
 }

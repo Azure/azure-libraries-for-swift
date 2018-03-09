@@ -8,7 +8,8 @@ public protocol UpdateReplicationProtectedItemInputPropertiesProtocol : Codable 
      var recoveryAzureVMName: String? { get set }
      var recoveryAzureVMSize: String? { get set }
      var selectedRecoveryAzureNetworkId: String? { get set }
-     var enableRDPOnTargetOption: String? { get set }
+     var selectedSourceNicId: String? { get set }
+     var enableRdpOnTargetOption: String? { get set }
      var vmNics: [VMNicInputDetailsProtocol?]? { get set }
      var licenseType: LicenseTypeEnum? { get set }
      var recoveryAvailabilitySetId: String? { get set }

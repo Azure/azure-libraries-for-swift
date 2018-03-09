@@ -13,13 +13,13 @@ internal struct EventQueryParameterData : EventQueryParameterProtocol {
     public var startTime: Date?
     public var endTime: Date?
 
-        enum CodingKeys: String, CodingKey {case eventCode = "EventCode"
-        case severity = "Severity"
-        case eventType = "EventType"
-        case fabricName = "FabricName"
-        case affectedObjectFriendlyName = "AffectedObjectFriendlyName"
-        case startTime = "StartTime"
-        case endTime = "EndTime"
+        enum CodingKeys: String, CodingKey {case eventCode = "eventCode"
+        case severity = "severity"
+        case eventType = "eventType"
+        case fabricName = "fabricName"
+        case affectedObjectFriendlyName = "affectedObjectFriendlyName"
+        case startTime = "startTime"
+        case endTime = "endTime"
         }
 
   public init()  {

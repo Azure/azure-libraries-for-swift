@@ -6,8 +6,8 @@ import Foundation
 // InMageReplicationDetailsProtocol is inMage provider specific settings
 public protocol InMageReplicationDetailsProtocol : ReplicationProviderSpecificSettingsProtocol {
      var activeSiteType: String? { get set }
-     var sourceVmCPUCount: Int32? { get set }
-     var sourceVmRAMSizeInMB: Int32? { get set }
+     var sourceVmCpuCount: Int32? { get set }
+     var sourceVmRamSizeInMB: Int32? { get set }
      var osDetails: OSDiskDetailsProtocol? { get set }
      var protectionStage: String? { get set }
      var vmId: String? { get set }

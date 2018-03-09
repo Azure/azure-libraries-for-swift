@@ -9,67 +9,67 @@ public protocol DatabasesUpdate  {
     var apiVersion : String { get set }
     var parameters :  DatabaseUpdateProtocol?  { get set }
     func execute(client: RuntimeClient,
-        completionHandler: @escaping (DatabaseProtocol?, Error?) -> Void) -> Void ;
+    completionHandler: @escaping (DatabaseProtocol?, Error?) -> Void) -> Void ;
 }
 
 extension Commands.Databases {
 // Update updates an existing database. This method may poll for completion. Polling can be canceled by passing the
 // cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP requests.
-internal class UpdateCommand : BaseCommand, DatabasesUpdate {
-    public var subscriptionId : String
-    public var resourceGroupName : String
-    public var serverName : String
-    public var databaseName : String
-    public var apiVersion = "2014-04-01"
+    internal class UpdateCommand : BaseCommand, DatabasesUpdate {
+        public var subscriptionId : String
+        public var resourceGroupName : String
+        public var serverName : String
+        public var databaseName : String
+        public var apiVersion = "2014-04-01"
     public var parameters :  DatabaseUpdateProtocol?
 
-    public init(subscriptionId: String, resourceGroupName: String, serverName: String, databaseName: String, parameters: DatabaseUpdateProtocol) {
-        self.subscriptionId = subscriptionId
-        self.resourceGroupName = resourceGroupName
-        self.serverName = serverName
-        self.databaseName = databaseName
-        self.parameters = parameters
-        super.init()
-        self.method = "Patch"
-        self.isLongRunningOperation = true
-        self.path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}"
-        self.headerParameters = ["Content-Type":"application/json; charset=utf-8"]
-    }
-
-    public override func preCall()  {
-        self.pathParameters["{subscriptionId}"] = String(describing: self.subscriptionId)
-        self.pathParameters["{resourceGroupName}"] = String(describing: self.resourceGroupName)
-        self.pathParameters["{serverName}"] = String(describing: self.serverName)
-        self.pathParameters["{databaseName}"] = String(describing: self.databaseName)
-        self.queryParameters["api-version"] = String(describing: self.apiVersion)
-    self.body = parameters
-}
-
-    public override func encodeBody() throws -> Data? {
-        let contentType = "application/json"
-        if let mimeType = MimeType.getType(forStr: contentType) {
-            let encoder = try CoderFactory.encoder(for: mimeType)
-            let encodedValue = try encoder.encode(parameters)
-            return encodedValue
+        public init(subscriptionId: String, resourceGroupName: String, serverName: String, databaseName: String, parameters: DatabaseUpdateProtocol) {
+            self.subscriptionId = subscriptionId
+            self.resourceGroupName = resourceGroupName
+            self.serverName = serverName
+            self.databaseName = databaseName
+            self.parameters = parameters
+            super.init()
+            self.method = "Patch"
+            self.isLongRunningOperation = true
+            self.path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}"
+            self.headerParameters = ["Content-Type":"application/json; charset=utf-8"]
         }
-        throw DecodeError.unknownMimeType
-    }
 
-    public override func returnFunc(data: Data) throws -> Decodable? {
-        let contentType = "application/json"
-        if let mimeType = MimeType.getType(forStr: contentType) {
-            let decoder = try CoderFactory.decoder(for: mimeType)
-            let result = try decoder.decode(DatabaseData?.self, from: data)
-            return result;
+        public override func preCall()  {
+            self.pathParameters["{subscriptionId}"] = String(describing: self.subscriptionId)
+            self.pathParameters["{resourceGroupName}"] = String(describing: self.resourceGroupName)
+            self.pathParameters["{serverName}"] = String(describing: self.serverName)
+            self.pathParameters["{databaseName}"] = String(describing: self.databaseName)
+            self.queryParameters["api-version"] = String(describing: self.apiVersion)
+            self.body = parameters
+
         }
-        throw DecodeError.unknownMimeType
-    }
-    public func execute(client: RuntimeClient,
-        completionHandler: @escaping (DatabaseProtocol?, Error?) -> Void) -> Void {
-        client.executeAsyncLRO(command: self) {
-            (result: DatabaseData?, error: Error?) in
-            completionHandler(result, error)
+        public override func encodeBody() throws -> Data? {
+            let contentType = "application/json"
+            if let mimeType = MimeType.getType(forStr: contentType) {
+                let encoder = try CoderFactory.encoder(for: mimeType)
+                let encodedValue = try encoder.encode(parameters as? DatabaseUpdateData)
+                return encodedValue
+            }
+            throw DecodeError.unknownMimeType
+        }
+
+        public override func returnFunc(data: Data) throws -> Decodable? {
+            let contentType = "application/json"
+            if let mimeType = MimeType.getType(forStr: contentType) {
+                let decoder = try CoderFactory.decoder(for: mimeType)
+                let result = try decoder.decode(DatabaseData?.self, from: data)
+                return result;
+            }
+            throw DecodeError.unknownMimeType
+        }
+        public func execute(client: RuntimeClient,
+            completionHandler: @escaping (DatabaseProtocol?, Error?) -> Void) -> Void {
+            client.executeAsyncLRO(command: self) {
+                (result: DatabaseData?, error: Error?) in
+                completionHandler(result, error)
+            }
         }
     }
-}
 }

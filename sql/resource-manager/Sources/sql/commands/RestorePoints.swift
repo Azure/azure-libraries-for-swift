@@ -13,6 +13,9 @@ public struct RestorePoints {
     public static func Create(resourceGroupName: String, serverName: String, databaseName: String, subscriptionId: String, parameters: CreateDatabaseRestorePointDefinitionProtocol) -> RestorePointsCreate {
         return CreateCommand(resourceGroupName: resourceGroupName, serverName: serverName, databaseName: databaseName, subscriptionId: subscriptionId, parameters: parameters)
     }
+    public static func Delete(resourceGroupName: String, serverName: String, databaseName: String, restorePointName: String, subscriptionId: String) -> RestorePointsDelete {
+        return DeleteCommand(resourceGroupName: resourceGroupName, serverName: serverName, databaseName: databaseName, restorePointName: restorePointName, subscriptionId: subscriptionId)
+    }
     public static func Get(resourceGroupName: String, serverName: String, databaseName: String, restorePointName: String, subscriptionId: String) -> RestorePointsGet {
         return GetCommand(resourceGroupName: resourceGroupName, serverName: serverName, databaseName: databaseName, restorePointName: restorePointName, subscriptionId: subscriptionId)
     }

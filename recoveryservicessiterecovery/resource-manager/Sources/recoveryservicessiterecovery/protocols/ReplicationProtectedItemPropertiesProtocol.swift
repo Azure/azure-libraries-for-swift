@@ -10,6 +10,7 @@ public protocol ReplicationProtectedItemPropertiesProtocol : Codable {
      var protectableItemId: String? { get set }
      var recoveryServicesProviderId: String? { get set }
      var primaryFabricFriendlyName: String? { get set }
+     var primaryFabricProvider: String? { get set }
      var recoveryFabricFriendlyName: String? { get set }
      var recoveryFabricId: String? { get set }
      var primaryProtectionContainerFriendlyName: String? { get set }
@@ -22,8 +23,7 @@ public protocol ReplicationProtectedItemPropertiesProtocol : Codable {
      var allowedOperations: [String]? { get set }
      var replicationHealth: String? { get set }
      var failoverHealth: String? { get set }
-     var replicationHealthErrors: [HealthErrorProtocol?]? { get set }
-     var failoverHealthErrors: [HealthErrorProtocol?]? { get set }
+     var healthErrors: [HealthErrorProtocol?]? { get set }
      var policyId: String? { get set }
      var policyFriendlyName: String? { get set }
      var lastSuccessfulFailoverTime: Date? { get set }

@@ -19,6 +19,7 @@ internal struct RecoveryServicesProviderPropertiesData : RecoveryServicesProvide
     public var healthErrorDetails: [HealthErrorProtocol?]?
     public var draIdentifier: String?
     public var identityDetails: IdentityInformationProtocol?
+    public var providerVersionDetails: VersionDetailsProtocol?
 
         enum CodingKeys: String, CodingKey {case fabricType = "fabricType"
         case friendlyName = "friendlyName"
@@ -34,6 +35,7 @@ internal struct RecoveryServicesProviderPropertiesData : RecoveryServicesProvide
         case healthErrorDetails = "healthErrorDetails"
         case draIdentifier = "draIdentifier"
         case identityDetails = "identityDetails"
+        case providerVersionDetails = "providerVersionDetails"
         }
 
   public init()  {
@@ -83,6 +85,9 @@ internal struct RecoveryServicesProviderPropertiesData : RecoveryServicesProvide
     if container.contains(.identityDetails) {
         self.identityDetails = try container.decode(IdentityInformationData?.self, forKey: .identityDetails)
     }
+    if container.contains(.providerVersionDetails) {
+        self.providerVersionDetails = try container.decode(VersionDetailsData?.self, forKey: .providerVersionDetails)
+    }
     if var pageDecoder = decoder as? PageDecoder  {
       if pageDecoder.isPagedData,
         let nextLinkName = pageDecoder.nextLinkName {
@@ -111,6 +116,7 @@ internal struct RecoveryServicesProviderPropertiesData : RecoveryServicesProvide
     if self.healthErrorDetails != nil {try container.encode(self.healthErrorDetails as! [HealthErrorData?]?, forKey: .healthErrorDetails)}
     if self.draIdentifier != nil {try container.encode(self.draIdentifier, forKey: .draIdentifier)}
     if self.identityDetails != nil {try container.encode(self.identityDetails as! IdentityInformationData?, forKey: .identityDetails)}
+    if self.providerVersionDetails != nil {try container.encode(self.providerVersionDetails as! VersionDetailsData?, forKey: .providerVersionDetails)}
   }
 }
 

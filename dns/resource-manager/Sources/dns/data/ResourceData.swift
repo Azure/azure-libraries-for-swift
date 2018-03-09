@@ -8,7 +8,7 @@ internal struct ResourceData : ResourceProtocol {
     public var id: String?
     public var name: String?
     public var type: String?
-    public var location: String
+    public var location: String?
     public var tags: [String:String]?
 
         enum CodingKeys: String, CodingKey {case id = "id"
@@ -18,8 +18,7 @@ internal struct ResourceData : ResourceProtocol {
         case tags = "tags"
         }
 
-  public init(location: String)  {
-    self.location = location
+  public init()  {
   }
 
   public init(from decoder: Decoder) throws {
@@ -33,7 +32,9 @@ internal struct ResourceData : ResourceProtocol {
     if container.contains(.type) {
         self.type = try container.decode(String?.self, forKey: .type)
     }
-    self.location = try container.decode(String.self, forKey: .location)
+    if container.contains(.location) {
+        self.location = try container.decode(String?.self, forKey: .location)
+    }
     if container.contains(.tags) {
         self.tags = try container.decode([String:String]?.self, forKey: .tags)
     }
@@ -50,13 +51,13 @@ internal struct ResourceData : ResourceProtocol {
     if self.id != nil {try container.encode(self.id, forKey: .id)}
     if self.name != nil {try container.encode(self.name, forKey: .name)}
     if self.type != nil {try container.encode(self.type, forKey: .type)}
-    try container.encode(self.location, forKey: .location)
+    if self.location != nil {try container.encode(self.location, forKey: .location)}
     if self.tags != nil {try container.encode(self.tags, forKey: .tags)}
   }
 }
 
 extension DataFactory {
-  public static func createResourceProtocol(location: String) -> ResourceProtocol {
-    return ResourceData(location: location)
+  public static func createResourceProtocol() -> ResourceProtocol {
+    return ResourceData()
   }
 }

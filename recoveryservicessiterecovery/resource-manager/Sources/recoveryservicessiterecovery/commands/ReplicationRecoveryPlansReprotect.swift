@@ -8,56 +8,56 @@ public protocol ReplicationRecoveryPlansReprotect  {
     var recoveryPlanName : String { get set }
     var apiVersion : String { get set }
     func execute(client: RuntimeClient,
-        completionHandler: @escaping (RecoveryPlanProtocol?, Error?) -> Void) -> Void ;
+    completionHandler: @escaping (RecoveryPlanProtocol?, Error?) -> Void) -> Void ;
 }
 
 extension Commands.ReplicationRecoveryPlans {
 // Reprotect the operation to reprotect(reverse replicate) a recovery plan. This method may poll for completion.
 // Polling can be canceled by passing the cancel channel argument. The channel will be used to cancel polling and any
 // outstanding HTTP requests.
-internal class ReprotectCommand : BaseCommand, ReplicationRecoveryPlansReprotect {
-    public var resourceName : String
-    public var resourceGroupName : String
-    public var subscriptionId : String
-    public var recoveryPlanName : String
-    public var apiVersion = "2016-08-10"
+    internal class ReprotectCommand : BaseCommand, ReplicationRecoveryPlansReprotect {
+        public var resourceName : String
+        public var resourceGroupName : String
+        public var subscriptionId : String
+        public var recoveryPlanName : String
+        public var apiVersion = "2018-01-10"
 
-    public init(resourceName: String, resourceGroupName: String, subscriptionId: String, recoveryPlanName: String) {
-        self.resourceName = resourceName
-        self.resourceGroupName = resourceGroupName
-        self.subscriptionId = subscriptionId
-        self.recoveryPlanName = recoveryPlanName
-        super.init()
-        self.method = "Post"
-        self.isLongRunningOperation = true
-        self.path = "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationRecoveryPlans/{recoveryPlanName}/reProtect"
-        self.headerParameters = ["Content-Type":"application/json; charset=utf-8"]
-    }
-
-    public override func preCall()  {
-        self.pathParameters["{resourceName}"] = String(describing: self.resourceName)
-        self.pathParameters["{resourceGroupName}"] = String(describing: self.resourceGroupName)
-        self.pathParameters["{subscriptionId}"] = String(describing: self.subscriptionId)
-        self.pathParameters["{recoveryPlanName}"] = String(describing: self.recoveryPlanName)
-        self.queryParameters["api-version"] = String(describing: self.apiVersion)
-}
-
-
-    public override func returnFunc(data: Data) throws -> Decodable? {
-        let contentType = "application/json"
-        if let mimeType = MimeType.getType(forStr: contentType) {
-            let decoder = try CoderFactory.decoder(for: mimeType)
-            let result = try decoder.decode(RecoveryPlanData?.self, from: data)
-            return result;
+        public init(resourceName: String, resourceGroupName: String, subscriptionId: String, recoveryPlanName: String) {
+            self.resourceName = resourceName
+            self.resourceGroupName = resourceGroupName
+            self.subscriptionId = subscriptionId
+            self.recoveryPlanName = recoveryPlanName
+            super.init()
+            self.method = "Post"
+            self.isLongRunningOperation = true
+            self.path = "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationRecoveryPlans/{recoveryPlanName}/reProtect"
+            self.headerParameters = ["Content-Type":"application/json; charset=utf-8"]
         }
-        throw DecodeError.unknownMimeType
-    }
-    public func execute(client: RuntimeClient,
-        completionHandler: @escaping (RecoveryPlanProtocol?, Error?) -> Void) -> Void {
-        client.executeAsyncLRO(command: self) {
-            (result: RecoveryPlanData?, error: Error?) in
-            completionHandler(result, error)
+
+        public override func preCall()  {
+            self.pathParameters["{resourceName}"] = String(describing: self.resourceName)
+            self.pathParameters["{resourceGroupName}"] = String(describing: self.resourceGroupName)
+            self.pathParameters["{subscriptionId}"] = String(describing: self.subscriptionId)
+            self.pathParameters["{recoveryPlanName}"] = String(describing: self.recoveryPlanName)
+            self.queryParameters["api-version"] = String(describing: self.apiVersion)
+
+        }
+
+        public override func returnFunc(data: Data) throws -> Decodable? {
+            let contentType = "application/json"
+            if let mimeType = MimeType.getType(forStr: contentType) {
+                let decoder = try CoderFactory.decoder(for: mimeType)
+                let result = try decoder.decode(RecoveryPlanData?.self, from: data)
+                return result;
+            }
+            throw DecodeError.unknownMimeType
+        }
+        public func execute(client: RuntimeClient,
+            completionHandler: @escaping (RecoveryPlanProtocol?, Error?) -> Void) -> Void {
+            client.executeAsyncLRO(command: self) {
+                (result: RecoveryPlanData?, error: Error?) in
+                completionHandler(result, error)
+            }
         }
     }
-}
 }

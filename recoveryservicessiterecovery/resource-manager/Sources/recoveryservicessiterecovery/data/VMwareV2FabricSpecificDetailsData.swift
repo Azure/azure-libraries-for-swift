@@ -7,9 +7,13 @@ import azureSwiftRuntime
 internal struct VMwareV2FabricSpecificDetailsData : VMwareV2FabricSpecificDetailsProtocol, FabricSpecificDetailsProtocol {
     public var srsServiceEndpoint: String?
     public var rcmServiceEndpoint: String?
+    public var keyVaultUrl: String?
+    public var keyVaultResourceArmId: String?
 
         enum CodingKeys: String, CodingKey {case srsServiceEndpoint = "srsServiceEndpoint"
         case rcmServiceEndpoint = "rcmServiceEndpoint"
+        case keyVaultUrl = "keyVaultUrl"
+        case keyVaultResourceArmId = "keyVaultResourceArmId"
         }
 
   public init()  {
@@ -23,6 +27,12 @@ internal struct VMwareV2FabricSpecificDetailsData : VMwareV2FabricSpecificDetail
     if container.contains(.rcmServiceEndpoint) {
         self.rcmServiceEndpoint = try container.decode(String?.self, forKey: .rcmServiceEndpoint)
     }
+    if container.contains(.keyVaultUrl) {
+        self.keyVaultUrl = try container.decode(String?.self, forKey: .keyVaultUrl)
+    }
+    if container.contains(.keyVaultResourceArmId) {
+        self.keyVaultResourceArmId = try container.decode(String?.self, forKey: .keyVaultResourceArmId)
+    }
     if var pageDecoder = decoder as? PageDecoder  {
       if pageDecoder.isPagedData,
         let nextLinkName = pageDecoder.nextLinkName {
@@ -35,6 +45,8 @@ internal struct VMwareV2FabricSpecificDetailsData : VMwareV2FabricSpecificDetail
     var container = encoder.container(keyedBy: CodingKeys.self)
     if self.srsServiceEndpoint != nil {try container.encode(self.srsServiceEndpoint, forKey: .srsServiceEndpoint)}
     if self.rcmServiceEndpoint != nil {try container.encode(self.rcmServiceEndpoint, forKey: .rcmServiceEndpoint)}
+    if self.keyVaultUrl != nil {try container.encode(self.keyVaultUrl, forKey: .keyVaultUrl)}
+    if self.keyVaultResourceArmId != nil {try container.encode(self.keyVaultResourceArmId, forKey: .keyVaultResourceArmId)}
   }
 }
 

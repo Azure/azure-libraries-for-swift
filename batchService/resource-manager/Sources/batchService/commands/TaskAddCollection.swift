@@ -10,7 +10,7 @@ public protocol TaskAddCollection  {
     var ocpDate : Date? { get set }
     var taskCollection :  TaskAddCollectionParameterProtocol?  { get set }
     func execute(client: RuntimeClient,
-        completionHandler: @escaping (TaskAddCollectionResultProtocol?, Error?) -> Void) -> Void ;
+    completionHandler: @escaping (TaskAddCollectionResultProtocol?, Error?) -> Void) -> Void ;
 }
 
 extension Commands.Task {
@@ -24,60 +24,60 @@ extension Commands.Task {
 // successfully added on the first attempt. The maximum lifetime of a task from addition to completion is 7 days. If a
 // task has not completed within 7 days of being added it will be terminated by the Batch service and left in whatever
 // state it was in at that time.
-internal class AddCollectionCommand : BaseCommand, TaskAddCollection {
-    public var jobId : String
-    public var timeout : Int32?
-    public var apiVersion = "2017-09-01.6.0"
-    public var clientRequestId : String?
-    public var returnClientRequestId : Bool?
-    public var ocpDate : Date?
+    internal class AddCollectionCommand : BaseCommand, TaskAddCollection {
+        public var jobId : String
+        public var timeout : Int32?
+        public var apiVersion = "2017-09-01.6.0"
+        public var clientRequestId : String?
+        public var returnClientRequestId : Bool?
+        public var ocpDate : Date?
     public var taskCollection :  TaskAddCollectionParameterProtocol?
 
-    public init(jobId: String, taskCollection: TaskAddCollectionParameterProtocol) {
-        self.jobId = jobId
-        self.taskCollection = taskCollection
-        super.init()
-        self.method = "Post"
-        self.isLongRunningOperation = false
-        self.path = "/jobs/{jobId}/addtaskcollection"
-        self.headerParameters = ["Content-Type":"application/json; odata=minimalmetadata; charset=utf-8"]
-    }
-
-    public override func preCall()  {
-        self.pathParameters["{jobId}"] = String(describing: self.jobId)
-        if self.timeout != nil { queryParameters["timeout"] = String(describing: self.timeout!) }
-        self.queryParameters["api-version"] = String(describing: self.apiVersion)
-        if self.clientRequestId != nil { headerParameters["client-request-id"] = String(describing: self.clientRequestId!) }
-        if self.returnClientRequestId != nil { headerParameters["return-client-request-id"] = String(describing: self.returnClientRequestId!) }
-        if self.ocpDate != nil { headerParameters["ocp-date"] = String(describing: self.ocpDate!) }
-    self.body = taskCollection
-}
-
-    public override func encodeBody() throws -> Data? {
-        let contentType = "application/json"
-        if let mimeType = MimeType.getType(forStr: contentType) {
-            let encoder = try CoderFactory.encoder(for: mimeType)
-            let encodedValue = try encoder.encode(taskCollection)
-            return encodedValue
+        public init(jobId: String, taskCollection: TaskAddCollectionParameterProtocol) {
+            self.jobId = jobId
+            self.taskCollection = taskCollection
+            super.init()
+            self.method = "Post"
+            self.isLongRunningOperation = false
+            self.path = "/jobs/{jobId}/addtaskcollection"
+            self.headerParameters = ["Content-Type":"application/json; odata=minimalmetadata; charset=utf-8"]
         }
-        throw DecodeError.unknownMimeType
-    }
 
-    public override func returnFunc(data: Data) throws -> Decodable? {
-        let contentType = "application/json"
-        if let mimeType = MimeType.getType(forStr: contentType) {
-            let decoder = try CoderFactory.decoder(for: mimeType)
-            let result = try decoder.decode(TaskAddCollectionResultData?.self, from: data)
-            return result;
+        public override func preCall()  {
+            self.pathParameters["{jobId}"] = String(describing: self.jobId)
+            if self.timeout != nil { queryParameters["timeout"] = String(describing: self.timeout!) }
+            self.queryParameters["api-version"] = String(describing: self.apiVersion)
+            if self.clientRequestId != nil { headerParameters["client-request-id"] = String(describing: self.clientRequestId!) }
+            if self.returnClientRequestId != nil { headerParameters["return-client-request-id"] = String(describing: self.returnClientRequestId!) }
+            if self.ocpDate != nil { headerParameters["ocp-date"] = String(describing: self.ocpDate!) }
+            self.body = taskCollection
+
         }
-        throw DecodeError.unknownMimeType
-    }
-    public func execute(client: RuntimeClient,
-        completionHandler: @escaping (TaskAddCollectionResultProtocol?, Error?) -> Void) -> Void {
-        client.executeAsync(command: self) {
-            (result: TaskAddCollectionResultData?, error: Error?) in
-            completionHandler(result, error)
+        public override func encodeBody() throws -> Data? {
+            let contentType = "application/json"
+            if let mimeType = MimeType.getType(forStr: contentType) {
+                let encoder = try CoderFactory.encoder(for: mimeType)
+                let encodedValue = try encoder.encode(taskCollection as? TaskAddCollectionParameterData)
+                return encodedValue
+            }
+            throw DecodeError.unknownMimeType
+        }
+
+        public override func returnFunc(data: Data) throws -> Decodable? {
+            let contentType = "application/json"
+            if let mimeType = MimeType.getType(forStr: contentType) {
+                let decoder = try CoderFactory.decoder(for: mimeType)
+                let result = try decoder.decode(TaskAddCollectionResultData?.self, from: data)
+                return result;
+            }
+            throw DecodeError.unknownMimeType
+        }
+        public func execute(client: RuntimeClient,
+            completionHandler: @escaping (TaskAddCollectionResultProtocol?, Error?) -> Void) -> Void {
+            client.executeAsync(command: self) {
+                (result: TaskAddCollectionResultData?, error: Error?) in
+                completionHandler(result, error)
+            }
         }
     }
-}
 }

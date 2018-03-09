@@ -7,4 +7,5 @@ import Foundation
 public protocol RecoveryPlanA2AFailoverInputProtocol : RecoveryPlanProviderSpecificFailoverInputProtocol {
      var recoveryPointType: A2ARpRecoveryPointTypeEnum { get set }
      var cloudServiceCreationOption: String? { get set }
+     var multiVmSyncPointOption: MultiVmSyncPointOptionEnum? { get set }
 }

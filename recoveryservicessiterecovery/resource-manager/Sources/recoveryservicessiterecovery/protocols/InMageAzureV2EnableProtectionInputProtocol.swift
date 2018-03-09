@@ -14,7 +14,7 @@ public protocol InMageAzureV2EnableProtectionInputProtocol : EnableProtectionPro
      var disksToInclude: [String]? { get set }
      var targetAzureNetworkId: String? { get set }
      var targetAzureSubnetId: String? { get set }
-     var enableRDPOnTargetOption: String? { get set }
+     var enableRdpOnTargetOption: String? { get set }
      var targetAzureVmName: String? { get set }
      var logStorageAccountId: String? { get set }
      var targetAzureV1ResourceGroupId: String? { get set }

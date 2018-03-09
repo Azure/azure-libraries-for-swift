@@ -9,6 +9,8 @@ internal struct DscCompilationJobPropertiesData : DscCompilationJobPropertiesPro
     public var startedBy: String?
     public var jobId: String?
     public var creationTime: Date?
+    public var provisioningState: JobProvisioningStatePropertyProtocol?
+    public var runOn: String?
     public var status: JobStatusEnum?
     public var statusDetails: String?
     public var startTime: Date?
@@ -22,6 +24,8 @@ internal struct DscCompilationJobPropertiesData : DscCompilationJobPropertiesPro
         case startedBy = "startedBy"
         case jobId = "jobId"
         case creationTime = "creationTime"
+        case provisioningState = "provisioningState"
+        case runOn = "runOn"
         case status = "status"
         case statusDetails = "statusDetails"
         case startTime = "startTime"
@@ -48,6 +52,12 @@ internal struct DscCompilationJobPropertiesData : DscCompilationJobPropertiesPro
     }
     if container.contains(.creationTime) {
         self.creationTime = DateConverter.fromString(dateStr: (try container.decode(String?.self, forKey: .creationTime)), format: .dateTime)
+    }
+    if container.contains(.provisioningState) {
+        self.provisioningState = try container.decode(JobProvisioningStatePropertyData?.self, forKey: .provisioningState)
+    }
+    if container.contains(.runOn) {
+        self.runOn = try container.decode(String?.self, forKey: .runOn)
     }
     if container.contains(.status) {
         self.status = try container.decode(JobStatusEnum?.self, forKey: .status)
@@ -89,6 +99,8 @@ internal struct DscCompilationJobPropertiesData : DscCompilationJobPropertiesPro
     if self.creationTime != nil {
         try container.encode(DateConverter.toString(date: self.creationTime!, format: .dateTime), forKey: .creationTime)
     }
+    if self.provisioningState != nil {try container.encode(self.provisioningState as! JobProvisioningStatePropertyData?, forKey: .provisioningState)}
+    if self.runOn != nil {try container.encode(self.runOn, forKey: .runOn)}
     if self.status != nil {try container.encode(self.status, forKey: .status)}
     if self.statusDetails != nil {try container.encode(self.statusDetails, forKey: .statusDetails)}
     if self.startTime != nil {

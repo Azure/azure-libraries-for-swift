@@ -9,65 +9,65 @@ public protocol TrustedIdProvidersUpdate  {
     var apiVersion : String { get set }
     var parameters :  UpdateTrustedIdProviderParametersProtocol?  { get set }
     func execute(client: RuntimeClient,
-        completionHandler: @escaping (TrustedIdProviderProtocol?, Error?) -> Void) -> Void ;
+    completionHandler: @escaping (TrustedIdProviderProtocol?, Error?) -> Void) -> Void ;
 }
 
 extension Commands.TrustedIdProviders {
 // Update updates the specified trusted identity provider.
-internal class UpdateCommand : BaseCommand, TrustedIdProvidersUpdate {
-    public var subscriptionId : String
-    public var resourceGroupName : String
-    public var accountName : String
-    public var trustedIdProviderName : String
-    public var apiVersion = "2016-11-01"
+    internal class UpdateCommand : BaseCommand, TrustedIdProvidersUpdate {
+        public var subscriptionId : String
+        public var resourceGroupName : String
+        public var accountName : String
+        public var trustedIdProviderName : String
+        public var apiVersion = "2016-11-01"
     public var parameters :  UpdateTrustedIdProviderParametersProtocol?
 
-    public init(subscriptionId: String, resourceGroupName: String, accountName: String, trustedIdProviderName: String) {
-        self.subscriptionId = subscriptionId
-        self.resourceGroupName = resourceGroupName
-        self.accountName = accountName
-        self.trustedIdProviderName = trustedIdProviderName
-        super.init()
-        self.method = "Patch"
-        self.isLongRunningOperation = false
-        self.path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore/accounts/{accountName}/trustedIdProviders/{trustedIdProviderName}"
-        self.headerParameters = ["Content-Type":"application/json; charset=utf-8"]
-    }
-
-    public override func preCall()  {
-        self.pathParameters["{subscriptionId}"] = String(describing: self.subscriptionId)
-        self.pathParameters["{resourceGroupName}"] = String(describing: self.resourceGroupName)
-        self.pathParameters["{accountName}"] = String(describing: self.accountName)
-        self.pathParameters["{trustedIdProviderName}"] = String(describing: self.trustedIdProviderName)
-        self.queryParameters["api-version"] = String(describing: self.apiVersion)
-    self.body = parameters
-}
-
-    public override func encodeBody() throws -> Data? {
-        let contentType = "application/json"
-        if let mimeType = MimeType.getType(forStr: contentType) {
-            let encoder = try CoderFactory.encoder(for: mimeType)
-            let encodedValue = try encoder.encode(parameters)
-            return encodedValue
+        public init(subscriptionId: String, resourceGroupName: String, accountName: String, trustedIdProviderName: String) {
+            self.subscriptionId = subscriptionId
+            self.resourceGroupName = resourceGroupName
+            self.accountName = accountName
+            self.trustedIdProviderName = trustedIdProviderName
+            super.init()
+            self.method = "Patch"
+            self.isLongRunningOperation = false
+            self.path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore/accounts/{accountName}/trustedIdProviders/{trustedIdProviderName}"
+            self.headerParameters = ["Content-Type":"application/json; charset=utf-8"]
         }
-        throw DecodeError.unknownMimeType
-    }
 
-    public override func returnFunc(data: Data) throws -> Decodable? {
-        let contentType = "application/json"
-        if let mimeType = MimeType.getType(forStr: contentType) {
-            let decoder = try CoderFactory.decoder(for: mimeType)
-            let result = try decoder.decode(TrustedIdProviderData?.self, from: data)
-            return result;
+        public override func preCall()  {
+            self.pathParameters["{subscriptionId}"] = String(describing: self.subscriptionId)
+            self.pathParameters["{resourceGroupName}"] = String(describing: self.resourceGroupName)
+            self.pathParameters["{accountName}"] = String(describing: self.accountName)
+            self.pathParameters["{trustedIdProviderName}"] = String(describing: self.trustedIdProviderName)
+            self.queryParameters["api-version"] = String(describing: self.apiVersion)
+            self.body = parameters
+
         }
-        throw DecodeError.unknownMimeType
-    }
-    public func execute(client: RuntimeClient,
-        completionHandler: @escaping (TrustedIdProviderProtocol?, Error?) -> Void) -> Void {
-        client.executeAsync(command: self) {
-            (result: TrustedIdProviderData?, error: Error?) in
-            completionHandler(result, error)
+        public override func encodeBody() throws -> Data? {
+            let contentType = "application/json"
+            if let mimeType = MimeType.getType(forStr: contentType) {
+                let encoder = try CoderFactory.encoder(for: mimeType)
+                let encodedValue = try encoder.encode(parameters as? UpdateTrustedIdProviderParametersData?)
+                return encodedValue
+            }
+            throw DecodeError.unknownMimeType
+        }
+
+        public override func returnFunc(data: Data) throws -> Decodable? {
+            let contentType = "application/json"
+            if let mimeType = MimeType.getType(forStr: contentType) {
+                let decoder = try CoderFactory.decoder(for: mimeType)
+                let result = try decoder.decode(TrustedIdProviderData?.self, from: data)
+                return result;
+            }
+            throw DecodeError.unknownMimeType
+        }
+        public func execute(client: RuntimeClient,
+            completionHandler: @escaping (TrustedIdProviderProtocol?, Error?) -> Void) -> Void {
+            client.executeAsync(command: self) {
+                (result: TrustedIdProviderData?, error: Error?) in
+                completionHandler(result, error)
+            }
         }
     }
-}
 }

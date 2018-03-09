@@ -5,12 +5,24 @@
 import Foundation
 import azureSwiftRuntime
 internal struct VMwareV2FabricCreationInputData : VMwareV2FabricCreationInputProtocol, FabricSpecificCreationInputProtocol {
+    public var keyVaultUrl: String?
+    public var keyVaultResourceArmId: String?
 
+        enum CodingKeys: String, CodingKey {case keyVaultUrl = "keyVaultUrl"
+        case keyVaultResourceArmId = "keyVaultResourceArmId"
+        }
 
   public init()  {
   }
 
   public init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+      if container.contains(.keyVaultUrl) {
+        self.keyVaultUrl = try container.decode(String?.self, forKey: .keyVaultUrl)
+    }
+    if container.contains(.keyVaultResourceArmId) {
+        self.keyVaultResourceArmId = try container.decode(String?.self, forKey: .keyVaultResourceArmId)
+    }
     if var pageDecoder = decoder as? PageDecoder  {
       if pageDecoder.isPagedData,
         let nextLinkName = pageDecoder.nextLinkName {
@@ -20,6 +32,9 @@ internal struct VMwareV2FabricCreationInputData : VMwareV2FabricCreationInputPro
   }
 
   public func encode(to encoder: Encoder) throws {
+    var container = encoder.container(keyedBy: CodingKeys.self)
+    if self.keyVaultUrl != nil {try container.encode(self.keyVaultUrl, forKey: .keyVaultUrl)}
+    if self.keyVaultResourceArmId != nil {try container.encode(self.keyVaultResourceArmId, forKey: .keyVaultResourceArmId)}
   }
 }
 

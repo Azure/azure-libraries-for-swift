@@ -8,8 +8,14 @@ public enum HealthErrorCategoryEnum: String, Codable
 {
 // Configuration specifies the configuration state for health error category.
     case Configuration = "Configuration"
+// FabricInfrastructure specifies the fabric infrastructure state for health error category.
+    case FabricInfrastructure = "FabricInfrastructure"
+// None specifies the none state for health error category.
+    case None = "None"
 // Replication specifies the replication state for health error category.
     case Replication = "Replication"
 // TestFailover specifies the test failover state for health error category.
     case TestFailover = "TestFailover"
+// VersionExpiry specifies the version expiry state for health error category.
+    case VersionExpiry = "VersionExpiry"
 }

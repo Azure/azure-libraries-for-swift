@@ -8,11 +8,11 @@ import Foundation
 import azureSwiftRuntime
 extension Commands {
 public struct JobStream {
-    public static func Get(resourceGroupName: String, automationAccountName: String, jobId: String, jobStreamId: String, subscriptionId: String) -> JobStreamGet {
-        return GetCommand(resourceGroupName: resourceGroupName, automationAccountName: automationAccountName, jobId: jobId, jobStreamId: jobStreamId, subscriptionId: subscriptionId)
+    public static func Get(subscriptionId: String, resourceGroupName: String, automationAccountName: String, jobName: String, jobStreamId: String) -> JobStreamGet {
+        return GetCommand(subscriptionId: subscriptionId, resourceGroupName: resourceGroupName, automationAccountName: automationAccountName, jobName: jobName, jobStreamId: jobStreamId)
     }
-    public static func ListByJob(resourceGroupName: String, automationAccountName: String, jobId: String, subscriptionId: String) -> JobStreamListByJob {
-        return ListByJobCommand(resourceGroupName: resourceGroupName, automationAccountName: automationAccountName, jobId: jobId, subscriptionId: subscriptionId)
+    public static func ListByJob(resourceGroupName: String, automationAccountName: String, jobName: String, subscriptionId: String) -> JobStreamListByJob {
+        return ListByJobCommand(resourceGroupName: resourceGroupName, automationAccountName: automationAccountName, jobName: jobName, subscriptionId: subscriptionId)
     }
 }
 }

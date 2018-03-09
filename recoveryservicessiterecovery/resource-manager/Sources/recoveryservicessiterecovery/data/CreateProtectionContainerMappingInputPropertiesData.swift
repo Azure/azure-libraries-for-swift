@@ -10,7 +10,7 @@ internal struct CreateProtectionContainerMappingInputPropertiesData : CreateProt
     public var providerSpecificInput: ReplicationProviderSpecificContainerMappingInputProtocol?
 
         enum CodingKeys: String, CodingKey {case targetProtectionContainerId = "targetProtectionContainerId"
-        case policyId = "PolicyId"
+        case policyId = "policyId"
         case providerSpecificInput = "providerSpecificInput"
         }
 

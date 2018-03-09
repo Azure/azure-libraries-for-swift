@@ -15,6 +15,12 @@ public protocol MasterTargetServerProtocol : Codable {
      var retentionVolumes: [RetentionVolumeProtocol?]? { get set }
      var dataStores: [DataStoreProtocol?]? { get set }
      var validationErrors: [HealthErrorProtocol?]? { get set }
+     var healthErrors: [HealthErrorProtocol?]? { get set }
      var diskCount: Int32? { get set }
      var osVersion: String? { get set }
+     var agentExpiryDate: Date? { get set }
+     var marsAgentVersion: String? { get set }
+     var marsAgentExpiryDate: Date? { get set }
+     var agentVersionDetails: VersionDetailsProtocol? { get set }
+     var marsAgentVersionDetails: VersionDetailsProtocol? { get set }
 }

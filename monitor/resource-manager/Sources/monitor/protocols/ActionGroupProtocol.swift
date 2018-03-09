@@ -13,5 +13,4 @@ public protocol ActionGroupProtocol : Codable {
      var itsmReceivers: [ItsmReceiverProtocol?]? { get set }
      var azureAppPushReceivers: [AzureAppPushReceiverProtocol?]? { get set }
      var automationRunbookReceivers: [AutomationRunbookReceiverProtocol?]? { get set }
-     var voiceReceivers: [VoiceReceiverProtocol?]? { get set }
 }

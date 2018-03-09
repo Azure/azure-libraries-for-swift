@@ -8,63 +8,63 @@ public protocol StorageAccountsRegenerateKey  {
     var apiVersion : String { get set }
     var regenerateKey :  StorageAccountRegenerateKeyParametersProtocol?  { get set }
     func execute(client: RuntimeClient,
-        completionHandler: @escaping (StorageAccountListKeysResultProtocol?, Error?) -> Void) -> Void ;
+    completionHandler: @escaping (StorageAccountListKeysResultProtocol?, Error?) -> Void) -> Void ;
 }
 
 extension Commands.StorageAccounts {
 // RegenerateKey regenerates one of the access keys for the specified storage account.
-internal class RegenerateKeyCommand : BaseCommand, StorageAccountsRegenerateKey {
-    public var resourceGroupName : String
-    public var accountName : String
-    public var subscriptionId : String
-    public var apiVersion = "2017-10-01"
+    internal class RegenerateKeyCommand : BaseCommand, StorageAccountsRegenerateKey {
+        public var resourceGroupName : String
+        public var accountName : String
+        public var subscriptionId : String
+        public var apiVersion = "2017-10-01"
     public var regenerateKey :  StorageAccountRegenerateKeyParametersProtocol?
 
-    public init(resourceGroupName: String, accountName: String, subscriptionId: String, regenerateKey: StorageAccountRegenerateKeyParametersProtocol) {
-        self.resourceGroupName = resourceGroupName
-        self.accountName = accountName
-        self.subscriptionId = subscriptionId
-        self.regenerateKey = regenerateKey
-        super.init()
-        self.method = "Post"
-        self.isLongRunningOperation = false
-        self.path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/regenerateKey"
-        self.headerParameters = ["Content-Type":"application/json; charset=utf-8"]
-    }
-
-    public override func preCall()  {
-        self.pathParameters["{resourceGroupName}"] = String(describing: self.resourceGroupName)
-        self.pathParameters["{accountName}"] = String(describing: self.accountName)
-        self.pathParameters["{subscriptionId}"] = String(describing: self.subscriptionId)
-        self.queryParameters["api-version"] = String(describing: self.apiVersion)
-    self.body = regenerateKey
-}
-
-    public override func encodeBody() throws -> Data? {
-        let contentType = "application/json"
-        if let mimeType = MimeType.getType(forStr: contentType) {
-            let encoder = try CoderFactory.encoder(for: mimeType)
-            let encodedValue = try encoder.encode(regenerateKey)
-            return encodedValue
+        public init(resourceGroupName: String, accountName: String, subscriptionId: String, regenerateKey: StorageAccountRegenerateKeyParametersProtocol) {
+            self.resourceGroupName = resourceGroupName
+            self.accountName = accountName
+            self.subscriptionId = subscriptionId
+            self.regenerateKey = regenerateKey
+            super.init()
+            self.method = "Post"
+            self.isLongRunningOperation = false
+            self.path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/regenerateKey"
+            self.headerParameters = ["Content-Type":"application/json; charset=utf-8"]
         }
-        throw DecodeError.unknownMimeType
-    }
 
-    public override func returnFunc(data: Data) throws -> Decodable? {
-        let contentType = "application/json"
-        if let mimeType = MimeType.getType(forStr: contentType) {
-            let decoder = try CoderFactory.decoder(for: mimeType)
-            let result = try decoder.decode(StorageAccountListKeysResultData?.self, from: data)
-            return result;
+        public override func preCall()  {
+            self.pathParameters["{resourceGroupName}"] = String(describing: self.resourceGroupName)
+            self.pathParameters["{accountName}"] = String(describing: self.accountName)
+            self.pathParameters["{subscriptionId}"] = String(describing: self.subscriptionId)
+            self.queryParameters["api-version"] = String(describing: self.apiVersion)
+            self.body = regenerateKey
+
         }
-        throw DecodeError.unknownMimeType
-    }
-    public func execute(client: RuntimeClient,
-        completionHandler: @escaping (StorageAccountListKeysResultProtocol?, Error?) -> Void) -> Void {
-        client.executeAsync(command: self) {
-            (result: StorageAccountListKeysResultData?, error: Error?) in
-            completionHandler(result, error)
+        public override func encodeBody() throws -> Data? {
+            let contentType = "application/json"
+            if let mimeType = MimeType.getType(forStr: contentType) {
+                let encoder = try CoderFactory.encoder(for: mimeType)
+                let encodedValue = try encoder.encode(regenerateKey as? StorageAccountRegenerateKeyParametersData)
+                return encodedValue
+            }
+            throw DecodeError.unknownMimeType
+        }
+
+        public override func returnFunc(data: Data) throws -> Decodable? {
+            let contentType = "application/json"
+            if let mimeType = MimeType.getType(forStr: contentType) {
+                let decoder = try CoderFactory.decoder(for: mimeType)
+                let result = try decoder.decode(StorageAccountListKeysResultData?.self, from: data)
+                return result;
+            }
+            throw DecodeError.unknownMimeType
+        }
+        public func execute(client: RuntimeClient,
+            completionHandler: @escaping (StorageAccountListKeysResultProtocol?, Error?) -> Void) -> Void {
+            client.executeAsync(command: self) {
+                (result: StorageAccountListKeysResultData?, error: Error?) in
+                completionHandler(result, error)
+            }
         }
     }
-}
 }

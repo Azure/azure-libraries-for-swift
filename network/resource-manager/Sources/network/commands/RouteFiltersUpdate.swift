@@ -8,65 +8,65 @@ public protocol RouteFiltersUpdate  {
     var apiVersion : String { get set }
     var routeFilterParameters :  PatchRouteFilterProtocol?  { get set }
     func execute(client: RuntimeClient,
-        completionHandler: @escaping (RouteFilterProtocol?, Error?) -> Void) -> Void ;
+    completionHandler: @escaping (RouteFilterProtocol?, Error?) -> Void) -> Void ;
 }
 
 extension Commands.RouteFilters {
 // Update updates a route filter in a specified resource group. This method may poll for completion. Polling can be
 // canceled by passing the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP
 // requests.
-internal class UpdateCommand : BaseCommand, RouteFiltersUpdate {
-    public var resourceGroupName : String
-    public var routeFilterName : String
-    public var subscriptionId : String
-    public var apiVersion = "2018-01-01"
+    internal class UpdateCommand : BaseCommand, RouteFiltersUpdate {
+        public var resourceGroupName : String
+        public var routeFilterName : String
+        public var subscriptionId : String
+        public var apiVersion = "2018-01-01"
     public var routeFilterParameters :  PatchRouteFilterProtocol?
 
-    public init(resourceGroupName: String, routeFilterName: String, subscriptionId: String, routeFilterParameters: PatchRouteFilterProtocol) {
-        self.resourceGroupName = resourceGroupName
-        self.routeFilterName = routeFilterName
-        self.subscriptionId = subscriptionId
-        self.routeFilterParameters = routeFilterParameters
-        super.init()
-        self.method = "Patch"
-        self.isLongRunningOperation = true
-        self.path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeFilters/{routeFilterName}"
-        self.headerParameters = ["Content-Type":"application/json; charset=utf-8"]
-    }
-
-    public override func preCall()  {
-        self.pathParameters["{resourceGroupName}"] = String(describing: self.resourceGroupName)
-        self.pathParameters["{routeFilterName}"] = String(describing: self.routeFilterName)
-        self.pathParameters["{subscriptionId}"] = String(describing: self.subscriptionId)
-        self.queryParameters["api-version"] = String(describing: self.apiVersion)
-    self.body = routeFilterParameters
-}
-
-    public override func encodeBody() throws -> Data? {
-        let contentType = "application/json"
-        if let mimeType = MimeType.getType(forStr: contentType) {
-            let encoder = try CoderFactory.encoder(for: mimeType)
-            let encodedValue = try encoder.encode(routeFilterParameters)
-            return encodedValue
+        public init(resourceGroupName: String, routeFilterName: String, subscriptionId: String, routeFilterParameters: PatchRouteFilterProtocol) {
+            self.resourceGroupName = resourceGroupName
+            self.routeFilterName = routeFilterName
+            self.subscriptionId = subscriptionId
+            self.routeFilterParameters = routeFilterParameters
+            super.init()
+            self.method = "Patch"
+            self.isLongRunningOperation = true
+            self.path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeFilters/{routeFilterName}"
+            self.headerParameters = ["Content-Type":"application/json; charset=utf-8"]
         }
-        throw DecodeError.unknownMimeType
-    }
 
-    public override func returnFunc(data: Data) throws -> Decodable? {
-        let contentType = "application/json"
-        if let mimeType = MimeType.getType(forStr: contentType) {
-            let decoder = try CoderFactory.decoder(for: mimeType)
-            let result = try decoder.decode(RouteFilterData?.self, from: data)
-            return result;
+        public override func preCall()  {
+            self.pathParameters["{resourceGroupName}"] = String(describing: self.resourceGroupName)
+            self.pathParameters["{routeFilterName}"] = String(describing: self.routeFilterName)
+            self.pathParameters["{subscriptionId}"] = String(describing: self.subscriptionId)
+            self.queryParameters["api-version"] = String(describing: self.apiVersion)
+            self.body = routeFilterParameters
+
         }
-        throw DecodeError.unknownMimeType
-    }
-    public func execute(client: RuntimeClient,
-        completionHandler: @escaping (RouteFilterProtocol?, Error?) -> Void) -> Void {
-        client.executeAsyncLRO(command: self) {
-            (result: RouteFilterData?, error: Error?) in
-            completionHandler(result, error)
+        public override func encodeBody() throws -> Data? {
+            let contentType = "application/json"
+            if let mimeType = MimeType.getType(forStr: contentType) {
+                let encoder = try CoderFactory.encoder(for: mimeType)
+                let encodedValue = try encoder.encode(routeFilterParameters as? PatchRouteFilterData)
+                return encodedValue
+            }
+            throw DecodeError.unknownMimeType
+        }
+
+        public override func returnFunc(data: Data) throws -> Decodable? {
+            let contentType = "application/json"
+            if let mimeType = MimeType.getType(forStr: contentType) {
+                let decoder = try CoderFactory.decoder(for: mimeType)
+                let result = try decoder.decode(RouteFilterData?.self, from: data)
+                return result;
+            }
+            throw DecodeError.unknownMimeType
+        }
+        public func execute(client: RuntimeClient,
+            completionHandler: @escaping (RouteFilterProtocol?, Error?) -> Void) -> Void {
+            client.executeAsyncLRO(command: self) {
+                (result: RouteFilterData?, error: Error?) in
+                completionHandler(result, error)
+            }
         }
     }
-}
 }

@@ -8,29 +8,29 @@ import Foundation
 import azureSwiftRuntime
 extension Commands {
 public struct Job {
-    public static func Create(resourceGroupName: String, automationAccountName: String, jobId: String, subscriptionId: String, parameters: JobCreateParametersProtocol) -> JobCreate {
-        return CreateCommand(resourceGroupName: resourceGroupName, automationAccountName: automationAccountName, jobId: jobId, subscriptionId: subscriptionId, parameters: parameters)
+    public static func Create(subscriptionId: String, resourceGroupName: String, automationAccountName: String, jobName: String, parameters: JobCreateParametersProtocol) -> JobCreate {
+        return CreateCommand(subscriptionId: subscriptionId, resourceGroupName: resourceGroupName, automationAccountName: automationAccountName, jobName: jobName, parameters: parameters)
     }
-    public static func Get(resourceGroupName: String, automationAccountName: String, jobId: String, subscriptionId: String) -> JobGet {
-        return GetCommand(resourceGroupName: resourceGroupName, automationAccountName: automationAccountName, jobId: jobId, subscriptionId: subscriptionId)
+    public static func Get(subscriptionId: String, resourceGroupName: String, automationAccountName: String, jobName: String) -> JobGet {
+        return GetCommand(subscriptionId: subscriptionId, resourceGroupName: resourceGroupName, automationAccountName: automationAccountName, jobName: jobName)
     }
-    public static func GetOutput(resourceGroupName: String, automationAccountName: String, jobId: String, subscriptionId: String) -> JobGetOutput {
-        return GetOutputCommand(resourceGroupName: resourceGroupName, automationAccountName: automationAccountName, jobId: jobId, subscriptionId: subscriptionId)
+    public static func GetOutput(subscriptionId: String, resourceGroupName: String, automationAccountName: String, jobName: String) -> JobGetOutput {
+        return GetOutputCommand(subscriptionId: subscriptionId, resourceGroupName: resourceGroupName, automationAccountName: automationAccountName, jobName: jobName)
     }
-    public static func GetRunbookContent(resourceGroupName: String, automationAccountName: String, jobId: String, subscriptionId: String) -> JobGetRunbookContent {
-        return GetRunbookContentCommand(resourceGroupName: resourceGroupName, automationAccountName: automationAccountName, jobId: jobId, subscriptionId: subscriptionId)
+    public static func GetRunbookContent(subscriptionId: String, resourceGroupName: String, automationAccountName: String, jobName: String) -> JobGetRunbookContent {
+        return GetRunbookContentCommand(subscriptionId: subscriptionId, resourceGroupName: resourceGroupName, automationAccountName: automationAccountName, jobName: jobName)
     }
     public static func ListByAutomationAccount(resourceGroupName: String, automationAccountName: String, subscriptionId: String) -> JobListByAutomationAccount {
         return ListByAutomationAccountCommand(resourceGroupName: resourceGroupName, automationAccountName: automationAccountName, subscriptionId: subscriptionId)
     }
-    public static func Resume(resourceGroupName: String, automationAccountName: String, jobId: String, subscriptionId: String) -> JobResume {
-        return ResumeCommand(resourceGroupName: resourceGroupName, automationAccountName: automationAccountName, jobId: jobId, subscriptionId: subscriptionId)
+    public static func Resume(resourceGroupName: String, automationAccountName: String, jobName: String, subscriptionId: String) -> JobResume {
+        return ResumeCommand(resourceGroupName: resourceGroupName, automationAccountName: automationAccountName, jobName: jobName, subscriptionId: subscriptionId)
     }
-    public static func Stop(resourceGroupName: String, automationAccountName: String, jobId: String, subscriptionId: String) -> JobStop {
-        return StopCommand(resourceGroupName: resourceGroupName, automationAccountName: automationAccountName, jobId: jobId, subscriptionId: subscriptionId)
+    public static func Stop(resourceGroupName: String, automationAccountName: String, jobName: String, subscriptionId: String) -> JobStop {
+        return StopCommand(resourceGroupName: resourceGroupName, automationAccountName: automationAccountName, jobName: jobName, subscriptionId: subscriptionId)
     }
-    public static func Suspend(resourceGroupName: String, automationAccountName: String, jobId: String, subscriptionId: String) -> JobSuspend {
-        return SuspendCommand(resourceGroupName: resourceGroupName, automationAccountName: automationAccountName, jobId: jobId, subscriptionId: subscriptionId)
+    public static func Suspend(subscriptionId: String, resourceGroupName: String, automationAccountName: String, jobName: String) -> JobSuspend {
+        return SuspendCommand(subscriptionId: subscriptionId, resourceGroupName: resourceGroupName, automationAccountName: automationAccountName, jobName: jobName)
     }
 }
 }

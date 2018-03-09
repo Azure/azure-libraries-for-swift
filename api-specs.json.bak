@@ -1,0 +1,266 @@
+{
+  	"analysisservices": {
+    "dir": "analysisservices/resource-manager/Sources/analysisservices",
+    "source": "specification/analysisservices/resource-manager/readme.md",
+    "package": "analysisservices",
+    "args": "--payload-flattening-threshold=1 --tag=package-2016-05"
+   },
+    "appservice": {
+    "dir": "appservice/resource-manager/Sources/appservice",
+    "source": "specification/web/resource-manager/readme.md",
+    "frameworkName": "appservice",
+    "args": "--payload-flattening-threshold=1 --tag=package-2016-09"
+  },
+  "automation": {
+    "frameworkName": "automation",
+    "dir": "automation/resource-manager/Sources/automation",
+    "source": "specification/automation/resource-manager/readme.md",
+    "args": "--payload-flattening-threshold=1 --tag=package-2015-10"
+  },
+  "batch": {
+    "frameworkName": "batch",
+    "dir": "batch/resource-manager/Sources/batch",
+    "source": "specification/batch/resource-manager/readme.md",
+    "args": "--payload-flattening-threshold=1 --tag=package-2017-05"
+  },
+  "batchai": {
+    "frameworkName": "batchai",
+    "dir": "batchai/resource-manager/Sources/batchai",
+    "source": "specification/batchai/resource-manager/readme.md",
+    "args": "--payload-flattening-threshold=1 --tag=package-2017-09-preview"    
+  },
+  "batchService": {
+    "frameworkName": "batchService",
+    "dir": "batchService/resource-manager/Sources/batchService",
+    "source": "specification/batch/data-plane/readme.md",
+    "args": "--payload-flattening-threshold=1 --tag=package-2016-07.3.1"
+  },
+  "billing": {
+	"frameworkName": "billing",
+    "dir": "billing/resource-manager/Sources/billing",
+    "source": "specification/billing/resource-manager/readme.md",
+    "args": "--payload-flattening-threshold=1 --tag=package-2017-04-preview"
+  },
+  "cdn": {
+    "frameworkName": "cdn",
+    "dir": "cdn/resource-manager/Sources/cdn",
+    "source": "specification/cdn/resource-manager/readme.md",
+    "args": "--payload-flattening-threshold=2 --tag=package-2016-10"
+  },
+    "cognitiveservices": {
+    "frameworkName": "cognitiveservices",
+    "dir": "cognitiveservices/resource-manager/Sources/cognitiveservices",
+    "source": "specification/cognitiveservices/resource-manager/readme.md",
+    "args": "--payload-flattening-threshold=1 --tag=package-2017-04"
+  },
+  "compute": {
+    "frameworkName": "compute",
+    "dir": "compute/resource-manager/Sources/compute",
+    "source": "specification/compute/resource-manager/readme.md",
+    "args": "--payload-flattening-threshold=1 --tag=package-compute-2017-12"
+  },
+  "consumption": {
+    "frameworkName": "consumption",
+    "dir": "consumption/resource-manager/Sources/consumption",
+    "source": "specification/consumption/resource-manager/readme.md",
+    "args": "--payload-flattening-threshold=1 --tag=package-2017-11"
+  },
+  "containerinstance": {
+    "frameworkName": "containerinstance",
+    "dir": "containerinstance/resource-manager/Sources/containerinstance",
+    "source": "specification/containerinstance/resource-manager/readme.md",
+    "args": "--payload-flattening-threshold=1 --tag=package-2017-10-preview"
+  },
+  "containerregistry": {
+    "frameworkName": "containerregistry",
+    "dir": "containerregistry/resource-manager/Sources/containerregistry",
+    "source": "specification/containerregistry/resource-manager/readme.md",
+    "args": "--payload-flattening-threshold=1 --tag=package-2017-10"
+  },
+  "containerservice": {
+    "frameworkName": "containerservice",
+    "dir": "containerservice/resource-manager/Sources/containerservice",
+    "source": "specification/compute/resource-manager/readme.md",
+    "args": "--payload-flattening-threshold=1 --tag=package-container-service-2017-09 --title=ContainerServiceManagementClient --description=\"Container Service Client\""
+  },
+  "cosmosdb": {
+    "frameworkName": "cosmosdb",
+    "dir": "cosmosdb/resource-manager/Sources/cosmosdb",
+    "source": "specification/cosmos-db/resource-manager/readme.md",
+    "args": "--payload-flattening-threshold=1 --tag=package-2015-04"
+  },
+  "customerinsights": {
+    "frameworkName": "customerinsights",
+    "dir": "customerinsights/resource-manager/Sources/customerinsights",
+    "source": "specification/customer-insights/resource-manager/readme.md",
+    "args": "--payload-flattening-threshold=1 --tag=package-2017-04"
+  },
+   "datalake.analytics.account": {
+    "frameworkName": "datalakeanalyticsaccount",
+    "dir": "datalakeanalyticsaccount/resource-manager/Sources/datalakeanalyticsaccount",
+    "source": "specification/datalake-analytics/resource-manager/readme.md",
+    "args": "--payload-flattening-threshold=2 --tag=package-2016-11"
+  },
+  "datalake.store.account": {
+    "frameworkName": "datalakestoreaccount",
+    "dir": "datalakestoreaccount/resource-manager/Sources/datalakestoreaccount",
+    "source": "specification/datalake-store/resource-manager/readme.md",
+    "args": "--payload-flattening-threshold=2 --tag=package-2016-11"
+  },
+  "devtestlab": {
+    "frameworkName": "devtestlab",
+    "dir": "devtestlab/resource-manager/Sources/devtestlab",
+    "source": "specification/devtestlabs/resource-manager/readme.md",
+    "args": "--payload-flattening-threshold=1 --tag=package-2016-05"
+  },
+  "dns": {
+    "frameworkName": "dns",
+    "dir": "dns/resource-manager/Sources/dns",
+    "source": "specification/dns/resource-manager/readme.md",
+    "args": "--payload-flattening-threshold=1 --tag=package-2016-04"
+  },
+   "eventhub": {
+    "frameworkName": "eventhub",
+    "dir": "eventhub/resource-manager/Sources/eventhub",
+    "source": "specification/eventhub/resource-manager/readme.md",
+    "args": "--payload-flattening-threshold=1 --tag=package-2017-04"
+  },
+  "graphrbac": {
+    "frameworkName": "graphrbac",
+    "dir": "graphrbac/resource-manager/Sources/graphrbac",
+    "source": "specification/graphrbac/data-plane/readme.md",
+    "args": "--payload-flattening-threshold=1 --tag=1.6"
+  },
+  "iothub": {
+    "frameworkName": "iothub",
+    "dir": "iothub/resource-manager/Sources/iothub",
+    "source": "specification/iothub/resource-manager/readme.md",
+    "args": "--payload-flattening-threshold=1 --tag=package-2017-01"
+  },
+  "keyvault": {
+    "frameworkName": "keyvault",
+    "dir": "keyvault/resource-manager/Sources/keyvault",
+    "source": "specification/keyvault/resource-manager/readme.md",
+    "args": "--payload-flattening-threshold=1 --tag=package-2016-10"
+  },
+  "logic": {
+    "frameworkName": "logic",
+    "dir": "logic/resource-manager/Sources/logic",
+    "source": "specification/logic/resource-manager/readme.md",
+    "args": "--payload-flattening-threshold=1 --tag=package-2016-06"
+  },
+  "monitor": {
+    "frameworkName": "monitor",
+    "dir": "monitor/resource-manager/Sources/monitor",
+    "source": "specification/monitor/resource-manager/readme.md",
+    "args": "--payload-flattening-threshold=1 --tag=package-2017-09"
+  },
+  "msi": {
+    "frameworkName": "msi",
+    "dir": "msi/resource-manager/Sources/msi",
+    "source": "specification/msi/resource-manager/readme.md",
+    "args": "--payload-flattening-threshold=1 --tag=package-2015-08-31-preview"
+  },
+  "network": {
+    "frameworkName": "network",
+    "dir": "network/resource-manager/Sources/network",
+    "source": "specification/network/resource-manager/readme.md",
+    "args": "--payload-flattening-threshold=1 --tag=package-2017-08"
+  },
+  "notificationhubs": {
+    "frameworkName": "notificationhubs",
+    "dir": "notificationhubs/resource-manager/Sources/notificationhubs",
+    "source": "specification/notificationhubs/resource-manager/readme.md",
+    "args": "--payload-flattening-threshold=1 --tag=package-2017-04"
+  },
+  "powerbi": {
+    "frameworkName": "powerbi",
+    "dir": "powerbi/resource-manager/Sources/powerbi",
+    "source": "specification/powerbiembedded/resource-manager/readme.md",
+    "args": "--payload-flattening-threshold=1 --tag=package-2016-01"
+  },
+  "recoveryservices": {
+    "frameworkName": "recoveryservices",
+    "dir": "recoveryservices/resource-manager/Sources/recoveryservices",
+    "source": "specification/recoveryservices/resource-manager/readme.md",
+    "args": "--payload-flattening-threshold=1 --tag=package-2016-12"
+  },
+  "recoveryservicesbackup": {
+    "frameworkName": "recoveryservicesbackup",
+    "dir": "recoveryservicesbackup/resource-manager/Sources/recoveryservicesbackup",
+    "source": "specification/recoveryservicesbackup/resource-manager/readme.md",
+    "args": "--payload-flattening-threshold=1 --tag=package-2016-06"
+  },
+  "recoveryservicessiterecovery": {
+    "frameworkName": "recoveryservicessiterecovery",
+    "dir": "recoveryservicessiterecovery/resource-manager/Sources/recoveryservicessiterecovery",
+    "source": "specification/recoveryservicessiterecovery/resource-manager/readme.md",
+    "args": "--payload-flattening-threshold=1 --tag=package-2016-08"
+  },
+  "redis": {
+    "frameworkName": "redis",
+    "dir": "redis/resource-manager/Sources/redis",
+    "source": "specification/redis/resource-manager/readme.md",
+    "args": "--payload-flattening-threshold=1 --tag=package-2016-04"
+  },
+  "relay": {
+    "frameworkName": "relay",
+    "dir": "relay/resource-manager/Sources/relay",
+    "source": "specification/relay/resource-manager/readme.md",
+    "args": "--payload-flattening-threshold=1 --tag=package-2017-04"
+  },
+   "scheduler": {
+    "frameworkName": "scheduler",
+    "dir": "scheduler/resource-manager/Sources/scheduler",
+    "source": "specification/scheduler/resource-manager/readme.md",
+    "args": "--payload-flattening-threshold=1 --tag=package-2016-03"
+  },
+  "search": {
+    "frameworkName": "search",
+    "dir": "search/resource-manager/Sources/search",
+    "source": "specification/search/resource-manager/readme.md",
+    "args": "--payload-flattening-threshold=1 --tag=package-2015-08"
+  },
+  "servermanagement": {
+    "frameworkName": "servermanagement",
+    "dir": "servermanagement/resource-manager/Sources/servermanagement",
+    "source": "specification/servermanagement/resource-manager/readme.md",
+    "args": "--payload-flattening-threshold=1 --tag=package-2016-07-preview"
+  },
+  "servicebus": {
+    "frameworkName": "servicebus",
+    "dir": "servicebus/resource-manager/Sources/servicebus",
+    "source": "specification/servicebus/resource-manager/readme.md",
+    "args": "--payload-flattening-threshold=1 --tag=package-2015-08"
+  },
+  "servicefabric": {
+    "frameworkName": "servicefabric",
+    "dir": "servicefabric/resource-manager/Sources/servicefabric",
+    "source": "specification/servicefabric/resource-manager/readme.md",
+    "args": "--payload-flattening-threshold=1 --tag=package-2016-09"
+  },
+  "sql": {
+    "frameworkName": "sql",
+    "dir": "sql/resource-manager/Sources/sql",
+    "source": "specification/sql/resource-manager/readme.md",
+    "args": "--payload-flattening-threshold=1 --tag=package-2015-05-preview"
+  },
+  "storage": {
+    "frameworkName": "storage",
+    "dir": "storage/resource-manager/Sources/storage",
+    "source": "specification/storage/resource-manager/readme.md",
+    "args": "--payload-flattening-threshold=2 --tag=package-2017-10"
+  },
+  "streamanalytics": {
+    "frameworkName": "streamanalytics",
+    "dir": "streamanalytics/resource-manager/Sources/streamanalytics",
+    "source": "specification/streamanalytics/resource-manager/readme.md",
+    "args": "--payload-flattening-threshold=1 --tag=package-2016-03"
+  },
+  "trafficmanager": {
+    "frameworkName": "trafficmanager",
+    "dir": "trafficmanager/resource-manager/Sources/trafficmanager",
+    "source": "specification/trafficmanager/resource-manager/readme.md",
+    "args": "--payload-flattening-threshold=1 --tag=package-2017-05"
+  }
+}

@@ -13,4 +13,5 @@ public protocol VaultPatchPropertiesProtocol : Codable {
      var enabledForTemplateDeployment: Bool? { get set }
      var enableSoftDelete: Bool? { get set }
      var createMode: CreateModeEnum? { get set }
+     var enablePurgeProtection: Bool? { get set }
 }

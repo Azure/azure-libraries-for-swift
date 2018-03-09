@@ -7,18 +7,22 @@ import azureSwiftRuntime
 internal struct MetricDefinitionData : MetricDefinitionProtocol {
     public var isDimensionRequired: Bool?
     public var resourceId: String?
+    public var namespace: String?
     public var name: LocalizableStringProtocol?
     public var unit: UnitEnum?
     public var primaryAggregationType: AggregationTypeEnum?
+    public var supportedAggregationTypes: [AggregationTypeEnum?]?
     public var metricAvailabilities: [MetricAvailabilityProtocol?]?
     public var id: String?
     public var dimensions: [LocalizableStringProtocol?]?
 
         enum CodingKeys: String, CodingKey {case isDimensionRequired = "isDimensionRequired"
         case resourceId = "resourceId"
+        case namespace = "namespace"
         case name = "name"
         case unit = "unit"
         case primaryAggregationType = "primaryAggregationType"
+        case supportedAggregationTypes = "supportedAggregationTypes"
         case metricAvailabilities = "metricAvailabilities"
         case id = "id"
         case dimensions = "dimensions"
@@ -35,6 +39,9 @@ internal struct MetricDefinitionData : MetricDefinitionProtocol {
     if container.contains(.resourceId) {
         self.resourceId = try container.decode(String?.self, forKey: .resourceId)
     }
+    if container.contains(.namespace) {
+        self.namespace = try container.decode(String?.self, forKey: .namespace)
+    }
     if container.contains(.name) {
         self.name = try container.decode(LocalizableStringData?.self, forKey: .name)
     }
@@ -43,6 +50,9 @@ internal struct MetricDefinitionData : MetricDefinitionProtocol {
     }
     if container.contains(.primaryAggregationType) {
         self.primaryAggregationType = try container.decode(AggregationTypeEnum?.self, forKey: .primaryAggregationType)
+    }
+    if container.contains(.supportedAggregationTypes) {
+        self.supportedAggregationTypes = try container.decode([AggregationTypeEnum?]?.self, forKey: .supportedAggregationTypes)
     }
     if container.contains(.metricAvailabilities) {
         self.metricAvailabilities = try container.decode([MetricAvailabilityData?]?.self, forKey: .metricAvailabilities)
@@ -65,9 +75,11 @@ internal struct MetricDefinitionData : MetricDefinitionProtocol {
     var container = encoder.container(keyedBy: CodingKeys.self)
     if self.isDimensionRequired != nil {try container.encode(self.isDimensionRequired, forKey: .isDimensionRequired)}
     if self.resourceId != nil {try container.encode(self.resourceId, forKey: .resourceId)}
+    if self.namespace != nil {try container.encode(self.namespace, forKey: .namespace)}
     if self.name != nil {try container.encode(self.name as! LocalizableStringData?, forKey: .name)}
     if self.unit != nil {try container.encode(self.unit, forKey: .unit)}
     if self.primaryAggregationType != nil {try container.encode(self.primaryAggregationType, forKey: .primaryAggregationType)}
+    if self.supportedAggregationTypes != nil {try container.encode(self.supportedAggregationTypes as! [AggregationTypeEnum?]?, forKey: .supportedAggregationTypes)}
     if self.metricAvailabilities != nil {try container.encode(self.metricAvailabilities as! [MetricAvailabilityData?]?, forKey: .metricAvailabilities)}
     if self.id != nil {try container.encode(self.id, forKey: .id)}
     if self.dimensions != nil {try container.encode(self.dimensions as! [LocalizableStringData?]?, forKey: .dimensions)}

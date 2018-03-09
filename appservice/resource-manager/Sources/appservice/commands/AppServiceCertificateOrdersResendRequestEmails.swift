@@ -8,54 +8,54 @@ public protocol AppServiceCertificateOrdersResendRequestEmails  {
     var apiVersion : String { get set }
     var nameIdentifier :  NameIdentifierProtocol?  { get set }
     func execute(client: RuntimeClient,
-        completionHandler: @escaping (Error?) -> Void) -> Void;
+    completionHandler: @escaping (Error?) -> Void) -> Void;
 }
 
 extension Commands.AppServiceCertificateOrders {
 // ResendRequestEmails verify domain ownership for this certificate order.
-internal class ResendRequestEmailsCommand : BaseCommand, AppServiceCertificateOrdersResendRequestEmails {
-    public var resourceGroupName : String
-    public var certificateOrderName : String
-    public var subscriptionId : String
-    public var apiVersion = "2015-08-01"
+    internal class ResendRequestEmailsCommand : BaseCommand, AppServiceCertificateOrdersResendRequestEmails {
+        public var resourceGroupName : String
+        public var certificateOrderName : String
+        public var subscriptionId : String
+        public var apiVersion = "2015-08-01"
     public var nameIdentifier :  NameIdentifierProtocol?
 
-    public init(resourceGroupName: String, certificateOrderName: String, subscriptionId: String, nameIdentifier: NameIdentifierProtocol) {
-        self.resourceGroupName = resourceGroupName
-        self.certificateOrderName = certificateOrderName
-        self.subscriptionId = subscriptionId
-        self.nameIdentifier = nameIdentifier
-        super.init()
-        self.method = "Post"
-        self.isLongRunningOperation = false
-        self.path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/resendRequestEmails"
-        self.headerParameters = ["Content-Type":"application/json; charset=utf-8"]
-    }
-
-    public override func preCall()  {
-        self.pathParameters["{resourceGroupName}"] = String(describing: self.resourceGroupName)
-        self.pathParameters["{certificateOrderName}"] = String(describing: self.certificateOrderName)
-        self.pathParameters["{subscriptionId}"] = String(describing: self.subscriptionId)
-        self.queryParameters["api-version"] = String(describing: self.apiVersion)
-    self.body = nameIdentifier
-}
-
-    public override func encodeBody() throws -> Data? {
-        let contentType = "application/json"
-        if let mimeType = MimeType.getType(forStr: contentType) {
-            let encoder = try CoderFactory.encoder(for: mimeType)
-            let encodedValue = try encoder.encode(nameIdentifier)
-            return encodedValue
+        public init(resourceGroupName: String, certificateOrderName: String, subscriptionId: String, nameIdentifier: NameIdentifierProtocol) {
+            self.resourceGroupName = resourceGroupName
+            self.certificateOrderName = certificateOrderName
+            self.subscriptionId = subscriptionId
+            self.nameIdentifier = nameIdentifier
+            super.init()
+            self.method = "Post"
+            self.isLongRunningOperation = false
+            self.path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/resendRequestEmails"
+            self.headerParameters = ["Content-Type":"application/json; charset=utf-8"]
         }
-        throw DecodeError.unknownMimeType
-    }
 
-    public func execute(client: RuntimeClient,
-        completionHandler: @escaping (Error?) -> Void) -> Void {
-        client.executeAsync(command: self) {
-            (error) in
-            completionHandler(error)
+        public override func preCall()  {
+            self.pathParameters["{resourceGroupName}"] = String(describing: self.resourceGroupName)
+            self.pathParameters["{certificateOrderName}"] = String(describing: self.certificateOrderName)
+            self.pathParameters["{subscriptionId}"] = String(describing: self.subscriptionId)
+            self.queryParameters["api-version"] = String(describing: self.apiVersion)
+            self.body = nameIdentifier
+
+        }
+        public override func encodeBody() throws -> Data? {
+            let contentType = "application/json"
+            if let mimeType = MimeType.getType(forStr: contentType) {
+                let encoder = try CoderFactory.encoder(for: mimeType)
+                let encodedValue = try encoder.encode(nameIdentifier as? NameIdentifierData)
+                return encodedValue
+            }
+            throw DecodeError.unknownMimeType
+        }
+
+        public func execute(client: RuntimeClient,
+            completionHandler: @escaping (Error?) -> Void) -> Void {
+            client.executeAsync(command: self) {
+                (error) in
+                completionHandler(error)
+            }
         }
     }
-}
 }

@@ -5,7 +5,7 @@
 import Foundation
 // ManagedServiceIdentityProtocol is managed service identity.
 public protocol ManagedServiceIdentityProtocol : Codable {
-     var type: [String: String?]? { get set }
+     var type: ManagedServiceIdentityTypeEnum? { get set }
      var tenantId: String? { get set }
      var principalId: String? { get set }
 }
