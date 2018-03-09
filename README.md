@@ -31,21 +31,67 @@ To learn more about authentication in the Azure Libraries for Swift, see [AUTH.m
 You can create a virtual machine instance by using a `define() … create()` method chain.
 
 ```swift
-System.out.println("Creating a Linux VM");
-
-VirtualMachine linuxVM = azure.virtualMachines().define("myLinuxVM")
-	.withRegion(Region.US_EAST)
-	.withNewResourceGroup(rgName)
-	.withNewPrimaryNetwork("10.0.0.0/28")
-	.withPrimaryPrivateIPAddressDynamic()
-	.withNewPrimaryPublicIPAddress("mylinuxvmdns")
-	.withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-	.withRootUsername("tirekicker")
-	.withSsh(sshKey)
-	.withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
-	.create();
-	
-System.out.println("Created a Linux VM: " + linuxVM.id());
+        let resourceGroupName = "swiftTestResourceGroup1"
+        let vmName = "<vm name>"
+        let osDiskName = "<os disk name>"
+        let adminUsername = "<user name>"
+        let adminPassword = "<password>"
+        let computerName = "<computer name>"
+        let nicId = "<id for nic>"
+        var vmProperties = compute.DataFactory.createVirtualMachinePropertiesProtocol()
+        
+        var hardwareProfile  = compute.DataFactory.createHardwareProfileProtocol()
+        hardwareProfile.vmSize = VirtualMachineSizeTypesEnum.VirtualMachineSizeTypesBasicA0
+        vmProperties.hardwareProfile = hardwareProfile
+        
+        var networkProfile = compute.DataFactory.createNetworkProfileProtocol()
+        networkProfile.networkInterfaces = [NetworkInterfaceReferenceProtocol?]()
+        var networkInterface = compute.DataFactory.createNetworkInterfaceReferenceProtocol()
+        networkInterface.id = nicId
+        networkProfile.networkInterfaces?.append(networkInterface)
+        vmProperties.networkProfile = networkProfile
+        
+        var storageProfile = compute.DataFactory.createStorageProfileProtocol();
+        var imageReference = compute.DataFactory.createImageReferenceProtocol()
+        imageReference.sku = "16.04-LTS"
+        imageReference.publisher = "Canonical"
+        imageReference.version = "latest"
+        imageReference.offer = "UbuntuServer"
+        storageProfile.imageReference = imageReference
+        
+        var osDisk = compute.DataFactory.createOSDiskProtocol(createOption: DiskCreateOptionTypesEnum.DiskCreateOptionTypesFromImage)
+        osDisk.name = osDiskName
+        osDisk.caching = CachingTypesEnum.CachingTypesReadWrite
+        osDisk.managedDisk = compute.DataFactory.createManagedDiskParametersProtocol()
+        osDisk.managedDisk?.storageAccountType = StorageAccountTypesEnum.StandardLRS
+        storageProfile.osDisk = osDisk
+        vmProperties.storageProfile = storageProfile
+        
+        var osProfile = compute.DataFactory.createOSProfileProtocol()
+        osProfile = compute.DataFactory.createOSProfileProtocol()
+        osProfile.adminUsername = adminUsername
+        osProfile.adminPassword = adminPassword
+        osProfile.computerName = computerName
+        vmProperties.osProfile = osProfile
+        
+        var vm = compute.DataFactory.createVirtualMachineProtocol(location: "west us");
+        vm.name = vmName
+        vm.properties = vmProperties;
+        
+        let e = expectation(description: "Wait for HTTP request to complete")
+        // This is an example of a functional test case.
+        var command = compute.Commands.VirtualMachines.CreateOrUpdate(
+            resourceGroupName: resourceGroupName,
+            vmName: vm.name!,
+            subscriptionId: applicationTokenCredentials.defaultSubscriptionId!,
+            parameters: vm)
+        command.execute(client: self.azureClient, completionHandler: {
+            (resource, error) -> Void in
+            e.fulfill()
+            print("done");
+        });
+        
+        waitForExpectations(timeout: 600, handler: nil)
 ```
 
 ## Prerequisites
