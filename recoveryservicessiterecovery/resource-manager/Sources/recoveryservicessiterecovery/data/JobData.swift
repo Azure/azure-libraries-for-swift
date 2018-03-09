@@ -10,20 +10,12 @@ internal struct JobData : JobProtocol, ResourceProtocol {
     public var type: String?
     public var location: String?
     public var properties: JobPropertiesProtocol?
-    public var status: String?
-    public var error: ARMExceptionProtocol?
-    public var startTime: String?
-    public var endTime: String?
 
         enum CodingKeys: String, CodingKey {case id = "id"
         case name = "name"
         case type = "type"
         case location = "location"
         case properties = "properties"
-        case status = "status"
-        case error = "error"
-        case startTime = "startTime"
-        case endTime = "endTime"
         }
 
   public init()  {
@@ -46,18 +38,6 @@ internal struct JobData : JobProtocol, ResourceProtocol {
     if container.contains(.properties) {
         self.properties = try container.decode(JobPropertiesData?.self, forKey: .properties)
     }
-    if container.contains(.status) {
-        self.status = try container.decode(String?.self, forKey: .status)
-    }
-    if container.contains(.error) {
-        self.error = try container.decode(ARMExceptionData?.self, forKey: .error)
-    }
-    if container.contains(.startTime) {
-        self.startTime = try container.decode(String?.self, forKey: .startTime)
-    }
-    if container.contains(.endTime) {
-        self.endTime = try container.decode(String?.self, forKey: .endTime)
-    }
     if var pageDecoder = decoder as? PageDecoder  {
       if pageDecoder.isPagedData,
         let nextLinkName = pageDecoder.nextLinkName {
@@ -73,10 +53,6 @@ internal struct JobData : JobProtocol, ResourceProtocol {
     if self.type != nil {try container.encode(self.type, forKey: .type)}
     if self.location != nil {try container.encode(self.location, forKey: .location)}
     if self.properties != nil {try container.encode(self.properties as! JobPropertiesData?, forKey: .properties)}
-    if self.status != nil {try container.encode(self.status, forKey: .status)}
-    if self.error != nil {try container.encode(self.error as! ARMExceptionData?, forKey: .error)}
-    if self.startTime != nil {try container.encode(self.startTime, forKey: .startTime)}
-    if self.endTime != nil {try container.encode(self.endTime, forKey: .endTime)}
   }
 }
 

@@ -15,4 +15,5 @@ public protocol TestJobProtocol : Codable {
      var lastModifiedTime: Date? { get set }
      var lastStatusModifiedTime: Date? { get set }
      var parameters: [String:String]? { get set }
+     var logActivityTrace: Int32? { get set }
 }

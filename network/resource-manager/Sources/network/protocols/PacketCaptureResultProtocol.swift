@@ -7,6 +7,7 @@ import Foundation
 public protocol PacketCaptureResultProtocol : Codable {
      var name: String? { get set }
      var id: String? { get set }
+     var type: String? { get set }
      var etag: String? { get set }
      var properties: PacketCaptureResultPropertiesProtocol? { get set }
 }

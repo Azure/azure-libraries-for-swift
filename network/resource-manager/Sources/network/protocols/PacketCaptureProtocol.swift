@@ -5,5 +5,8 @@
 import Foundation
 // PacketCaptureProtocol is parameters that define the create packet capture operation.
 public protocol PacketCaptureProtocol : Codable {
+     var name: String? { get set }
+     var id: String? { get set }
+     var type: String? { get set }
      var properties: PacketCaptureParametersProtocol { get set }
 }

@@ -5,9 +5,15 @@
 import Foundation
 import azureSwiftRuntime
 internal struct PacketCaptureData : PacketCaptureProtocol {
+    public var name: String?
+    public var id: String?
+    public var type: String?
     public var properties: PacketCaptureParametersProtocol
 
-        enum CodingKeys: String, CodingKey {case properties = "properties"
+        enum CodingKeys: String, CodingKey {case name = "name"
+        case id = "id"
+        case type = "type"
+        case properties = "properties"
         }
 
   public init(properties: PacketCaptureParametersProtocol)  {
@@ -16,7 +22,16 @@ internal struct PacketCaptureData : PacketCaptureProtocol {
 
   public init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
-      self.properties = try container.decode(PacketCaptureParametersData.self, forKey: .properties)
+      if container.contains(.name) {
+        self.name = try container.decode(String?.self, forKey: .name)
+    }
+    if container.contains(.id) {
+        self.id = try container.decode(String?.self, forKey: .id)
+    }
+    if container.contains(.type) {
+        self.type = try container.decode(String?.self, forKey: .type)
+    }
+    self.properties = try container.decode(PacketCaptureParametersData.self, forKey: .properties)
     if var pageDecoder = decoder as? PageDecoder  {
       if pageDecoder.isPagedData,
         let nextLinkName = pageDecoder.nextLinkName {
@@ -27,6 +42,9 @@ internal struct PacketCaptureData : PacketCaptureProtocol {
 
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
+    if self.name != nil {try container.encode(self.name, forKey: .name)}
+    if self.id != nil {try container.encode(self.id, forKey: .id)}
+    if self.type != nil {try container.encode(self.type, forKey: .type)}
     try container.encode(self.properties as! PacketCaptureParametersData, forKey: .properties)
   }
 }

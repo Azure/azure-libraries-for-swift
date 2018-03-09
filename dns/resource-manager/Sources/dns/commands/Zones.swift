@@ -23,5 +23,8 @@ public struct Zones {
     public static func ListByResourceGroup(resourceGroupName: String, subscriptionId: String) -> ZonesListByResourceGroup {
         return ListByResourceGroupCommand(resourceGroupName: resourceGroupName, subscriptionId: subscriptionId)
     }
+    public static func Update(resourceGroupName: String, zoneName: String, subscriptionId: String, parameters: ZoneProtocol) -> ZonesUpdate {
+        return UpdateCommand(resourceGroupName: resourceGroupName, zoneName: zoneName, subscriptionId: subscriptionId, parameters: parameters)
+    }
 }
 }

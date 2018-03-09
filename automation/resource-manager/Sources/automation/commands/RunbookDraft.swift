@@ -8,20 +8,20 @@ import Foundation
 import azureSwiftRuntime
 extension Commands {
 public struct RunbookDraft {
-    public static func CreateOrUpdate(resourceGroupName: String, automationAccountName: String, runbookName: String, subscriptionId: String, runbookContent: Data) -> RunbookDraftCreateOrUpdate {
-        return CreateOrUpdateCommand(resourceGroupName: resourceGroupName, automationAccountName: automationAccountName, runbookName: runbookName, subscriptionId: subscriptionId, runbookContent: runbookContent)
+    public static func Get(subscriptionId: String, resourceGroupName: String, automationAccountName: String, runbookName: String) -> RunbookDraftGet {
+        return GetCommand(subscriptionId: subscriptionId, resourceGroupName: resourceGroupName, automationAccountName: automationAccountName, runbookName: runbookName)
     }
-    public static func Get(resourceGroupName: String, automationAccountName: String, runbookName: String, subscriptionId: String) -> RunbookDraftGet {
-        return GetCommand(resourceGroupName: resourceGroupName, automationAccountName: automationAccountName, runbookName: runbookName, subscriptionId: subscriptionId)
+    public static func GetContent(subscriptionId: String, resourceGroupName: String, automationAccountName: String, runbookName: String) -> RunbookDraftGetContent {
+        return GetContentCommand(subscriptionId: subscriptionId, resourceGroupName: resourceGroupName, automationAccountName: automationAccountName, runbookName: runbookName)
     }
-    public static func GetContent(resourceGroupName: String, automationAccountName: String, runbookName: String, subscriptionId: String) -> RunbookDraftGetContent {
-        return GetContentCommand(resourceGroupName: resourceGroupName, automationAccountName: automationAccountName, runbookName: runbookName, subscriptionId: subscriptionId)
+    public static func Publish(subscriptionId: String, resourceGroupName: String, automationAccountName: String, runbookName: String) -> RunbookDraftPublish {
+        return PublishCommand(subscriptionId: subscriptionId, resourceGroupName: resourceGroupName, automationAccountName: automationAccountName, runbookName: runbookName)
     }
-    public static func Publish(resourceGroupName: String, automationAccountName: String, runbookName: String, subscriptionId: String) -> RunbookDraftPublish {
-        return PublishCommand(resourceGroupName: resourceGroupName, automationAccountName: automationAccountName, runbookName: runbookName, subscriptionId: subscriptionId)
+    public static func ReplaceContent(subscriptionId: String, resourceGroupName: String, automationAccountName: String, runbookName: String, runbookContent: String) -> RunbookDraftReplaceContent {
+        return ReplaceContentCommand(subscriptionId: subscriptionId, resourceGroupName: resourceGroupName, automationAccountName: automationAccountName, runbookName: runbookName, runbookContent: runbookContent)
     }
-    public static func UndoEdit(resourceGroupName: String, automationAccountName: String, runbookName: String, subscriptionId: String) -> RunbookDraftUndoEdit {
-        return UndoEditCommand(resourceGroupName: resourceGroupName, automationAccountName: automationAccountName, runbookName: runbookName, subscriptionId: subscriptionId)
+    public static func UndoEdit(subscriptionId: String, resourceGroupName: String, automationAccountName: String, runbookName: String) -> RunbookDraftUndoEdit {
+        return UndoEditCommand(subscriptionId: subscriptionId, resourceGroupName: resourceGroupName, automationAccountName: automationAccountName, runbookName: runbookName)
     }
 }
 }

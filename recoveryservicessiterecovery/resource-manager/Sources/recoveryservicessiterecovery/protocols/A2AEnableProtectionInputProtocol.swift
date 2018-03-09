@@ -12,4 +12,6 @@ public protocol A2AEnableProtectionInputProtocol : EnableProtectionProviderSpeci
      var recoveryAvailabilitySetId: String? { get set }
      var vmDisks: [A2AVmDiskInputDetailsProtocol?]? { get set }
      var vmManagedDisks: [A2AVmManagedDiskInputDetailsProtocol?]? { get set }
+     var multiVmGroupName: String? { get set }
+     var recoveryBootDiagStorageAccountId: String? { get set }
 }

@@ -15,6 +15,7 @@ internal struct TestJobData : TestJobProtocol {
     public var lastModifiedTime: Date?
     public var lastStatusModifiedTime: Date?
     public var parameters: [String:String]?
+    public var logActivityTrace: Int32?
 
         enum CodingKeys: String, CodingKey {case creationTime = "creationTime"
         case status = "status"
@@ -26,6 +27,7 @@ internal struct TestJobData : TestJobProtocol {
         case lastModifiedTime = "lastModifiedTime"
         case lastStatusModifiedTime = "lastStatusModifiedTime"
         case parameters = "parameters"
+        case logActivityTrace = "logActivityTrace"
         }
 
   public init()  {
@@ -63,6 +65,9 @@ internal struct TestJobData : TestJobProtocol {
     if container.contains(.parameters) {
         self.parameters = try container.decode([String:String]?.self, forKey: .parameters)
     }
+    if container.contains(.logActivityTrace) {
+        self.logActivityTrace = try container.decode(Int32?.self, forKey: .logActivityTrace)
+    }
     if var pageDecoder = decoder as? PageDecoder  {
       if pageDecoder.isPagedData,
         let nextLinkName = pageDecoder.nextLinkName {
@@ -93,6 +98,7 @@ internal struct TestJobData : TestJobProtocol {
         try container.encode(DateConverter.toString(date: self.lastStatusModifiedTime!, format: .dateTime), forKey: .lastStatusModifiedTime)
     }
     if self.parameters != nil {try container.encode(self.parameters, forKey: .parameters)}
+    if self.logActivityTrace != nil {try container.encode(self.logActivityTrace, forKey: .logActivityTrace)}
   }
 }
 

@@ -5,7 +5,7 @@
 import Foundation
 import azureSwiftRuntime
 internal struct ManagedServiceIdentityData : ManagedServiceIdentityProtocol {
-    public var type: [String: String?]?
+    public var type: ManagedServiceIdentityTypeEnum?
     public var tenantId: String?
     public var principalId: String?
 
@@ -20,7 +20,7 @@ internal struct ManagedServiceIdentityData : ManagedServiceIdentityProtocol {
   public init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
       if container.contains(.type) {
-        self.type = try container.decode([String: String?]?.self, forKey: .type)
+        self.type = try container.decode(ManagedServiceIdentityTypeEnum?.self, forKey: .type)
     }
     if container.contains(.tenantId) {
         self.tenantId = try container.decode(String?.self, forKey: .tenantId)

@@ -5,23 +5,19 @@
 import Foundation
 import azureSwiftRuntime
 internal struct TestJobCreateParametersData : TestJobCreateParametersProtocol {
-    public var runbookName: String
     public var parameters: [String:String]?
     public var runOn: String?
 
-        enum CodingKeys: String, CodingKey {case runbookName = "runbookName"
-        case parameters = "parameters"
+        enum CodingKeys: String, CodingKey {case parameters = "parameters"
         case runOn = "runOn"
         }
 
-  public init(runbookName: String)  {
-    self.runbookName = runbookName
+  public init()  {
   }
 
   public init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
-      self.runbookName = try container.decode(String.self, forKey: .runbookName)
-    if container.contains(.parameters) {
+      if container.contains(.parameters) {
         self.parameters = try container.decode([String:String]?.self, forKey: .parameters)
     }
     if container.contains(.runOn) {
@@ -37,14 +33,13 @@ internal struct TestJobCreateParametersData : TestJobCreateParametersProtocol {
 
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
-    try container.encode(self.runbookName, forKey: .runbookName)
     if self.parameters != nil {try container.encode(self.parameters, forKey: .parameters)}
     if self.runOn != nil {try container.encode(self.runOn, forKey: .runOn)}
   }
 }
 
 extension DataFactory {
-  public static func createTestJobCreateParametersProtocol(runbookName: String) -> TestJobCreateParametersProtocol {
-    return TestJobCreateParametersData(runbookName: runbookName)
+  public static func createTestJobCreateParametersProtocol() -> TestJobCreateParametersProtocol {
+    return TestJobCreateParametersData()
   }
 }

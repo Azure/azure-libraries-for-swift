@@ -15,6 +15,7 @@ internal struct VCenterPropertiesData : VCenterPropertiesProtocol {
     public var port: String?
     public var runAsAccountId: String?
     public var fabricArmResourceName: String?
+    public var healthErrors: [HealthErrorProtocol?]?
 
         enum CodingKeys: String, CodingKey {case friendlyName = "friendlyName"
         case internalId = "internalId"
@@ -26,6 +27,7 @@ internal struct VCenterPropertiesData : VCenterPropertiesProtocol {
         case port = "port"
         case runAsAccountId = "runAsAccountId"
         case fabricArmResourceName = "fabricArmResourceName"
+        case healthErrors = "healthErrors"
         }
 
   public init()  {
@@ -63,6 +65,9 @@ internal struct VCenterPropertiesData : VCenterPropertiesProtocol {
     if container.contains(.fabricArmResourceName) {
         self.fabricArmResourceName = try container.decode(String?.self, forKey: .fabricArmResourceName)
     }
+    if container.contains(.healthErrors) {
+        self.healthErrors = try container.decode([HealthErrorData?]?.self, forKey: .healthErrors)
+    }
     if var pageDecoder = decoder as? PageDecoder  {
       if pageDecoder.isPagedData,
         let nextLinkName = pageDecoder.nextLinkName {
@@ -85,6 +90,7 @@ internal struct VCenterPropertiesData : VCenterPropertiesProtocol {
     if self.port != nil {try container.encode(self.port, forKey: .port)}
     if self.runAsAccountId != nil {try container.encode(self.runAsAccountId, forKey: .runAsAccountId)}
     if self.fabricArmResourceName != nil {try container.encode(self.fabricArmResourceName, forKey: .fabricArmResourceName)}
+    if self.healthErrors != nil {try container.encode(self.healthErrors as! [HealthErrorData?]?, forKey: .healthErrors)}
   }
 }
 

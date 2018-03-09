@@ -15,8 +15,14 @@ internal struct MasterTargetServerData : MasterTargetServerProtocol {
     public var retentionVolumes: [RetentionVolumeProtocol?]?
     public var dataStores: [DataStoreProtocol?]?
     public var validationErrors: [HealthErrorProtocol?]?
+    public var healthErrors: [HealthErrorProtocol?]?
     public var diskCount: Int32?
     public var osVersion: String?
+    public var agentExpiryDate: Date?
+    public var marsAgentVersion: String?
+    public var marsAgentExpiryDate: Date?
+    public var agentVersionDetails: VersionDetailsProtocol?
+    public var marsAgentVersionDetails: VersionDetailsProtocol?
 
         enum CodingKeys: String, CodingKey {case id = "id"
         case ipAddress = "ipAddress"
@@ -28,8 +34,14 @@ internal struct MasterTargetServerData : MasterTargetServerProtocol {
         case retentionVolumes = "retentionVolumes"
         case dataStores = "dataStores"
         case validationErrors = "validationErrors"
+        case healthErrors = "healthErrors"
         case diskCount = "diskCount"
         case osVersion = "osVersion"
+        case agentExpiryDate = "agentExpiryDate"
+        case marsAgentVersion = "marsAgentVersion"
+        case marsAgentExpiryDate = "marsAgentExpiryDate"
+        case agentVersionDetails = "agentVersionDetails"
+        case marsAgentVersionDetails = "marsAgentVersionDetails"
         }
 
   public init()  {
@@ -67,11 +79,29 @@ internal struct MasterTargetServerData : MasterTargetServerProtocol {
     if container.contains(.validationErrors) {
         self.validationErrors = try container.decode([HealthErrorData?]?.self, forKey: .validationErrors)
     }
+    if container.contains(.healthErrors) {
+        self.healthErrors = try container.decode([HealthErrorData?]?.self, forKey: .healthErrors)
+    }
     if container.contains(.diskCount) {
         self.diskCount = try container.decode(Int32?.self, forKey: .diskCount)
     }
     if container.contains(.osVersion) {
         self.osVersion = try container.decode(String?.self, forKey: .osVersion)
+    }
+    if container.contains(.agentExpiryDate) {
+        self.agentExpiryDate = DateConverter.fromString(dateStr: (try container.decode(String?.self, forKey: .agentExpiryDate)), format: .dateTime)
+    }
+    if container.contains(.marsAgentVersion) {
+        self.marsAgentVersion = try container.decode(String?.self, forKey: .marsAgentVersion)
+    }
+    if container.contains(.marsAgentExpiryDate) {
+        self.marsAgentExpiryDate = DateConverter.fromString(dateStr: (try container.decode(String?.self, forKey: .marsAgentExpiryDate)), format: .dateTime)
+    }
+    if container.contains(.agentVersionDetails) {
+        self.agentVersionDetails = try container.decode(VersionDetailsData?.self, forKey: .agentVersionDetails)
+    }
+    if container.contains(.marsAgentVersionDetails) {
+        self.marsAgentVersionDetails = try container.decode(VersionDetailsData?.self, forKey: .marsAgentVersionDetails)
     }
     if var pageDecoder = decoder as? PageDecoder  {
       if pageDecoder.isPagedData,
@@ -95,8 +125,18 @@ internal struct MasterTargetServerData : MasterTargetServerProtocol {
     if self.retentionVolumes != nil {try container.encode(self.retentionVolumes as! [RetentionVolumeData?]?, forKey: .retentionVolumes)}
     if self.dataStores != nil {try container.encode(self.dataStores as! [DataStoreData?]?, forKey: .dataStores)}
     if self.validationErrors != nil {try container.encode(self.validationErrors as! [HealthErrorData?]?, forKey: .validationErrors)}
+    if self.healthErrors != nil {try container.encode(self.healthErrors as! [HealthErrorData?]?, forKey: .healthErrors)}
     if self.diskCount != nil {try container.encode(self.diskCount, forKey: .diskCount)}
     if self.osVersion != nil {try container.encode(self.osVersion, forKey: .osVersion)}
+    if self.agentExpiryDate != nil {
+        try container.encode(DateConverter.toString(date: self.agentExpiryDate!, format: .dateTime), forKey: .agentExpiryDate)
+    }
+    if self.marsAgentVersion != nil {try container.encode(self.marsAgentVersion, forKey: .marsAgentVersion)}
+    if self.marsAgentExpiryDate != nil {
+        try container.encode(DateConverter.toString(date: self.marsAgentExpiryDate!, format: .dateTime), forKey: .marsAgentExpiryDate)
+    }
+    if self.agentVersionDetails != nil {try container.encode(self.agentVersionDetails as! VersionDetailsData?, forKey: .agentVersionDetails)}
+    if self.marsAgentVersionDetails != nil {try container.encode(self.marsAgentVersionDetails as! VersionDetailsData?, forKey: .marsAgentVersionDetails)}
   }
 }
 

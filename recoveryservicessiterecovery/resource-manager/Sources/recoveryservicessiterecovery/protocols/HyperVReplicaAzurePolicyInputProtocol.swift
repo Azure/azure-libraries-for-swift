@@ -9,6 +9,5 @@ public protocol HyperVReplicaAzurePolicyInputProtocol : PolicyProviderSpecificIn
      var applicationConsistentSnapshotFrequencyInHours: Int32? { get set }
      var replicationInterval: Int32? { get set }
      var onlineReplicationStartTime: String? { get set }
-     var encryption: String? { get set }
      var storageAccounts: [String]? { get set }
 }

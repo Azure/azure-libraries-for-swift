@@ -9,57 +9,57 @@ public protocol WebAppsGetTriggeredWebJobHistory  {
     var subscriptionId : String { get set }
     var apiVersion : String { get set }
     func execute(client: RuntimeClient,
-        completionHandler: @escaping (TriggeredJobHistoryProtocol?, Error?) -> Void) -> Void ;
+    completionHandler: @escaping (TriggeredJobHistoryProtocol?, Error?) -> Void) -> Void ;
 }
 
 extension Commands.WebApps {
 // GetTriggeredWebJobHistory gets a triggered web job's history by its ID for an app, , or a deployment slot.
-internal class GetTriggeredWebJobHistoryCommand : BaseCommand, WebAppsGetTriggeredWebJobHistory {
-    public var resourceGroupName : String
-    public var name : String
-    public var webJobName : String
-    public var id : String
-    public var subscriptionId : String
-    public var apiVersion = "2016-08-01"
+    internal class GetTriggeredWebJobHistoryCommand : BaseCommand, WebAppsGetTriggeredWebJobHistory {
+        public var resourceGroupName : String
+        public var name : String
+        public var webJobName : String
+        public var id : String
+        public var subscriptionId : String
+        public var apiVersion = "2016-08-01"
 
-    public init(resourceGroupName: String, name: String, webJobName: String, id: String, subscriptionId: String) {
-        self.resourceGroupName = resourceGroupName
-        self.name = name
-        self.webJobName = webJobName
-        self.id = id
-        self.subscriptionId = subscriptionId
-        super.init()
-        self.method = "Get"
-        self.isLongRunningOperation = false
-        self.path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/triggeredwebjobs/{webJobName}/history/{id}"
-        self.headerParameters = ["Content-Type":"application/json; charset=utf-8"]
-    }
-
-    public override func preCall()  {
-        self.pathParameters["{resourceGroupName}"] = String(describing: self.resourceGroupName)
-        self.pathParameters["{name}"] = String(describing: self.name)
-        self.pathParameters["{webJobName}"] = String(describing: self.webJobName)
-        self.pathParameters["{id}"] = String(describing: self.id)
-        self.pathParameters["{subscriptionId}"] = String(describing: self.subscriptionId)
-        self.queryParameters["api-version"] = String(describing: self.apiVersion)
-}
-
-
-    public override func returnFunc(data: Data) throws -> Decodable? {
-        let contentType = "application/json"
-        if let mimeType = MimeType.getType(forStr: contentType) {
-            let decoder = try CoderFactory.decoder(for: mimeType)
-            let result = try decoder.decode(TriggeredJobHistoryData?.self, from: data)
-            return result;
+        public init(resourceGroupName: String, name: String, webJobName: String, id: String, subscriptionId: String) {
+            self.resourceGroupName = resourceGroupName
+            self.name = name
+            self.webJobName = webJobName
+            self.id = id
+            self.subscriptionId = subscriptionId
+            super.init()
+            self.method = "Get"
+            self.isLongRunningOperation = false
+            self.path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/triggeredwebjobs/{webJobName}/history/{id}"
+            self.headerParameters = ["Content-Type":"application/json; charset=utf-8"]
         }
-        throw DecodeError.unknownMimeType
-    }
-    public func execute(client: RuntimeClient,
-        completionHandler: @escaping (TriggeredJobHistoryProtocol?, Error?) -> Void) -> Void {
-        client.executeAsync(command: self) {
-            (result: TriggeredJobHistoryData?, error: Error?) in
-            completionHandler(result, error)
+
+        public override func preCall()  {
+            self.pathParameters["{resourceGroupName}"] = String(describing: self.resourceGroupName)
+            self.pathParameters["{name}"] = String(describing: self.name)
+            self.pathParameters["{webJobName}"] = String(describing: self.webJobName)
+            self.pathParameters["{id}"] = String(describing: self.id)
+            self.pathParameters["{subscriptionId}"] = String(describing: self.subscriptionId)
+            self.queryParameters["api-version"] = String(describing: self.apiVersion)
+
+        }
+
+        public override func returnFunc(data: Data) throws -> Decodable? {
+            let contentType = "application/json"
+            if let mimeType = MimeType.getType(forStr: contentType) {
+                let decoder = try CoderFactory.decoder(for: mimeType)
+                let result = try decoder.decode(TriggeredJobHistoryData?.self, from: data)
+                return result;
+            }
+            throw DecodeError.unknownMimeType
+        }
+        public func execute(client: RuntimeClient,
+            completionHandler: @escaping (TriggeredJobHistoryProtocol?, Error?) -> Void) -> Void {
+            client.executeAsync(command: self) {
+                (result: TriggeredJobHistoryData?, error: Error?) in
+                completionHandler(result, error)
+            }
         }
     }
-}
 }

@@ -12,7 +12,7 @@ internal struct HyperVReplicaAzureEnableProtectionInputData : HyperVReplicaAzure
     public var targetStorageAccountId: String?
     public var targetAzureNetworkId: String?
     public var targetAzureSubnetId: String?
-    public var enableRDPOnTargetOption: String?
+    public var enableRdpOnTargetOption: String?
     public var targetAzureVmName: String?
     public var logStorageAccountId: String?
     public var disksToInclude: [String]?
@@ -27,7 +27,7 @@ internal struct HyperVReplicaAzureEnableProtectionInputData : HyperVReplicaAzure
         case targetStorageAccountId = "targetStorageAccountId"
         case targetAzureNetworkId = "targetAzureNetworkId"
         case targetAzureSubnetId = "targetAzureSubnetId"
-        case enableRDPOnTargetOption = "enableRDPOnTargetOption"
+        case enableRdpOnTargetOption = "enableRdpOnTargetOption"
         case targetAzureVmName = "targetAzureVmName"
         case logStorageAccountId = "logStorageAccountId"
         case disksToInclude = "disksToInclude"
@@ -62,8 +62,8 @@ internal struct HyperVReplicaAzureEnableProtectionInputData : HyperVReplicaAzure
     if container.contains(.targetAzureSubnetId) {
         self.targetAzureSubnetId = try container.decode(String?.self, forKey: .targetAzureSubnetId)
     }
-    if container.contains(.enableRDPOnTargetOption) {
-        self.enableRDPOnTargetOption = try container.decode(String?.self, forKey: .enableRDPOnTargetOption)
+    if container.contains(.enableRdpOnTargetOption) {
+        self.enableRdpOnTargetOption = try container.decode(String?.self, forKey: .enableRdpOnTargetOption)
     }
     if container.contains(.targetAzureVmName) {
         self.targetAzureVmName = try container.decode(String?.self, forKey: .targetAzureVmName)
@@ -100,7 +100,7 @@ internal struct HyperVReplicaAzureEnableProtectionInputData : HyperVReplicaAzure
     if self.targetStorageAccountId != nil {try container.encode(self.targetStorageAccountId, forKey: .targetStorageAccountId)}
     if self.targetAzureNetworkId != nil {try container.encode(self.targetAzureNetworkId, forKey: .targetAzureNetworkId)}
     if self.targetAzureSubnetId != nil {try container.encode(self.targetAzureSubnetId, forKey: .targetAzureSubnetId)}
-    if self.enableRDPOnTargetOption != nil {try container.encode(self.enableRDPOnTargetOption, forKey: .enableRDPOnTargetOption)}
+    if self.enableRdpOnTargetOption != nil {try container.encode(self.enableRdpOnTargetOption, forKey: .enableRdpOnTargetOption)}
     if self.targetAzureVmName != nil {try container.encode(self.targetAzureVmName, forKey: .targetAzureVmName)}
     if self.logStorageAccountId != nil {try container.encode(self.logStorageAccountId, forKey: .logStorageAccountId)}
     if self.disksToInclude != nil {try container.encode(self.disksToInclude as! [String]?, forKey: .disksToInclude)}

@@ -9,11 +9,17 @@ internal struct HyperVVirtualMachineDetailsData : HyperVVirtualMachineDetailsPro
     public var generation: String?
     public var osDetails: OSDetailsProtocol?
     public var diskDetails: [DiskDetailsProtocol?]?
+    public var hasPhysicalDisk: Bool?
+    public var hasFibreChannelAdapter: Bool?
+    public var hasSharedVhd: Bool?
 
         enum CodingKeys: String, CodingKey {case sourceItemId = "sourceItemId"
         case generation = "generation"
         case osDetails = "osDetails"
         case diskDetails = "diskDetails"
+        case hasPhysicalDisk = "hasPhysicalDisk"
+        case hasFibreChannelAdapter = "hasFibreChannelAdapter"
+        case hasSharedVhd = "hasSharedVhd"
         }
 
   public init()  {
@@ -33,6 +39,15 @@ internal struct HyperVVirtualMachineDetailsData : HyperVVirtualMachineDetailsPro
     if container.contains(.diskDetails) {
         self.diskDetails = try container.decode([DiskDetailsData?]?.self, forKey: .diskDetails)
     }
+    if container.contains(.hasPhysicalDisk) {
+        self.hasPhysicalDisk = try container.decode(Bool?.self, forKey: .hasPhysicalDisk)
+    }
+    if container.contains(.hasFibreChannelAdapter) {
+        self.hasFibreChannelAdapter = try container.decode(Bool?.self, forKey: .hasFibreChannelAdapter)
+    }
+    if container.contains(.hasSharedVhd) {
+        self.hasSharedVhd = try container.decode(Bool?.self, forKey: .hasSharedVhd)
+    }
     if var pageDecoder = decoder as? PageDecoder  {
       if pageDecoder.isPagedData,
         let nextLinkName = pageDecoder.nextLinkName {
@@ -47,6 +62,9 @@ internal struct HyperVVirtualMachineDetailsData : HyperVVirtualMachineDetailsPro
     if self.generation != nil {try container.encode(self.generation, forKey: .generation)}
     if self.osDetails != nil {try container.encode(self.osDetails as! OSDetailsData?, forKey: .osDetails)}
     if self.diskDetails != nil {try container.encode(self.diskDetails as! [DiskDetailsData?]?, forKey: .diskDetails)}
+    if self.hasPhysicalDisk != nil {try container.encode(self.hasPhysicalDisk, forKey: .hasPhysicalDisk)}
+    if self.hasFibreChannelAdapter != nil {try container.encode(self.hasFibreChannelAdapter, forKey: .hasFibreChannelAdapter)}
+    if self.hasSharedVhd != nil {try container.encode(self.hasSharedVhd, forKey: .hasSharedVhd)}
   }
 }
 

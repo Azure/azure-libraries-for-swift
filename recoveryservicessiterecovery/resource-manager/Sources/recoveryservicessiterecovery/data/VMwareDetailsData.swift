@@ -35,6 +35,8 @@ internal struct VMwareDetailsData : VMwareDetailsProtocol, FabricSpecificDetails
     public var sslCertExpiryDate: Date?
     public var sslCertExpiryRemainingDays: Int32?
     public var psTemplateVersion: String?
+    public var agentExpiryDate: Date?
+    public var agentVersionDetails: VersionDetailsProtocol?
 
         enum CodingKeys: String, CodingKey {case processServers = "processServers"
         case masterTargetServers = "masterTargetServers"
@@ -66,6 +68,8 @@ internal struct VMwareDetailsData : VMwareDetailsProtocol, FabricSpecificDetails
         case sslCertExpiryDate = "sslCertExpiryDate"
         case sslCertExpiryRemainingDays = "sslCertExpiryRemainingDays"
         case psTemplateVersion = "psTemplateVersion"
+        case agentExpiryDate = "agentExpiryDate"
+        case agentVersionDetails = "agentVersionDetails"
         }
 
   public init()  {
@@ -163,6 +167,12 @@ internal struct VMwareDetailsData : VMwareDetailsProtocol, FabricSpecificDetails
     if container.contains(.psTemplateVersion) {
         self.psTemplateVersion = try container.decode(String?.self, forKey: .psTemplateVersion)
     }
+    if container.contains(.agentExpiryDate) {
+        self.agentExpiryDate = DateConverter.fromString(dateStr: (try container.decode(String?.self, forKey: .agentExpiryDate)), format: .dateTime)
+    }
+    if container.contains(.agentVersionDetails) {
+        self.agentVersionDetails = try container.decode(VersionDetailsData?.self, forKey: .agentVersionDetails)
+    }
     if var pageDecoder = decoder as? PageDecoder  {
       if pageDecoder.isPagedData,
         let nextLinkName = pageDecoder.nextLinkName {
@@ -207,6 +217,10 @@ internal struct VMwareDetailsData : VMwareDetailsProtocol, FabricSpecificDetails
     }
     if self.sslCertExpiryRemainingDays != nil {try container.encode(self.sslCertExpiryRemainingDays, forKey: .sslCertExpiryRemainingDays)}
     if self.psTemplateVersion != nil {try container.encode(self.psTemplateVersion, forKey: .psTemplateVersion)}
+    if self.agentExpiryDate != nil {
+        try container.encode(DateConverter.toString(date: self.agentExpiryDate!, format: .dateTime), forKey: .agentExpiryDate)
+    }
+    if self.agentVersionDetails != nil {try container.encode(self.agentVersionDetails as! VersionDetailsData?, forKey: .agentVersionDetails)}
   }
 }
 

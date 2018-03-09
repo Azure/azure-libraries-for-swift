@@ -20,6 +20,7 @@ public protocol SBQueuePropertiesProtocol : Codable {
      var duplicateDetectionHistoryTimeWindow: String? { get set }
      var maxDeliveryCount: Int32? { get set }
      var status: EntityStatusEnum? { get set }
+     var enableBatchedOperations: Bool? { get set }
      var autoDeleteOnIdle: String? { get set }
      var enablePartitioning: Bool? { get set }
      var enableExpress: Bool? { get set }

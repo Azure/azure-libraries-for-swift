@@ -12,5 +12,8 @@ public struct ReplicationVaultHealth {
     public static func Get(resourceName: String, resourceGroupName: String, subscriptionId: String) -> ReplicationVaultHealthGet {
         return GetCommand(resourceName: resourceName, resourceGroupName: resourceGroupName, subscriptionId: subscriptionId)
     }
+    public static func Refresh(resourceName: String, resourceGroupName: String, subscriptionId: String) -> ReplicationVaultHealthRefresh {
+        return RefreshCommand(resourceName: resourceName, resourceGroupName: resourceGroupName, subscriptionId: subscriptionId)
+    }
 }
 }

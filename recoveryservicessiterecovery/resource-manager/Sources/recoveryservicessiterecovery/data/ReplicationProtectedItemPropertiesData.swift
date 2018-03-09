@@ -10,6 +10,7 @@ internal struct ReplicationProtectedItemPropertiesData : ReplicationProtectedIte
     public var protectableItemId: String?
     public var recoveryServicesProviderId: String?
     public var primaryFabricFriendlyName: String?
+    public var primaryFabricProvider: String?
     public var recoveryFabricFriendlyName: String?
     public var recoveryFabricId: String?
     public var primaryProtectionContainerFriendlyName: String?
@@ -22,8 +23,7 @@ internal struct ReplicationProtectedItemPropertiesData : ReplicationProtectedIte
     public var allowedOperations: [String]?
     public var replicationHealth: String?
     public var failoverHealth: String?
-    public var replicationHealthErrors: [HealthErrorProtocol?]?
-    public var failoverHealthErrors: [HealthErrorProtocol?]?
+    public var healthErrors: [HealthErrorProtocol?]?
     public var policyId: String?
     public var policyFriendlyName: String?
     public var lastSuccessfulFailoverTime: Date?
@@ -38,6 +38,7 @@ internal struct ReplicationProtectedItemPropertiesData : ReplicationProtectedIte
         case protectableItemId = "protectableItemId"
         case recoveryServicesProviderId = "recoveryServicesProviderId"
         case primaryFabricFriendlyName = "primaryFabricFriendlyName"
+        case primaryFabricProvider = "primaryFabricProvider"
         case recoveryFabricFriendlyName = "recoveryFabricFriendlyName"
         case recoveryFabricId = "recoveryFabricId"
         case primaryProtectionContainerFriendlyName = "primaryProtectionContainerFriendlyName"
@@ -50,8 +51,7 @@ internal struct ReplicationProtectedItemPropertiesData : ReplicationProtectedIte
         case allowedOperations = "allowedOperations"
         case replicationHealth = "replicationHealth"
         case failoverHealth = "failoverHealth"
-        case replicationHealthErrors = "replicationHealthErrors"
-        case failoverHealthErrors = "failoverHealthErrors"
+        case healthErrors = "healthErrors"
         case policyId = "policyId"
         case policyFriendlyName = "policyFriendlyName"
         case lastSuccessfulFailoverTime = "lastSuccessfulFailoverTime"
@@ -81,6 +81,9 @@ internal struct ReplicationProtectedItemPropertiesData : ReplicationProtectedIte
     }
     if container.contains(.primaryFabricFriendlyName) {
         self.primaryFabricFriendlyName = try container.decode(String?.self, forKey: .primaryFabricFriendlyName)
+    }
+    if container.contains(.primaryFabricProvider) {
+        self.primaryFabricProvider = try container.decode(String?.self, forKey: .primaryFabricProvider)
     }
     if container.contains(.recoveryFabricFriendlyName) {
         self.recoveryFabricFriendlyName = try container.decode(String?.self, forKey: .recoveryFabricFriendlyName)
@@ -118,11 +121,8 @@ internal struct ReplicationProtectedItemPropertiesData : ReplicationProtectedIte
     if container.contains(.failoverHealth) {
         self.failoverHealth = try container.decode(String?.self, forKey: .failoverHealth)
     }
-    if container.contains(.replicationHealthErrors) {
-        self.replicationHealthErrors = try container.decode([HealthErrorData?]?.self, forKey: .replicationHealthErrors)
-    }
-    if container.contains(.failoverHealthErrors) {
-        self.failoverHealthErrors = try container.decode([HealthErrorData?]?.self, forKey: .failoverHealthErrors)
+    if container.contains(.healthErrors) {
+        self.healthErrors = try container.decode([HealthErrorData?]?.self, forKey: .healthErrors)
     }
     if container.contains(.policyId) {
         self.policyId = try container.decode(String?.self, forKey: .policyId)
@@ -163,6 +163,7 @@ internal struct ReplicationProtectedItemPropertiesData : ReplicationProtectedIte
     if self.protectableItemId != nil {try container.encode(self.protectableItemId, forKey: .protectableItemId)}
     if self.recoveryServicesProviderId != nil {try container.encode(self.recoveryServicesProviderId, forKey: .recoveryServicesProviderId)}
     if self.primaryFabricFriendlyName != nil {try container.encode(self.primaryFabricFriendlyName, forKey: .primaryFabricFriendlyName)}
+    if self.primaryFabricProvider != nil {try container.encode(self.primaryFabricProvider, forKey: .primaryFabricProvider)}
     if self.recoveryFabricFriendlyName != nil {try container.encode(self.recoveryFabricFriendlyName, forKey: .recoveryFabricFriendlyName)}
     if self.recoveryFabricId != nil {try container.encode(self.recoveryFabricId, forKey: .recoveryFabricId)}
     if self.primaryProtectionContainerFriendlyName != nil {try container.encode(self.primaryProtectionContainerFriendlyName, forKey: .primaryProtectionContainerFriendlyName)}
@@ -175,8 +176,7 @@ internal struct ReplicationProtectedItemPropertiesData : ReplicationProtectedIte
     if self.allowedOperations != nil {try container.encode(self.allowedOperations as! [String]?, forKey: .allowedOperations)}
     if self.replicationHealth != nil {try container.encode(self.replicationHealth, forKey: .replicationHealth)}
     if self.failoverHealth != nil {try container.encode(self.failoverHealth, forKey: .failoverHealth)}
-    if self.replicationHealthErrors != nil {try container.encode(self.replicationHealthErrors as! [HealthErrorData?]?, forKey: .replicationHealthErrors)}
-    if self.failoverHealthErrors != nil {try container.encode(self.failoverHealthErrors as! [HealthErrorData?]?, forKey: .failoverHealthErrors)}
+    if self.healthErrors != nil {try container.encode(self.healthErrors as! [HealthErrorData?]?, forKey: .healthErrors)}
     if self.policyId != nil {try container.encode(self.policyId, forKey: .policyId)}
     if self.policyFriendlyName != nil {try container.encode(self.policyFriendlyName, forKey: .policyFriendlyName)}
     if self.lastSuccessfulFailoverTime != nil {

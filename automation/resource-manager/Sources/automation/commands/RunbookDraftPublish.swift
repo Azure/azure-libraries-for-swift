@@ -2,61 +2,52 @@ import Foundation
 import azureSwiftRuntime
 public protocol RunbookDraftPublish  {
     var headerParameters: [String: String] { get set }
+    var subscriptionId : String { get set }
     var resourceGroupName : String { get set }
     var automationAccountName : String { get set }
     var runbookName : String { get set }
-    var subscriptionId : String { get set }
     var apiVersion : String { get set }
     func execute(client: RuntimeClient,
-        completionHandler: @escaping (RunbookProtocol?, Error?) -> Void) -> Void ;
+    completionHandler: @escaping (Error?) -> Void) -> Void;
 }
 
 extension Commands.RunbookDraft {
 // Publish publish runbook draft. This method may poll for completion. Polling can be canceled by passing the cancel
 // channel argument. The channel will be used to cancel polling and any outstanding HTTP requests.
-internal class PublishCommand : BaseCommand, RunbookDraftPublish {
-    public var resourceGroupName : String
-    public var automationAccountName : String
-    public var runbookName : String
-    public var subscriptionId : String
-    public var apiVersion = "2015-10-31"
+    internal class PublishCommand : BaseCommand, RunbookDraftPublish {
+        public var subscriptionId : String
+        public var resourceGroupName : String
+        public var automationAccountName : String
+        public var runbookName : String
+        public var apiVersion = "2015-10-31"
 
-    public init(resourceGroupName: String, automationAccountName: String, runbookName: String, subscriptionId: String) {
-        self.resourceGroupName = resourceGroupName
-        self.automationAccountName = automationAccountName
-        self.runbookName = runbookName
-        self.subscriptionId = subscriptionId
-        super.init()
-        self.method = "Post"
-        self.isLongRunningOperation = true
-        self.path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/runbooks/{runbookName}/draft/publish"
-        self.headerParameters = ["Content-Type":"application/json; charset=utf-8"]
-    }
-
-    public override func preCall()  {
-        self.pathParameters["{resourceGroupName}"] = String(describing: self.resourceGroupName)
-        self.pathParameters["{automationAccountName}"] = String(describing: self.automationAccountName)
-        self.pathParameters["{runbookName}"] = String(describing: self.runbookName)
-        self.pathParameters["{subscriptionId}"] = String(describing: self.subscriptionId)
-        self.queryParameters["api-version"] = String(describing: self.apiVersion)
-}
-
-
-    public override func returnFunc(data: Data) throws -> Decodable? {
-        let contentType = "application/json"
-        if let mimeType = MimeType.getType(forStr: contentType) {
-            let decoder = try CoderFactory.decoder(for: mimeType)
-            let result = try decoder.decode(RunbookData?.self, from: data)
-            return result;
+        public init(subscriptionId: String, resourceGroupName: String, automationAccountName: String, runbookName: String) {
+            self.subscriptionId = subscriptionId
+            self.resourceGroupName = resourceGroupName
+            self.automationAccountName = automationAccountName
+            self.runbookName = runbookName
+            super.init()
+            self.method = "Post"
+            self.isLongRunningOperation = true
+            self.path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/runbooks/{runbookName}/draft/publish"
+            self.headerParameters = ["Content-Type":"application/json; charset=utf-8"]
         }
-        throw DecodeError.unknownMimeType
-    }
-    public func execute(client: RuntimeClient,
-        completionHandler: @escaping (RunbookProtocol?, Error?) -> Void) -> Void {
-        client.executeAsyncLRO(command: self) {
-            (result: RunbookData?, error: Error?) in
-            completionHandler(result, error)
+
+        public override func preCall()  {
+            self.pathParameters["{subscriptionId}"] = String(describing: self.subscriptionId)
+            self.pathParameters["{resourceGroupName}"] = String(describing: self.resourceGroupName)
+            self.pathParameters["{automationAccountName}"] = String(describing: self.automationAccountName)
+            self.pathParameters["{runbookName}"] = String(describing: self.runbookName)
+            self.queryParameters["api-version"] = String(describing: self.apiVersion)
+
+        }
+
+        public func execute(client: RuntimeClient,
+            completionHandler: @escaping (Error?) -> Void) -> Void {
+            client.executeAsyncLRO(command: self) {
+                (error) in
+                completionHandler(error)
+            }
         }
     }
-}
 }

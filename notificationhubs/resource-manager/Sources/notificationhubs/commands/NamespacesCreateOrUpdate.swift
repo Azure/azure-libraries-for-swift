@@ -8,64 +8,64 @@ public protocol NamespacesCreateOrUpdate  {
     var apiVersion : String { get set }
     var parameters :  NamespaceCreateOrUpdateParametersProtocol?  { get set }
     func execute(client: RuntimeClient,
-        completionHandler: @escaping (NamespaceResourceProtocol?, Error?) -> Void) -> Void ;
+    completionHandler: @escaping (NamespaceResourceProtocol?, Error?) -> Void) -> Void ;
 }
 
 extension Commands.Namespaces {
 // CreateOrUpdate creates/Updates a service namespace. Once created, this namespace's resource manifest is immutable.
 // This operation is idempotent.
-internal class CreateOrUpdateCommand : BaseCommand, NamespacesCreateOrUpdate {
-    public var resourceGroupName : String
-    public var namespaceName : String
-    public var subscriptionId : String
-    public var apiVersion = "2017-04-01"
+    internal class CreateOrUpdateCommand : BaseCommand, NamespacesCreateOrUpdate {
+        public var resourceGroupName : String
+        public var namespaceName : String
+        public var subscriptionId : String
+        public var apiVersion = "2017-04-01"
     public var parameters :  NamespaceCreateOrUpdateParametersProtocol?
 
-    public init(resourceGroupName: String, namespaceName: String, subscriptionId: String, parameters: NamespaceCreateOrUpdateParametersProtocol) {
-        self.resourceGroupName = resourceGroupName
-        self.namespaceName = namespaceName
-        self.subscriptionId = subscriptionId
-        self.parameters = parameters
-        super.init()
-        self.method = "Put"
-        self.isLongRunningOperation = false
-        self.path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NotificationHubs/namespaces/{namespaceName}"
-        self.headerParameters = ["Content-Type":"application/json; charset=utf-8"]
-    }
-
-    public override func preCall()  {
-        self.pathParameters["{resourceGroupName}"] = String(describing: self.resourceGroupName)
-        self.pathParameters["{namespaceName}"] = String(describing: self.namespaceName)
-        self.pathParameters["{subscriptionId}"] = String(describing: self.subscriptionId)
-        self.queryParameters["api-version"] = String(describing: self.apiVersion)
-    self.body = parameters
-}
-
-    public override func encodeBody() throws -> Data? {
-        let contentType = "application/json"
-        if let mimeType = MimeType.getType(forStr: contentType) {
-            let encoder = try CoderFactory.encoder(for: mimeType)
-            let encodedValue = try encoder.encode(parameters)
-            return encodedValue
+        public init(resourceGroupName: String, namespaceName: String, subscriptionId: String, parameters: NamespaceCreateOrUpdateParametersProtocol) {
+            self.resourceGroupName = resourceGroupName
+            self.namespaceName = namespaceName
+            self.subscriptionId = subscriptionId
+            self.parameters = parameters
+            super.init()
+            self.method = "Put"
+            self.isLongRunningOperation = false
+            self.path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NotificationHubs/namespaces/{namespaceName}"
+            self.headerParameters = ["Content-Type":"application/json; charset=utf-8"]
         }
-        throw DecodeError.unknownMimeType
-    }
 
-    public override func returnFunc(data: Data) throws -> Decodable? {
-        let contentType = "application/json"
-        if let mimeType = MimeType.getType(forStr: contentType) {
-            let decoder = try CoderFactory.decoder(for: mimeType)
-            let result = try decoder.decode(NamespaceResourceData?.self, from: data)
-            return result;
+        public override func preCall()  {
+            self.pathParameters["{resourceGroupName}"] = String(describing: self.resourceGroupName)
+            self.pathParameters["{namespaceName}"] = String(describing: self.namespaceName)
+            self.pathParameters["{subscriptionId}"] = String(describing: self.subscriptionId)
+            self.queryParameters["api-version"] = String(describing: self.apiVersion)
+            self.body = parameters
+
         }
-        throw DecodeError.unknownMimeType
-    }
-    public func execute(client: RuntimeClient,
-        completionHandler: @escaping (NamespaceResourceProtocol?, Error?) -> Void) -> Void {
-        client.executeAsync(command: self) {
-            (result: NamespaceResourceData?, error: Error?) in
-            completionHandler(result, error)
+        public override func encodeBody() throws -> Data? {
+            let contentType = "application/json"
+            if let mimeType = MimeType.getType(forStr: contentType) {
+                let encoder = try CoderFactory.encoder(for: mimeType)
+                let encodedValue = try encoder.encode(parameters as? NamespaceCreateOrUpdateParametersData)
+                return encodedValue
+            }
+            throw DecodeError.unknownMimeType
+        }
+
+        public override func returnFunc(data: Data) throws -> Decodable? {
+            let contentType = "application/json"
+            if let mimeType = MimeType.getType(forStr: contentType) {
+                let decoder = try CoderFactory.decoder(for: mimeType)
+                let result = try decoder.decode(NamespaceResourceData?.self, from: data)
+                return result;
+            }
+            throw DecodeError.unknownMimeType
+        }
+        public func execute(client: RuntimeClient,
+            completionHandler: @escaping (NamespaceResourceProtocol?, Error?) -> Void) -> Void {
+            client.executeAsync(command: self) {
+                (result: NamespaceResourceData?, error: Error?) in
+                completionHandler(result, error)
+            }
         }
     }
-}
 }

@@ -5,20 +5,21 @@
 import Foundation
 import azureSwiftRuntime
 internal struct WebhookUpdateParametersData : WebhookUpdateParametersProtocol {
-    public var name: String
+    public var name: String?
     public var properties: WebhookUpdatePropertiesProtocol?
 
         enum CodingKeys: String, CodingKey {case name = "name"
         case properties = "properties"
         }
 
-  public init(name: String)  {
-    self.name = name
+  public init()  {
   }
 
   public init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
-      self.name = try container.decode(String.self, forKey: .name)
+      if container.contains(.name) {
+        self.name = try container.decode(String?.self, forKey: .name)
+    }
     if container.contains(.properties) {
         self.properties = try container.decode(WebhookUpdatePropertiesData?.self, forKey: .properties)
     }
@@ -32,13 +33,13 @@ internal struct WebhookUpdateParametersData : WebhookUpdateParametersProtocol {
 
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
-    try container.encode(self.name, forKey: .name)
+    if self.name != nil {try container.encode(self.name, forKey: .name)}
     if self.properties != nil {try container.encode(self.properties as! WebhookUpdatePropertiesData?, forKey: .properties)}
   }
 }
 
 extension DataFactory {
-  public static func createWebhookUpdateParametersProtocol(name: String) -> WebhookUpdateParametersProtocol {
-    return WebhookUpdateParametersData(name: name)
+  public static func createWebhookUpdateParametersProtocol() -> WebhookUpdateParametersProtocol {
+    return WebhookUpdateParametersData()
   }
 }

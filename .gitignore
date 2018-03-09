@@ -68,5 +68,6 @@ fastlane/test_output
 
 node_modules/
 .DS_Store
-
+Package.resolved
 *.sh
+output/

@@ -6,8 +6,4 @@ import Foundation
 // JobProtocol is job details.
 public protocol JobProtocol : ResourceProtocol {
      var properties: JobPropertiesProtocol? { get set }
-     var status: String? { get set }
-     var error: ARMExceptionProtocol? { get set }
-     var startTime: String? { get set }
-     var endTime: String? { get set }
 }

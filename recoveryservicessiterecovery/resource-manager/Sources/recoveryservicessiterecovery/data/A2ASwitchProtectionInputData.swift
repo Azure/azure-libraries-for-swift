@@ -12,6 +12,7 @@ internal struct A2ASwitchProtectionInputData : A2ASwitchProtectionInputProtocol,
     public var recoveryCloudServiceId: String?
     public var recoveryAvailabilitySetId: String?
     public var policyId: String?
+    public var recoveryBootDiagStorageAccountId: String?
 
         enum CodingKeys: String, CodingKey {case recoveryContainerId = "recoveryContainerId"
         case vmDisks = "vmDisks"
@@ -20,6 +21,7 @@ internal struct A2ASwitchProtectionInputData : A2ASwitchProtectionInputProtocol,
         case recoveryCloudServiceId = "recoveryCloudServiceId"
         case recoveryAvailabilitySetId = "recoveryAvailabilitySetId"
         case policyId = "policyId"
+        case recoveryBootDiagStorageAccountId = "recoveryBootDiagStorageAccountId"
         }
 
   public init()  {
@@ -48,6 +50,9 @@ internal struct A2ASwitchProtectionInputData : A2ASwitchProtectionInputProtocol,
     if container.contains(.policyId) {
         self.policyId = try container.decode(String?.self, forKey: .policyId)
     }
+    if container.contains(.recoveryBootDiagStorageAccountId) {
+        self.recoveryBootDiagStorageAccountId = try container.decode(String?.self, forKey: .recoveryBootDiagStorageAccountId)
+    }
     if var pageDecoder = decoder as? PageDecoder  {
       if pageDecoder.isPagedData,
         let nextLinkName = pageDecoder.nextLinkName {
@@ -65,6 +70,7 @@ internal struct A2ASwitchProtectionInputData : A2ASwitchProtectionInputProtocol,
     if self.recoveryCloudServiceId != nil {try container.encode(self.recoveryCloudServiceId, forKey: .recoveryCloudServiceId)}
     if self.recoveryAvailabilitySetId != nil {try container.encode(self.recoveryAvailabilitySetId, forKey: .recoveryAvailabilitySetId)}
     if self.policyId != nil {try container.encode(self.policyId, forKey: .policyId)}
+    if self.recoveryBootDiagStorageAccountId != nil {try container.encode(self.recoveryBootDiagStorageAccountId, forKey: .recoveryBootDiagStorageAccountId)}
   }
 }
 

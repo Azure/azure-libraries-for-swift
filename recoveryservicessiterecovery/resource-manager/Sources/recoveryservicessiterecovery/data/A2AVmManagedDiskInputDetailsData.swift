@@ -8,10 +8,14 @@ internal struct A2AVmManagedDiskInputDetailsData : A2AVmManagedDiskInputDetailsP
     public var diskId: String?
     public var primaryStagingAzureStorageAccountId: String?
     public var recoveryResourceGroupId: String?
+    public var recoveryReplicaDiskAccountType: String?
+    public var recoveryTargetDiskAccountType: String?
 
         enum CodingKeys: String, CodingKey {case diskId = "diskId"
         case primaryStagingAzureStorageAccountId = "primaryStagingAzureStorageAccountId"
         case recoveryResourceGroupId = "recoveryResourceGroupId"
+        case recoveryReplicaDiskAccountType = "recoveryReplicaDiskAccountType"
+        case recoveryTargetDiskAccountType = "recoveryTargetDiskAccountType"
         }
 
   public init()  {
@@ -28,6 +32,12 @@ internal struct A2AVmManagedDiskInputDetailsData : A2AVmManagedDiskInputDetailsP
     if container.contains(.recoveryResourceGroupId) {
         self.recoveryResourceGroupId = try container.decode(String?.self, forKey: .recoveryResourceGroupId)
     }
+    if container.contains(.recoveryReplicaDiskAccountType) {
+        self.recoveryReplicaDiskAccountType = try container.decode(String?.self, forKey: .recoveryReplicaDiskAccountType)
+    }
+    if container.contains(.recoveryTargetDiskAccountType) {
+        self.recoveryTargetDiskAccountType = try container.decode(String?.self, forKey: .recoveryTargetDiskAccountType)
+    }
     if var pageDecoder = decoder as? PageDecoder  {
       if pageDecoder.isPagedData,
         let nextLinkName = pageDecoder.nextLinkName {
@@ -41,6 +51,8 @@ internal struct A2AVmManagedDiskInputDetailsData : A2AVmManagedDiskInputDetailsP
     if self.diskId != nil {try container.encode(self.diskId, forKey: .diskId)}
     if self.primaryStagingAzureStorageAccountId != nil {try container.encode(self.primaryStagingAzureStorageAccountId, forKey: .primaryStagingAzureStorageAccountId)}
     if self.recoveryResourceGroupId != nil {try container.encode(self.recoveryResourceGroupId, forKey: .recoveryResourceGroupId)}
+    if self.recoveryReplicaDiskAccountType != nil {try container.encode(self.recoveryReplicaDiskAccountType, forKey: .recoveryReplicaDiskAccountType)}
+    if self.recoveryTargetDiskAccountType != nil {try container.encode(self.recoveryTargetDiskAccountType, forKey: .recoveryTargetDiskAccountType)}
   }
 }
 

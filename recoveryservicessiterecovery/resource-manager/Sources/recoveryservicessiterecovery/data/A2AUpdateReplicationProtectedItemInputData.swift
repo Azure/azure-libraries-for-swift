@@ -7,9 +7,13 @@ import azureSwiftRuntime
 internal struct A2AUpdateReplicationProtectedItemInputData : A2AUpdateReplicationProtectedItemInputProtocol, UpdateReplicationProtectedItemProviderInputProtocol {
     public var recoveryCloudServiceId: String?
     public var recoveryResourceGroupId: String?
+    public var managedDiskUpdateDetails: [A2AVmManagedDiskUpdateDetailsProtocol?]?
+    public var recoveryBootDiagStorageAccountId: String?
 
         enum CodingKeys: String, CodingKey {case recoveryCloudServiceId = "recoveryCloudServiceId"
         case recoveryResourceGroupId = "recoveryResourceGroupId"
+        case managedDiskUpdateDetails = "managedDiskUpdateDetails"
+        case recoveryBootDiagStorageAccountId = "recoveryBootDiagStorageAccountId"
         }
 
   public init()  {
@@ -23,6 +27,12 @@ internal struct A2AUpdateReplicationProtectedItemInputData : A2AUpdateReplicatio
     if container.contains(.recoveryResourceGroupId) {
         self.recoveryResourceGroupId = try container.decode(String?.self, forKey: .recoveryResourceGroupId)
     }
+    if container.contains(.managedDiskUpdateDetails) {
+        self.managedDiskUpdateDetails = try container.decode([A2AVmManagedDiskUpdateDetailsData?]?.self, forKey: .managedDiskUpdateDetails)
+    }
+    if container.contains(.recoveryBootDiagStorageAccountId) {
+        self.recoveryBootDiagStorageAccountId = try container.decode(String?.self, forKey: .recoveryBootDiagStorageAccountId)
+    }
     if var pageDecoder = decoder as? PageDecoder  {
       if pageDecoder.isPagedData,
         let nextLinkName = pageDecoder.nextLinkName {
@@ -35,6 +45,8 @@ internal struct A2AUpdateReplicationProtectedItemInputData : A2AUpdateReplicatio
     var container = encoder.container(keyedBy: CodingKeys.self)
     if self.recoveryCloudServiceId != nil {try container.encode(self.recoveryCloudServiceId, forKey: .recoveryCloudServiceId)}
     if self.recoveryResourceGroupId != nil {try container.encode(self.recoveryResourceGroupId, forKey: .recoveryResourceGroupId)}
+    if self.managedDiskUpdateDetails != nil {try container.encode(self.managedDiskUpdateDetails as! [A2AVmManagedDiskUpdateDetailsData?]?, forKey: .managedDiskUpdateDetails)}
+    if self.recoveryBootDiagStorageAccountId != nil {try container.encode(self.recoveryBootDiagStorageAccountId, forKey: .recoveryBootDiagStorageAccountId)}
   }
 }
 

@@ -11,74 +11,74 @@ public protocol ReplicationNetworkMappingsCreate  {
     var apiVersion : String { get set }
     var input :  CreateNetworkMappingInputProtocol?  { get set }
     func execute(client: RuntimeClient,
-        completionHandler: @escaping (NetworkMappingProtocol?, Error?) -> Void) -> Void ;
+    completionHandler: @escaping (NetworkMappingProtocol?, Error?) -> Void) -> Void ;
 }
 
 extension Commands.ReplicationNetworkMappings {
 // Create the operation to create an ASR network mapping. This method may poll for completion. Polling can be canceled
 // by passing the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP
 // requests.
-internal class CreateCommand : BaseCommand, ReplicationNetworkMappingsCreate {
-    public var resourceName : String
-    public var resourceGroupName : String
-    public var subscriptionId : String
-    public var fabricName : String
-    public var networkName : String
-    public var networkMappingName : String
-    public var apiVersion = "2016-08-10"
+    internal class CreateCommand : BaseCommand, ReplicationNetworkMappingsCreate {
+        public var resourceName : String
+        public var resourceGroupName : String
+        public var subscriptionId : String
+        public var fabricName : String
+        public var networkName : String
+        public var networkMappingName : String
+        public var apiVersion = "2018-01-10"
     public var input :  CreateNetworkMappingInputProtocol?
 
-    public init(resourceName: String, resourceGroupName: String, subscriptionId: String, fabricName: String, networkName: String, networkMappingName: String, input: CreateNetworkMappingInputProtocol) {
-        self.resourceName = resourceName
-        self.resourceGroupName = resourceGroupName
-        self.subscriptionId = subscriptionId
-        self.fabricName = fabricName
-        self.networkName = networkName
-        self.networkMappingName = networkMappingName
-        self.input = input
-        super.init()
-        self.method = "Put"
-        self.isLongRunningOperation = true
-        self.path = "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationNetworks/{networkName}/replicationNetworkMappings/{networkMappingName}"
-        self.headerParameters = ["Content-Type":"application/json; charset=utf-8"]
-    }
-
-    public override func preCall()  {
-        self.pathParameters["{resourceName}"] = String(describing: self.resourceName)
-        self.pathParameters["{resourceGroupName}"] = String(describing: self.resourceGroupName)
-        self.pathParameters["{subscriptionId}"] = String(describing: self.subscriptionId)
-        self.pathParameters["{fabricName}"] = String(describing: self.fabricName)
-        self.pathParameters["{networkName}"] = String(describing: self.networkName)
-        self.pathParameters["{networkMappingName}"] = String(describing: self.networkMappingName)
-        self.queryParameters["api-version"] = String(describing: self.apiVersion)
-    self.body = input
-}
-
-    public override func encodeBody() throws -> Data? {
-        let contentType = "application/json"
-        if let mimeType = MimeType.getType(forStr: contentType) {
-            let encoder = try CoderFactory.encoder(for: mimeType)
-            let encodedValue = try encoder.encode(input)
-            return encodedValue
+        public init(resourceName: String, resourceGroupName: String, subscriptionId: String, fabricName: String, networkName: String, networkMappingName: String, input: CreateNetworkMappingInputProtocol) {
+            self.resourceName = resourceName
+            self.resourceGroupName = resourceGroupName
+            self.subscriptionId = subscriptionId
+            self.fabricName = fabricName
+            self.networkName = networkName
+            self.networkMappingName = networkMappingName
+            self.input = input
+            super.init()
+            self.method = "Put"
+            self.isLongRunningOperation = true
+            self.path = "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationNetworks/{networkName}/replicationNetworkMappings/{networkMappingName}"
+            self.headerParameters = ["Content-Type":"application/json; charset=utf-8"]
         }
-        throw DecodeError.unknownMimeType
-    }
 
-    public override func returnFunc(data: Data) throws -> Decodable? {
-        let contentType = "application/json"
-        if let mimeType = MimeType.getType(forStr: contentType) {
-            let decoder = try CoderFactory.decoder(for: mimeType)
-            let result = try decoder.decode(NetworkMappingData?.self, from: data)
-            return result;
+        public override func preCall()  {
+            self.pathParameters["{resourceName}"] = String(describing: self.resourceName)
+            self.pathParameters["{resourceGroupName}"] = String(describing: self.resourceGroupName)
+            self.pathParameters["{subscriptionId}"] = String(describing: self.subscriptionId)
+            self.pathParameters["{fabricName}"] = String(describing: self.fabricName)
+            self.pathParameters["{networkName}"] = String(describing: self.networkName)
+            self.pathParameters["{networkMappingName}"] = String(describing: self.networkMappingName)
+            self.queryParameters["api-version"] = String(describing: self.apiVersion)
+            self.body = input
+
         }
-        throw DecodeError.unknownMimeType
-    }
-    public func execute(client: RuntimeClient,
-        completionHandler: @escaping (NetworkMappingProtocol?, Error?) -> Void) -> Void {
-        client.executeAsyncLRO(command: self) {
-            (result: NetworkMappingData?, error: Error?) in
-            completionHandler(result, error)
+        public override func encodeBody() throws -> Data? {
+            let contentType = "application/json"
+            if let mimeType = MimeType.getType(forStr: contentType) {
+                let encoder = try CoderFactory.encoder(for: mimeType)
+                let encodedValue = try encoder.encode(input as? CreateNetworkMappingInputData)
+                return encodedValue
+            }
+            throw DecodeError.unknownMimeType
+        }
+
+        public override func returnFunc(data: Data) throws -> Decodable? {
+            let contentType = "application/json"
+            if let mimeType = MimeType.getType(forStr: contentType) {
+                let decoder = try CoderFactory.decoder(for: mimeType)
+                let result = try decoder.decode(NetworkMappingData?.self, from: data)
+                return result;
+            }
+            throw DecodeError.unknownMimeType
+        }
+        public func execute(client: RuntimeClient,
+            completionHandler: @escaping (NetworkMappingProtocol?, Error?) -> Void) -> Void {
+            client.executeAsyncLRO(command: self) {
+                (result: NetworkMappingData?, error: Error?) in
+                completionHandler(result, error)
+            }
         }
     }
-}
 }

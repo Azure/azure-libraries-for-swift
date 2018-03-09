@@ -9,66 +9,66 @@ public protocol VaultCertificatesCreate  {
     var apiVersion : String { get set }
     var certificateRequest :  CertificateRequestProtocol?  { get set }
     func execute(client: RuntimeClient,
-        completionHandler: @escaping (VaultCertificateResponseProtocol?, Error?) -> Void) -> Void ;
+    completionHandler: @escaping (VaultCertificateResponseProtocol?, Error?) -> Void) -> Void ;
 }
 
 extension Commands.VaultCertificates {
 // Create uploads a certificate for a resource.
-internal class CreateCommand : BaseCommand, VaultCertificatesCreate {
-    public var subscriptionId : String
-    public var resourceGroupName : String
-    public var vaultName : String
-    public var certificateName : String
-    public var apiVersion = "2016-06-01"
+    internal class CreateCommand : BaseCommand, VaultCertificatesCreate {
+        public var subscriptionId : String
+        public var resourceGroupName : String
+        public var vaultName : String
+        public var certificateName : String
+        public var apiVersion = "2016-06-01"
     public var certificateRequest :  CertificateRequestProtocol?
 
-    public init(subscriptionId: String, resourceGroupName: String, vaultName: String, certificateName: String, certificateRequest: CertificateRequestProtocol) {
-        self.subscriptionId = subscriptionId
-        self.resourceGroupName = resourceGroupName
-        self.vaultName = vaultName
-        self.certificateName = certificateName
-        self.certificateRequest = certificateRequest
-        super.init()
-        self.method = "Put"
-        self.isLongRunningOperation = false
-        self.path = "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/certificates/{certificateName}"
-        self.headerParameters = ["Content-Type":"application/json; charset=utf-8"]
-    }
-
-    public override func preCall()  {
-        self.pathParameters["{subscriptionId}"] = String(describing: self.subscriptionId)
-        self.pathParameters["{resourceGroupName}"] = String(describing: self.resourceGroupName)
-        self.pathParameters["{vaultName}"] = String(describing: self.vaultName)
-        self.pathParameters["{certificateName}"] = String(describing: self.certificateName)
-        self.queryParameters["api-version"] = String(describing: self.apiVersion)
-    self.body = certificateRequest
-}
-
-    public override func encodeBody() throws -> Data? {
-        let contentType = "application/json"
-        if let mimeType = MimeType.getType(forStr: contentType) {
-            let encoder = try CoderFactory.encoder(for: mimeType)
-            let encodedValue = try encoder.encode(certificateRequest)
-            return encodedValue
+        public init(subscriptionId: String, resourceGroupName: String, vaultName: String, certificateName: String, certificateRequest: CertificateRequestProtocol) {
+            self.subscriptionId = subscriptionId
+            self.resourceGroupName = resourceGroupName
+            self.vaultName = vaultName
+            self.certificateName = certificateName
+            self.certificateRequest = certificateRequest
+            super.init()
+            self.method = "Put"
+            self.isLongRunningOperation = false
+            self.path = "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/certificates/{certificateName}"
+            self.headerParameters = ["Content-Type":"application/json; charset=utf-8"]
         }
-        throw DecodeError.unknownMimeType
-    }
 
-    public override func returnFunc(data: Data) throws -> Decodable? {
-        let contentType = "application/json"
-        if let mimeType = MimeType.getType(forStr: contentType) {
-            let decoder = try CoderFactory.decoder(for: mimeType)
-            let result = try decoder.decode(VaultCertificateResponseData?.self, from: data)
-            return result;
+        public override func preCall()  {
+            self.pathParameters["{subscriptionId}"] = String(describing: self.subscriptionId)
+            self.pathParameters["{resourceGroupName}"] = String(describing: self.resourceGroupName)
+            self.pathParameters["{vaultName}"] = String(describing: self.vaultName)
+            self.pathParameters["{certificateName}"] = String(describing: self.certificateName)
+            self.queryParameters["api-version"] = String(describing: self.apiVersion)
+            self.body = certificateRequest
+
         }
-        throw DecodeError.unknownMimeType
-    }
-    public func execute(client: RuntimeClient,
-        completionHandler: @escaping (VaultCertificateResponseProtocol?, Error?) -> Void) -> Void {
-        client.executeAsync(command: self) {
-            (result: VaultCertificateResponseData?, error: Error?) in
-            completionHandler(result, error)
+        public override func encodeBody() throws -> Data? {
+            let contentType = "application/json"
+            if let mimeType = MimeType.getType(forStr: contentType) {
+                let encoder = try CoderFactory.encoder(for: mimeType)
+                let encodedValue = try encoder.encode(certificateRequest as? CertificateRequestData)
+                return encodedValue
+            }
+            throw DecodeError.unknownMimeType
+        }
+
+        public override func returnFunc(data: Data) throws -> Decodable? {
+            let contentType = "application/json"
+            if let mimeType = MimeType.getType(forStr: contentType) {
+                let decoder = try CoderFactory.decoder(for: mimeType)
+                let result = try decoder.decode(VaultCertificateResponseData?.self, from: data)
+                return result;
+            }
+            throw DecodeError.unknownMimeType
+        }
+        public func execute(client: RuntimeClient,
+            completionHandler: @escaping (VaultCertificateResponseProtocol?, Error?) -> Void) -> Void {
+            client.executeAsync(command: self) {
+                (result: VaultCertificateResponseData?, error: Error?) in
+                completionHandler(result, error)
+            }
         }
     }
-}
 }

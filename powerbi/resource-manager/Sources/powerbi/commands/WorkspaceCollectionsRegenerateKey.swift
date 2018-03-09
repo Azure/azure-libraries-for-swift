@@ -8,63 +8,63 @@ public protocol WorkspaceCollectionsRegenerateKey  {
     var apiVersion : String { get set }
     var _body :  WorkspaceCollectionAccessKeyProtocol?  { get set }
     func execute(client: RuntimeClient,
-        completionHandler: @escaping (WorkspaceCollectionAccessKeysProtocol?, Error?) -> Void) -> Void ;
+    completionHandler: @escaping (WorkspaceCollectionAccessKeysProtocol?, Error?) -> Void) -> Void ;
 }
 
 extension Commands.WorkspaceCollections {
 // RegenerateKey regenerates the primary or secondary access key for the specified Power BI Workspace Collection.
-internal class RegenerateKeyCommand : BaseCommand, WorkspaceCollectionsRegenerateKey {
-    public var subscriptionId : String
-    public var resourceGroupName : String
-    public var workspaceCollectionName : String
-    public var apiVersion = "2016-01-29"
+    internal class RegenerateKeyCommand : BaseCommand, WorkspaceCollectionsRegenerateKey {
+        public var subscriptionId : String
+        public var resourceGroupName : String
+        public var workspaceCollectionName : String
+        public var apiVersion = "2016-01-29"
     public var _body :  WorkspaceCollectionAccessKeyProtocol?
 
-    public init(subscriptionId: String, resourceGroupName: String, workspaceCollectionName: String, _body: WorkspaceCollectionAccessKeyProtocol) {
-        self.subscriptionId = subscriptionId
-        self.resourceGroupName = resourceGroupName
-        self.workspaceCollectionName = workspaceCollectionName
-        self._body = _body
-        super.init()
-        self.method = "Post"
-        self.isLongRunningOperation = false
-        self.path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBI/workspaceCollections/{workspaceCollectionName}/regenerateKey"
-        self.headerParameters = ["Content-Type":"application/json; charset=utf-8"]
-    }
-
-    public override func preCall()  {
-        self.pathParameters["{subscriptionId}"] = String(describing: self.subscriptionId)
-        self.pathParameters["{resourceGroupName}"] = String(describing: self.resourceGroupName)
-        self.pathParameters["{workspaceCollectionName}"] = String(describing: self.workspaceCollectionName)
-        self.queryParameters["api-version"] = String(describing: self.apiVersion)
-    self.body = _body
-}
-
-    public override func encodeBody() throws -> Data? {
-        let contentType = "application/json"
-        if let mimeType = MimeType.getType(forStr: contentType) {
-            let encoder = try CoderFactory.encoder(for: mimeType)
-            let encodedValue = try encoder.encode(_body)
-            return encodedValue
+        public init(subscriptionId: String, resourceGroupName: String, workspaceCollectionName: String, _body: WorkspaceCollectionAccessKeyProtocol) {
+            self.subscriptionId = subscriptionId
+            self.resourceGroupName = resourceGroupName
+            self.workspaceCollectionName = workspaceCollectionName
+            self._body = _body
+            super.init()
+            self.method = "Post"
+            self.isLongRunningOperation = false
+            self.path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBI/workspaceCollections/{workspaceCollectionName}/regenerateKey"
+            self.headerParameters = ["Content-Type":"application/json; charset=utf-8"]
         }
-        throw DecodeError.unknownMimeType
-    }
 
-    public override func returnFunc(data: Data) throws -> Decodable? {
-        let contentType = "application/json"
-        if let mimeType = MimeType.getType(forStr: contentType) {
-            let decoder = try CoderFactory.decoder(for: mimeType)
-            let result = try decoder.decode(WorkspaceCollectionAccessKeysData?.self, from: data)
-            return result;
+        public override func preCall()  {
+            self.pathParameters["{subscriptionId}"] = String(describing: self.subscriptionId)
+            self.pathParameters["{resourceGroupName}"] = String(describing: self.resourceGroupName)
+            self.pathParameters["{workspaceCollectionName}"] = String(describing: self.workspaceCollectionName)
+            self.queryParameters["api-version"] = String(describing: self.apiVersion)
+            self.body = _body
+
         }
-        throw DecodeError.unknownMimeType
-    }
-    public func execute(client: RuntimeClient,
-        completionHandler: @escaping (WorkspaceCollectionAccessKeysProtocol?, Error?) -> Void) -> Void {
-        client.executeAsync(command: self) {
-            (result: WorkspaceCollectionAccessKeysData?, error: Error?) in
-            completionHandler(result, error)
+        public override func encodeBody() throws -> Data? {
+            let contentType = "application/json"
+            if let mimeType = MimeType.getType(forStr: contentType) {
+                let encoder = try CoderFactory.encoder(for: mimeType)
+                let encodedValue = try encoder.encode(_body as? WorkspaceCollectionAccessKeyData)
+                return encodedValue
+            }
+            throw DecodeError.unknownMimeType
+        }
+
+        public override func returnFunc(data: Data) throws -> Decodable? {
+            let contentType = "application/json"
+            if let mimeType = MimeType.getType(forStr: contentType) {
+                let decoder = try CoderFactory.decoder(for: mimeType)
+                let result = try decoder.decode(WorkspaceCollectionAccessKeysData?.self, from: data)
+                return result;
+            }
+            throw DecodeError.unknownMimeType
+        }
+        public func execute(client: RuntimeClient,
+            completionHandler: @escaping (WorkspaceCollectionAccessKeysProtocol?, Error?) -> Void) -> Void {
+            client.executeAsync(command: self) {
+                (result: WorkspaceCollectionAccessKeysData?, error: Error?) in
+                completionHandler(result, error)
+            }
         }
     }
-}
 }

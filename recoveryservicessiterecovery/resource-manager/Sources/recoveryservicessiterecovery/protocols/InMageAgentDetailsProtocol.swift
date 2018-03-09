@@ -8,4 +8,5 @@ public protocol InMageAgentDetailsProtocol : Codable {
      var agentVersion: String? { get set }
      var agentUpdateStatus: String? { get set }
      var postUpdateRebootStatus: String? { get set }
+     var agentExpiryDate: Date? { get set }
 }

@@ -18,6 +18,7 @@ internal struct JobPropertiesData : JobPropertiesProtocol {
     public var lastModifiedTime: Date?
     public var lastStatusModifiedTime: Date?
     public var parameters: [String:String]?
+    public var provisioningState: JobProvisioningStatePropertyProtocol?
 
         enum CodingKeys: String, CodingKey {case runbook = "runbook"
         case startedBy = "startedBy"
@@ -32,6 +33,7 @@ internal struct JobPropertiesData : JobPropertiesProtocol {
         case lastModifiedTime = "lastModifiedTime"
         case lastStatusModifiedTime = "lastStatusModifiedTime"
         case parameters = "parameters"
+        case provisioningState = "provisioningState"
         }
 
   public init()  {
@@ -78,6 +80,9 @@ internal struct JobPropertiesData : JobPropertiesProtocol {
     if container.contains(.parameters) {
         self.parameters = try container.decode([String:String]?.self, forKey: .parameters)
     }
+    if container.contains(.provisioningState) {
+        self.provisioningState = try container.decode(JobProvisioningStatePropertyData?.self, forKey: .provisioningState)
+    }
     if var pageDecoder = decoder as? PageDecoder  {
       if pageDecoder.isPagedData,
         let nextLinkName = pageDecoder.nextLinkName {
@@ -111,6 +116,7 @@ internal struct JobPropertiesData : JobPropertiesProtocol {
         try container.encode(DateConverter.toString(date: self.lastStatusModifiedTime!, format: .dateTime), forKey: .lastStatusModifiedTime)
     }
     if self.parameters != nil {try container.encode(self.parameters, forKey: .parameters)}
+    if self.provisioningState != nil {try container.encode(self.provisioningState as! JobProvisioningStatePropertyData?, forKey: .provisioningState)}
   }
 }
 

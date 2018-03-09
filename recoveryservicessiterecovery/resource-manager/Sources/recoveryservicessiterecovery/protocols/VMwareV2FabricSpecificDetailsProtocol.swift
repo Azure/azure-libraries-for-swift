@@ -7,4 +7,6 @@ import Foundation
 public protocol VMwareV2FabricSpecificDetailsProtocol : FabricSpecificDetailsProtocol {
      var srsServiceEndpoint: String? { get set }
      var rcmServiceEndpoint: String? { get set }
+     var keyVaultUrl: String? { get set }
+     var keyVaultResourceArmId: String? { get set }
 }

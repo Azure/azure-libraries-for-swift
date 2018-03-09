@@ -9,67 +9,67 @@ public protocol ReplicationPoliciesCreate  {
     var apiVersion : String { get set }
     var input :  CreatePolicyInputProtocol?  { get set }
     func execute(client: RuntimeClient,
-        completionHandler: @escaping (PolicyProtocol?, Error?) -> Void) -> Void ;
+    completionHandler: @escaping (PolicyProtocol?, Error?) -> Void) -> Void ;
 }
 
 extension Commands.ReplicationPolicies {
 // Create the operation to create a replication policy This method may poll for completion. Polling can be canceled by
 // passing the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP requests.
-internal class CreateCommand : BaseCommand, ReplicationPoliciesCreate {
-    public var resourceName : String
-    public var resourceGroupName : String
-    public var subscriptionId : String
-    public var policyName : String
-    public var apiVersion = "2016-08-10"
+    internal class CreateCommand : BaseCommand, ReplicationPoliciesCreate {
+        public var resourceName : String
+        public var resourceGroupName : String
+        public var subscriptionId : String
+        public var policyName : String
+        public var apiVersion = "2018-01-10"
     public var input :  CreatePolicyInputProtocol?
 
-    public init(resourceName: String, resourceGroupName: String, subscriptionId: String, policyName: String, input: CreatePolicyInputProtocol) {
-        self.resourceName = resourceName
-        self.resourceGroupName = resourceGroupName
-        self.subscriptionId = subscriptionId
-        self.policyName = policyName
-        self.input = input
-        super.init()
-        self.method = "Put"
-        self.isLongRunningOperation = true
-        self.path = "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationPolicies/{policyName}"
-        self.headerParameters = ["Content-Type":"application/json; charset=utf-8"]
-    }
-
-    public override func preCall()  {
-        self.pathParameters["{resourceName}"] = String(describing: self.resourceName)
-        self.pathParameters["{resourceGroupName}"] = String(describing: self.resourceGroupName)
-        self.pathParameters["{subscriptionId}"] = String(describing: self.subscriptionId)
-        self.pathParameters["{policyName}"] = String(describing: self.policyName)
-        self.queryParameters["api-version"] = String(describing: self.apiVersion)
-    self.body = input
-}
-
-    public override func encodeBody() throws -> Data? {
-        let contentType = "application/json"
-        if let mimeType = MimeType.getType(forStr: contentType) {
-            let encoder = try CoderFactory.encoder(for: mimeType)
-            let encodedValue = try encoder.encode(input)
-            return encodedValue
+        public init(resourceName: String, resourceGroupName: String, subscriptionId: String, policyName: String, input: CreatePolicyInputProtocol) {
+            self.resourceName = resourceName
+            self.resourceGroupName = resourceGroupName
+            self.subscriptionId = subscriptionId
+            self.policyName = policyName
+            self.input = input
+            super.init()
+            self.method = "Put"
+            self.isLongRunningOperation = true
+            self.path = "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationPolicies/{policyName}"
+            self.headerParameters = ["Content-Type":"application/json; charset=utf-8"]
         }
-        throw DecodeError.unknownMimeType
-    }
 
-    public override func returnFunc(data: Data) throws -> Decodable? {
-        let contentType = "application/json"
-        if let mimeType = MimeType.getType(forStr: contentType) {
-            let decoder = try CoderFactory.decoder(for: mimeType)
-            let result = try decoder.decode(PolicyData?.self, from: data)
-            return result;
+        public override func preCall()  {
+            self.pathParameters["{resourceName}"] = String(describing: self.resourceName)
+            self.pathParameters["{resourceGroupName}"] = String(describing: self.resourceGroupName)
+            self.pathParameters["{subscriptionId}"] = String(describing: self.subscriptionId)
+            self.pathParameters["{policyName}"] = String(describing: self.policyName)
+            self.queryParameters["api-version"] = String(describing: self.apiVersion)
+            self.body = input
+
         }
-        throw DecodeError.unknownMimeType
-    }
-    public func execute(client: RuntimeClient,
-        completionHandler: @escaping (PolicyProtocol?, Error?) -> Void) -> Void {
-        client.executeAsyncLRO(command: self) {
-            (result: PolicyData?, error: Error?) in
-            completionHandler(result, error)
+        public override func encodeBody() throws -> Data? {
+            let contentType = "application/json"
+            if let mimeType = MimeType.getType(forStr: contentType) {
+                let encoder = try CoderFactory.encoder(for: mimeType)
+                let encodedValue = try encoder.encode(input as? CreatePolicyInputData)
+                return encodedValue
+            }
+            throw DecodeError.unknownMimeType
+        }
+
+        public override func returnFunc(data: Data) throws -> Decodable? {
+            let contentType = "application/json"
+            if let mimeType = MimeType.getType(forStr: contentType) {
+                let decoder = try CoderFactory.decoder(for: mimeType)
+                let result = try decoder.decode(PolicyData?.self, from: data)
+                return result;
+            }
+            throw DecodeError.unknownMimeType
+        }
+        public func execute(client: RuntimeClient,
+            completionHandler: @escaping (PolicyProtocol?, Error?) -> Void) -> Void {
+            client.executeAsyncLRO(command: self) {
+                (result: PolicyData?, error: Error?) in
+                completionHandler(result, error)
+            }
         }
     }
-}
 }

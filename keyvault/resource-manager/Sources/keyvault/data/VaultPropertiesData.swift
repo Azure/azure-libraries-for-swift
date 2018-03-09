@@ -14,6 +14,7 @@ internal struct VaultPropertiesData : VaultPropertiesProtocol {
     public var enabledForTemplateDeployment: Bool?
     public var enableSoftDelete: Bool?
     public var createMode: CreateModeEnum?
+    public var enablePurgeProtection: Bool?
 
         enum CodingKeys: String, CodingKey {case tenantId = "tenantId"
         case sku = "sku"
@@ -24,6 +25,7 @@ internal struct VaultPropertiesData : VaultPropertiesProtocol {
         case enabledForTemplateDeployment = "enabledForTemplateDeployment"
         case enableSoftDelete = "enableSoftDelete"
         case createMode = "createMode"
+        case enablePurgeProtection = "enablePurgeProtection"
         }
 
   public init(tenantId: String, sku: SkuProtocol)  {
@@ -56,6 +58,9 @@ internal struct VaultPropertiesData : VaultPropertiesProtocol {
     if container.contains(.createMode) {
         self.createMode = try container.decode(CreateModeEnum?.self, forKey: .createMode)
     }
+    if container.contains(.enablePurgeProtection) {
+        self.enablePurgeProtection = try container.decode(Bool?.self, forKey: .enablePurgeProtection)
+    }
     if var pageDecoder = decoder as? PageDecoder  {
       if pageDecoder.isPagedData,
         let nextLinkName = pageDecoder.nextLinkName {
@@ -75,6 +80,7 @@ internal struct VaultPropertiesData : VaultPropertiesProtocol {
     if self.enabledForTemplateDeployment != nil {try container.encode(self.enabledForTemplateDeployment, forKey: .enabledForTemplateDeployment)}
     if self.enableSoftDelete != nil {try container.encode(self.enableSoftDelete, forKey: .enableSoftDelete)}
     if self.createMode != nil {try container.encode(self.createMode, forKey: .createMode)}
+    if self.enablePurgeProtection != nil {try container.encode(self.enablePurgeProtection, forKey: .enablePurgeProtection)}
   }
 }
 

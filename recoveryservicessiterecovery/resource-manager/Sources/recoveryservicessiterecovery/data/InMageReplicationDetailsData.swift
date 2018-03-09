@@ -6,8 +6,8 @@ import Foundation
 import azureSwiftRuntime
 internal struct InMageReplicationDetailsData : InMageReplicationDetailsProtocol, ReplicationProviderSpecificSettingsProtocol {
     public var activeSiteType: String?
-    public var sourceVmCPUCount: Int32?
-    public var sourceVmRAMSizeInMB: Int32?
+    public var sourceVmCpuCount: Int32?
+    public var sourceVmRamSizeInMB: Int32?
     public var osDetails: OSDiskDetailsProtocol?
     public var protectionStage: String?
     public var vmId: String?
@@ -44,8 +44,8 @@ internal struct InMageReplicationDetailsData : InMageReplicationDetailsProtocol,
     public var osVersion: String?
 
         enum CodingKeys: String, CodingKey {case activeSiteType = "activeSiteType"
-        case sourceVmCPUCount = "sourceVmCPUCount"
-        case sourceVmRAMSizeInMB = "sourceVmRAMSizeInMB"
+        case sourceVmCpuCount = "sourceVmCpuCount"
+        case sourceVmRamSizeInMB = "sourceVmRamSizeInMB"
         case osDetails = "osDetails"
         case protectionStage = "protectionStage"
         case vmId = "vmId"
@@ -90,11 +90,11 @@ internal struct InMageReplicationDetailsData : InMageReplicationDetailsProtocol,
       if container.contains(.activeSiteType) {
         self.activeSiteType = try container.decode(String?.self, forKey: .activeSiteType)
     }
-    if container.contains(.sourceVmCPUCount) {
-        self.sourceVmCPUCount = try container.decode(Int32?.self, forKey: .sourceVmCPUCount)
+    if container.contains(.sourceVmCpuCount) {
+        self.sourceVmCpuCount = try container.decode(Int32?.self, forKey: .sourceVmCpuCount)
     }
-    if container.contains(.sourceVmRAMSizeInMB) {
-        self.sourceVmRAMSizeInMB = try container.decode(Int32?.self, forKey: .sourceVmRAMSizeInMB)
+    if container.contains(.sourceVmRamSizeInMB) {
+        self.sourceVmRamSizeInMB = try container.decode(Int32?.self, forKey: .sourceVmRamSizeInMB)
     }
     if container.contains(.osDetails) {
         self.osDetails = try container.decode(OSDiskDetailsData?.self, forKey: .osDetails)
@@ -209,8 +209,8 @@ internal struct InMageReplicationDetailsData : InMageReplicationDetailsProtocol,
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
     if self.activeSiteType != nil {try container.encode(self.activeSiteType, forKey: .activeSiteType)}
-    if self.sourceVmCPUCount != nil {try container.encode(self.sourceVmCPUCount, forKey: .sourceVmCPUCount)}
-    if self.sourceVmRAMSizeInMB != nil {try container.encode(self.sourceVmRAMSizeInMB, forKey: .sourceVmRAMSizeInMB)}
+    if self.sourceVmCpuCount != nil {try container.encode(self.sourceVmCpuCount, forKey: .sourceVmCpuCount)}
+    if self.sourceVmRamSizeInMB != nil {try container.encode(self.sourceVmRamSizeInMB, forKey: .sourceVmRamSizeInMB)}
     if self.osDetails != nil {try container.encode(self.osDetails as! OSDiskDetailsData?, forKey: .osDetails)}
     if self.protectionStage != nil {try container.encode(self.protectionStage, forKey: .protectionStage)}
     if self.vmId != nil {try container.encode(self.vmId, forKey: .vmId)}

@@ -16,4 +16,7 @@ public protocol DatabaseOperationPropertiesProtocol : Codable {
      var errorDescription: String? { get set }
      var errorSeverity: Int32? { get set }
      var isUserError: Bool? { get set }
+     var estimatedCompletionTime: Date? { get set }
+     var description: String? { get set }
+     var isCancellable: Bool? { get set }
 }

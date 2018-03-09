@@ -8,6 +8,9 @@ import Foundation
 import azureSwiftRuntime
 extension Commands {
 public struct Redis {
+    public static func CheckNameAvailability(subscriptionId: String, parameters: CheckNameAvailabilityParametersProtocol) -> RedisCheckNameAvailability {
+        return CheckNameAvailabilityCommand(subscriptionId: subscriptionId, parameters: parameters)
+    }
     public static func Create(resourceGroupName: String, name: String, subscriptionId: String, parameters: RedisCreateParametersProtocol) -> RedisCreate {
         return CreateCommand(resourceGroupName: resourceGroupName, name: name, subscriptionId: subscriptionId, parameters: parameters)
     }
@@ -34,6 +37,9 @@ public struct Redis {
     }
     public static func ListKeys(resourceGroupName: String, name: String, subscriptionId: String) -> RedisListKeys {
         return ListKeysCommand(resourceGroupName: resourceGroupName, name: name, subscriptionId: subscriptionId)
+    }
+    public static func ListUpgradeNotifications(resourceGroupName: String, name: String, subscriptionId: String, history: Double) -> RedisListUpgradeNotifications {
+        return ListUpgradeNotificationsCommand(resourceGroupName: resourceGroupName, name: name, subscriptionId: subscriptionId, history: history)
     }
     public static func RegenerateKey(resourceGroupName: String, name: String, subscriptionId: String, parameters: RedisRegenerateKeyParametersProtocol) -> RedisRegenerateKey {
         return RegenerateKeyCommand(resourceGroupName: resourceGroupName, name: name, subscriptionId: subscriptionId, parameters: parameters)

@@ -6,8 +6,11 @@ import Foundation
 // A2AProtectedManagedDiskDetailsProtocol is a2A protected managed disk details.
 public protocol A2AProtectedManagedDiskDetailsProtocol : Codable {
      var diskId: String? { get set }
-     var recoveryAzureResourceGroupId: String? { get set }
-     var recoveryDiskId: String? { get set }
+     var recoveryResourceGroupId: String? { get set }
+     var recoveryTargetDiskId: String? { get set }
+     var recoveryReplicaDiskId: String? { get set }
+     var recoveryReplicaDiskAccountType: String? { get set }
+     var recoveryTargetDiskAccountType: String? { get set }
      var diskName: String? { get set }
      var diskCapacityInBytes: Int64? { get set }
      var primaryStagingAzureStorageAccountId: String? { get set }

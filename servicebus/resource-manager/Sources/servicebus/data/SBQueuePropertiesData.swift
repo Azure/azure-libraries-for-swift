@@ -20,6 +20,7 @@ internal struct SBQueuePropertiesData : SBQueuePropertiesProtocol {
     public var duplicateDetectionHistoryTimeWindow: String?
     public var maxDeliveryCount: Int32?
     public var status: EntityStatusEnum?
+    public var enableBatchedOperations: Bool?
     public var autoDeleteOnIdle: String?
     public var enablePartitioning: Bool?
     public var enableExpress: Bool?
@@ -41,6 +42,7 @@ internal struct SBQueuePropertiesData : SBQueuePropertiesProtocol {
         case duplicateDetectionHistoryTimeWindow = "duplicateDetectionHistoryTimeWindow"
         case maxDeliveryCount = "maxDeliveryCount"
         case status = "status"
+        case enableBatchedOperations = "enableBatchedOperations"
         case autoDeleteOnIdle = "autoDeleteOnIdle"
         case enablePartitioning = "enablePartitioning"
         case enableExpress = "enableExpress"
@@ -98,6 +100,9 @@ internal struct SBQueuePropertiesData : SBQueuePropertiesProtocol {
     if container.contains(.status) {
         self.status = try container.decode(EntityStatusEnum?.self, forKey: .status)
     }
+    if container.contains(.enableBatchedOperations) {
+        self.enableBatchedOperations = try container.decode(Bool?.self, forKey: .enableBatchedOperations)
+    }
     if container.contains(.autoDeleteOnIdle) {
         self.autoDeleteOnIdle = try container.decode(String?.self, forKey: .autoDeleteOnIdle)
     }
@@ -144,6 +149,7 @@ internal struct SBQueuePropertiesData : SBQueuePropertiesProtocol {
     if self.duplicateDetectionHistoryTimeWindow != nil {try container.encode(self.duplicateDetectionHistoryTimeWindow, forKey: .duplicateDetectionHistoryTimeWindow)}
     if self.maxDeliveryCount != nil {try container.encode(self.maxDeliveryCount, forKey: .maxDeliveryCount)}
     if self.status != nil {try container.encode(self.status, forKey: .status)}
+    if self.enableBatchedOperations != nil {try container.encode(self.enableBatchedOperations, forKey: .enableBatchedOperations)}
     if self.autoDeleteOnIdle != nil {try container.encode(self.autoDeleteOnIdle, forKey: .autoDeleteOnIdle)}
     if self.enablePartitioning != nil {try container.encode(self.enablePartitioning, forKey: .enablePartitioning)}
     if self.enableExpress != nil {try container.encode(self.enableExpress, forKey: .enableExpress)}

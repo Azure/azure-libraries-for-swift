@@ -8,7 +8,8 @@ internal struct UpdateReplicationProtectedItemInputPropertiesData : UpdateReplic
     public var recoveryAzureVMName: String?
     public var recoveryAzureVMSize: String?
     public var selectedRecoveryAzureNetworkId: String?
-    public var enableRDPOnTargetOption: String?
+    public var selectedSourceNicId: String?
+    public var enableRdpOnTargetOption: String?
     public var vmNics: [VMNicInputDetailsProtocol?]?
     public var licenseType: LicenseTypeEnum?
     public var recoveryAvailabilitySetId: String?
@@ -17,7 +18,8 @@ internal struct UpdateReplicationProtectedItemInputPropertiesData : UpdateReplic
         enum CodingKeys: String, CodingKey {case recoveryAzureVMName = "recoveryAzureVMName"
         case recoveryAzureVMSize = "recoveryAzureVMSize"
         case selectedRecoveryAzureNetworkId = "selectedRecoveryAzureNetworkId"
-        case enableRDPOnTargetOption = "enableRDPOnTargetOption"
+        case selectedSourceNicId = "selectedSourceNicId"
+        case enableRdpOnTargetOption = "enableRdpOnTargetOption"
         case vmNics = "vmNics"
         case licenseType = "licenseType"
         case recoveryAvailabilitySetId = "recoveryAvailabilitySetId"
@@ -38,8 +40,11 @@ internal struct UpdateReplicationProtectedItemInputPropertiesData : UpdateReplic
     if container.contains(.selectedRecoveryAzureNetworkId) {
         self.selectedRecoveryAzureNetworkId = try container.decode(String?.self, forKey: .selectedRecoveryAzureNetworkId)
     }
-    if container.contains(.enableRDPOnTargetOption) {
-        self.enableRDPOnTargetOption = try container.decode(String?.self, forKey: .enableRDPOnTargetOption)
+    if container.contains(.selectedSourceNicId) {
+        self.selectedSourceNicId = try container.decode(String?.self, forKey: .selectedSourceNicId)
+    }
+    if container.contains(.enableRdpOnTargetOption) {
+        self.enableRdpOnTargetOption = try container.decode(String?.self, forKey: .enableRdpOnTargetOption)
     }
     if container.contains(.vmNics) {
         self.vmNics = try container.decode([VMNicInputDetailsData?]?.self, forKey: .vmNics)
@@ -66,7 +71,8 @@ internal struct UpdateReplicationProtectedItemInputPropertiesData : UpdateReplic
     if self.recoveryAzureVMName != nil {try container.encode(self.recoveryAzureVMName, forKey: .recoveryAzureVMName)}
     if self.recoveryAzureVMSize != nil {try container.encode(self.recoveryAzureVMSize, forKey: .recoveryAzureVMSize)}
     if self.selectedRecoveryAzureNetworkId != nil {try container.encode(self.selectedRecoveryAzureNetworkId, forKey: .selectedRecoveryAzureNetworkId)}
-    if self.enableRDPOnTargetOption != nil {try container.encode(self.enableRDPOnTargetOption, forKey: .enableRDPOnTargetOption)}
+    if self.selectedSourceNicId != nil {try container.encode(self.selectedSourceNicId, forKey: .selectedSourceNicId)}
+    if self.enableRdpOnTargetOption != nil {try container.encode(self.enableRdpOnTargetOption, forKey: .enableRdpOnTargetOption)}
     if self.vmNics != nil {try container.encode(self.vmNics as! [VMNicInputDetailsData?]?, forKey: .vmNics)}
     if self.licenseType != nil {try container.encode(self.licenseType, forKey: .licenseType)}
     if self.recoveryAvailabilitySetId != nil {try container.encode(self.recoveryAvailabilitySetId, forKey: .recoveryAvailabilitySetId)}

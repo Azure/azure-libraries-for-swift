@@ -9,68 +9,68 @@ public protocol WebAppsCreateOrUpdateSourceControlSlot  {
     var apiVersion : String { get set }
     var siteSourceControl :  SiteSourceControlProtocol?  { get set }
     func execute(client: RuntimeClient,
-        completionHandler: @escaping (SiteSourceControlProtocol?, Error?) -> Void) -> Void ;
+    completionHandler: @escaping (SiteSourceControlProtocol?, Error?) -> Void) -> Void ;
 }
 
 extension Commands.WebApps {
 // CreateOrUpdateSourceControlSlot updates the source control configuration of an app. This method may poll for
 // completion. Polling can be canceled by passing the cancel channel argument. The channel will be used to cancel
 // polling and any outstanding HTTP requests.
-internal class CreateOrUpdateSourceControlSlotCommand : BaseCommand, WebAppsCreateOrUpdateSourceControlSlot {
-    public var resourceGroupName : String
-    public var name : String
-    public var slot : String
-    public var subscriptionId : String
-    public var apiVersion = "2016-08-01"
+    internal class CreateOrUpdateSourceControlSlotCommand : BaseCommand, WebAppsCreateOrUpdateSourceControlSlot {
+        public var resourceGroupName : String
+        public var name : String
+        public var slot : String
+        public var subscriptionId : String
+        public var apiVersion = "2016-08-01"
     public var siteSourceControl :  SiteSourceControlProtocol?
 
-    public init(resourceGroupName: String, name: String, slot: String, subscriptionId: String, siteSourceControl: SiteSourceControlProtocol) {
-        self.resourceGroupName = resourceGroupName
-        self.name = name
-        self.slot = slot
-        self.subscriptionId = subscriptionId
-        self.siteSourceControl = siteSourceControl
-        super.init()
-        self.method = "Put"
-        self.isLongRunningOperation = true
-        self.path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/sourcecontrols/web"
-        self.headerParameters = ["Content-Type":"application/json; charset=utf-8"]
-    }
-
-    public override func preCall()  {
-        self.pathParameters["{resourceGroupName}"] = String(describing: self.resourceGroupName)
-        self.pathParameters["{name}"] = String(describing: self.name)
-        self.pathParameters["{slot}"] = String(describing: self.slot)
-        self.pathParameters["{subscriptionId}"] = String(describing: self.subscriptionId)
-        self.queryParameters["api-version"] = String(describing: self.apiVersion)
-    self.body = siteSourceControl
-}
-
-    public override func encodeBody() throws -> Data? {
-        let contentType = "application/json"
-        if let mimeType = MimeType.getType(forStr: contentType) {
-            let encoder = try CoderFactory.encoder(for: mimeType)
-            let encodedValue = try encoder.encode(siteSourceControl)
-            return encodedValue
+        public init(resourceGroupName: String, name: String, slot: String, subscriptionId: String, siteSourceControl: SiteSourceControlProtocol) {
+            self.resourceGroupName = resourceGroupName
+            self.name = name
+            self.slot = slot
+            self.subscriptionId = subscriptionId
+            self.siteSourceControl = siteSourceControl
+            super.init()
+            self.method = "Put"
+            self.isLongRunningOperation = true
+            self.path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/sourcecontrols/web"
+            self.headerParameters = ["Content-Type":"application/json; charset=utf-8"]
         }
-        throw DecodeError.unknownMimeType
-    }
 
-    public override func returnFunc(data: Data) throws -> Decodable? {
-        let contentType = "application/json"
-        if let mimeType = MimeType.getType(forStr: contentType) {
-            let decoder = try CoderFactory.decoder(for: mimeType)
-            let result = try decoder.decode(SiteSourceControlData?.self, from: data)
-            return result;
+        public override func preCall()  {
+            self.pathParameters["{resourceGroupName}"] = String(describing: self.resourceGroupName)
+            self.pathParameters["{name}"] = String(describing: self.name)
+            self.pathParameters["{slot}"] = String(describing: self.slot)
+            self.pathParameters["{subscriptionId}"] = String(describing: self.subscriptionId)
+            self.queryParameters["api-version"] = String(describing: self.apiVersion)
+            self.body = siteSourceControl
+
         }
-        throw DecodeError.unknownMimeType
-    }
-    public func execute(client: RuntimeClient,
-        completionHandler: @escaping (SiteSourceControlProtocol?, Error?) -> Void) -> Void {
-        client.executeAsyncLRO(command: self) {
-            (result: SiteSourceControlData?, error: Error?) in
-            completionHandler(result, error)
+        public override func encodeBody() throws -> Data? {
+            let contentType = "application/json"
+            if let mimeType = MimeType.getType(forStr: contentType) {
+                let encoder = try CoderFactory.encoder(for: mimeType)
+                let encodedValue = try encoder.encode(siteSourceControl as? SiteSourceControlData)
+                return encodedValue
+            }
+            throw DecodeError.unknownMimeType
+        }
+
+        public override func returnFunc(data: Data) throws -> Decodable? {
+            let contentType = "application/json"
+            if let mimeType = MimeType.getType(forStr: contentType) {
+                let decoder = try CoderFactory.decoder(for: mimeType)
+                let result = try decoder.decode(SiteSourceControlData?.self, from: data)
+                return result;
+            }
+            throw DecodeError.unknownMimeType
+        }
+        public func execute(client: RuntimeClient,
+            completionHandler: @escaping (SiteSourceControlProtocol?, Error?) -> Void) -> Void {
+            client.executeAsyncLRO(command: self) {
+                (result: SiteSourceControlData?, error: Error?) in
+                completionHandler(result, error)
+            }
         }
     }
-}
 }

@@ -16,6 +16,9 @@ internal struct DatabaseOperationPropertiesData : DatabaseOperationPropertiesPro
     public var errorDescription: String?
     public var errorSeverity: Int32?
     public var isUserError: Bool?
+    public var estimatedCompletionTime: Date?
+    public var description: String?
+    public var isCancellable: Bool?
 
         enum CodingKeys: String, CodingKey {case databaseName = "databaseName"
         case operation = "operation"
@@ -28,6 +31,9 @@ internal struct DatabaseOperationPropertiesData : DatabaseOperationPropertiesPro
         case errorDescription = "errorDescription"
         case errorSeverity = "errorSeverity"
         case isUserError = "isUserError"
+        case estimatedCompletionTime = "estimatedCompletionTime"
+        case description = "description"
+        case isCancellable = "isCancellable"
         }
 
   public init()  {
@@ -68,6 +74,15 @@ internal struct DatabaseOperationPropertiesData : DatabaseOperationPropertiesPro
     if container.contains(.isUserError) {
         self.isUserError = try container.decode(Bool?.self, forKey: .isUserError)
     }
+    if container.contains(.estimatedCompletionTime) {
+        self.estimatedCompletionTime = DateConverter.fromString(dateStr: (try container.decode(String?.self, forKey: .estimatedCompletionTime)), format: .dateTime)
+    }
+    if container.contains(.description) {
+        self.description = try container.decode(String?.self, forKey: .description)
+    }
+    if container.contains(.isCancellable) {
+        self.isCancellable = try container.decode(Bool?.self, forKey: .isCancellable)
+    }
     if var pageDecoder = decoder as? PageDecoder  {
       if pageDecoder.isPagedData,
         let nextLinkName = pageDecoder.nextLinkName {
@@ -91,6 +106,11 @@ internal struct DatabaseOperationPropertiesData : DatabaseOperationPropertiesPro
     if self.errorDescription != nil {try container.encode(self.errorDescription, forKey: .errorDescription)}
     if self.errorSeverity != nil {try container.encode(self.errorSeverity, forKey: .errorSeverity)}
     if self.isUserError != nil {try container.encode(self.isUserError, forKey: .isUserError)}
+    if self.estimatedCompletionTime != nil {
+        try container.encode(DateConverter.toString(date: self.estimatedCompletionTime!, format: .dateTime), forKey: .estimatedCompletionTime)
+    }
+    if self.description != nil {try container.encode(self.description, forKey: .description)}
+    if self.isCancellable != nil {try container.encode(self.isCancellable, forKey: .isCancellable)}
   }
 }
 

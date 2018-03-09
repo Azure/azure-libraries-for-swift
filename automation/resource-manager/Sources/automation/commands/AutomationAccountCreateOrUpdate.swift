@@ -8,63 +8,63 @@ public protocol AutomationAccountCreateOrUpdate  {
     var apiVersion : String { get set }
     var parameters :  AutomationAccountCreateOrUpdateParametersProtocol?  { get set }
     func execute(client: RuntimeClient,
-        completionHandler: @escaping (AutomationAccountProtocol?, Error?) -> Void) -> Void ;
+    completionHandler: @escaping (AutomationAccountProtocol?, Error?) -> Void) -> Void ;
 }
 
 extension Commands.AutomationAccount {
 // CreateOrUpdate create or update automation account.
-internal class CreateOrUpdateCommand : BaseCommand, AutomationAccountCreateOrUpdate {
-    public var resourceGroupName : String
-    public var automationAccountName : String
-    public var subscriptionId : String
-    public var apiVersion = "2015-10-31"
+    internal class CreateOrUpdateCommand : BaseCommand, AutomationAccountCreateOrUpdate {
+        public var resourceGroupName : String
+        public var automationAccountName : String
+        public var subscriptionId : String
+        public var apiVersion = "2015-10-31"
     public var parameters :  AutomationAccountCreateOrUpdateParametersProtocol?
 
-    public init(resourceGroupName: String, automationAccountName: String, subscriptionId: String, parameters: AutomationAccountCreateOrUpdateParametersProtocol) {
-        self.resourceGroupName = resourceGroupName
-        self.automationAccountName = automationAccountName
-        self.subscriptionId = subscriptionId
-        self.parameters = parameters
-        super.init()
-        self.method = "Put"
-        self.isLongRunningOperation = false
-        self.path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}"
-        self.headerParameters = ["Content-Type":"application/json; charset=utf-8"]
-    }
-
-    public override func preCall()  {
-        self.pathParameters["{resourceGroupName}"] = String(describing: self.resourceGroupName)
-        self.pathParameters["{automationAccountName}"] = String(describing: self.automationAccountName)
-        self.pathParameters["{subscriptionId}"] = String(describing: self.subscriptionId)
-        self.queryParameters["api-version"] = String(describing: self.apiVersion)
-    self.body = parameters
-}
-
-    public override func encodeBody() throws -> Data? {
-        let contentType = "application/json"
-        if let mimeType = MimeType.getType(forStr: contentType) {
-            let encoder = try CoderFactory.encoder(for: mimeType)
-            let encodedValue = try encoder.encode(parameters)
-            return encodedValue
+        public init(resourceGroupName: String, automationAccountName: String, subscriptionId: String, parameters: AutomationAccountCreateOrUpdateParametersProtocol) {
+            self.resourceGroupName = resourceGroupName
+            self.automationAccountName = automationAccountName
+            self.subscriptionId = subscriptionId
+            self.parameters = parameters
+            super.init()
+            self.method = "Put"
+            self.isLongRunningOperation = false
+            self.path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}"
+            self.headerParameters = ["Content-Type":"application/json; charset=utf-8"]
         }
-        throw DecodeError.unknownMimeType
-    }
 
-    public override func returnFunc(data: Data) throws -> Decodable? {
-        let contentType = "application/json"
-        if let mimeType = MimeType.getType(forStr: contentType) {
-            let decoder = try CoderFactory.decoder(for: mimeType)
-            let result = try decoder.decode(AutomationAccountData?.self, from: data)
-            return result;
+        public override func preCall()  {
+            self.pathParameters["{resourceGroupName}"] = String(describing: self.resourceGroupName)
+            self.pathParameters["{automationAccountName}"] = String(describing: self.automationAccountName)
+            self.pathParameters["{subscriptionId}"] = String(describing: self.subscriptionId)
+            self.queryParameters["api-version"] = String(describing: self.apiVersion)
+            self.body = parameters
+
         }
-        throw DecodeError.unknownMimeType
-    }
-    public func execute(client: RuntimeClient,
-        completionHandler: @escaping (AutomationAccountProtocol?, Error?) -> Void) -> Void {
-        client.executeAsync(command: self) {
-            (result: AutomationAccountData?, error: Error?) in
-            completionHandler(result, error)
+        public override func encodeBody() throws -> Data? {
+            let contentType = "application/json"
+            if let mimeType = MimeType.getType(forStr: contentType) {
+                let encoder = try CoderFactory.encoder(for: mimeType)
+                let encodedValue = try encoder.encode(parameters as? AutomationAccountCreateOrUpdateParametersData)
+                return encodedValue
+            }
+            throw DecodeError.unknownMimeType
+        }
+
+        public override func returnFunc(data: Data) throws -> Decodable? {
+            let contentType = "application/json"
+            if let mimeType = MimeType.getType(forStr: contentType) {
+                let decoder = try CoderFactory.decoder(for: mimeType)
+                let result = try decoder.decode(AutomationAccountData?.self, from: data)
+                return result;
+            }
+            throw DecodeError.unknownMimeType
+        }
+        public func execute(client: RuntimeClient,
+            completionHandler: @escaping (AutomationAccountProtocol?, Error?) -> Void) -> Void {
+            client.executeAsync(command: self) {
+                (result: AutomationAccountData?, error: Error?) in
+                completionHandler(result, error)
+            }
         }
     }
-}
 }

@@ -7,9 +7,11 @@ import azureSwiftRuntime
 internal struct ImageStorageProfileData : ImageStorageProfileProtocol {
     public var osDisk: ImageOSDiskProtocol
     public var dataDisks: [ImageDataDiskProtocol?]?
+    public var zoneResilient: Bool?
 
         enum CodingKeys: String, CodingKey {case osDisk = "osDisk"
         case dataDisks = "dataDisks"
+        case zoneResilient = "zoneResilient"
         }
 
   public init(osDisk: ImageOSDiskProtocol)  {
@@ -21,6 +23,9 @@ internal struct ImageStorageProfileData : ImageStorageProfileProtocol {
       self.osDisk = try container.decode(ImageOSDiskData.self, forKey: .osDisk)
     if container.contains(.dataDisks) {
         self.dataDisks = try container.decode([ImageDataDiskData?]?.self, forKey: .dataDisks)
+    }
+    if container.contains(.zoneResilient) {
+        self.zoneResilient = try container.decode(Bool?.self, forKey: .zoneResilient)
     }
     if var pageDecoder = decoder as? PageDecoder  {
       if pageDecoder.isPagedData,
@@ -34,6 +39,7 @@ internal struct ImageStorageProfileData : ImageStorageProfileProtocol {
     var container = encoder.container(keyedBy: CodingKeys.self)
     try container.encode(self.osDisk as! ImageOSDiskData, forKey: .osDisk)
     if self.dataDisks != nil {try container.encode(self.dataDisks as! [ImageDataDiskData?]?, forKey: .dataDisks)}
+    if self.zoneResilient != nil {try container.encode(self.zoneResilient, forKey: .zoneResilient)}
   }
 }
 

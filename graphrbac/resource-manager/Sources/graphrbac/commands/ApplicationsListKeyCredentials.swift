@@ -8,66 +8,66 @@ public protocol ApplicationsListKeyCredentials  {
     var tenantID : String { get set }
     var apiVersion : String { get set }
     func execute(client: RuntimeClient,
-        completionHandler: @escaping (KeyCredentialListResultProtocol?, Error?) -> Void) -> Void ;
+    completionHandler: @escaping (KeyCredentialListResultProtocol?, Error?) -> Void) -> Void ;
 }
 
 extension Commands.Applications {
 // ListKeyCredentials get the keyCredentials associated with an application.
-internal class ListKeyCredentialsCommand : BaseCommand, ApplicationsListKeyCredentials {
-    var nextLink: String?
-    public var hasAdditionalPages : Bool {
+    internal class ListKeyCredentialsCommand : BaseCommand, ApplicationsListKeyCredentials {
+        var nextLink: String?
+        public var hasAdditionalPages : Bool {
         get {
             return nextLink != nil
         }
     }
-    public var applicationObjectId : String
-    public var tenantID : String
-    public var apiVersion = "1.6"
+        public var applicationObjectId : String
+        public var tenantID : String
+        public var apiVersion = "1.6"
 
-    public init(applicationObjectId: String, tenantID: String) {
-        self.applicationObjectId = applicationObjectId
-        self.tenantID = tenantID
-        super.init()
-        self.method = "Get"
-        self.isLongRunningOperation = false
-        self.path = "/{tenantID}/applications/{applicationObjectId}/keyCredentials"
-        self.headerParameters = ["Content-Type":"application/json; charset=utf-8"]
-    }
+        public init(applicationObjectId: String, tenantID: String) {
+            self.applicationObjectId = applicationObjectId
+            self.tenantID = tenantID
+            super.init()
+            self.method = "Get"
+            self.isLongRunningOperation = false
+            self.path = "/{tenantID}/applications/{applicationObjectId}/keyCredentials"
+            self.headerParameters = ["Content-Type":"application/json; charset=utf-8"]
+        }
 
-    public override func preCall()  {
-        self.pathParameters["{applicationObjectId}"] = String(describing: self.applicationObjectId)
-        self.pathParameters["{tenantID}"] = String(describing: self.tenantID)
-        self.queryParameters["api-version"] = String(describing: self.apiVersion)
-}
+        public override func preCall()  {
+            self.pathParameters["{applicationObjectId}"] = String(describing: self.applicationObjectId)
+            self.pathParameters["{tenantID}"] = String(describing: self.tenantID)
+            self.queryParameters["api-version"] = String(describing: self.apiVersion)
 
+        }
 
-    public override func returnFunc(data: Data) throws -> Decodable? {
-        let contentType = "application/json"
-        if let mimeType = MimeType.getType(forStr: contentType) {
-            let decoder = try CoderFactory.decoder(for: mimeType)
-            if var pageDecoder = decoder as? PageDecoder {
-                pageDecoder.isPagedData = true
-                pageDecoder.nextLinkName = "nil"
+        public override func returnFunc(data: Data) throws -> Decodable? {
+            let contentType = "application/json"
+            if let mimeType = MimeType.getType(forStr: contentType) {
+                let decoder = try CoderFactory.decoder(for: mimeType)
+                if var pageDecoder = decoder as? PageDecoder {
+                    pageDecoder.isPagedData = true
+                    pageDecoder.nextLinkName = "nil"
+                }
+                let result = try decoder.decode(KeyCredentialListResultData?.self, from: data)
+                if var pageDecoder = decoder as? PageDecoder {
+                    self.nextLink = pageDecoder.nextLink
+                }
+                return result;
             }
-            let result = try decoder.decode(KeyCredentialListResultData?.self, from: data)
-            if var pageDecoder = decoder as? PageDecoder {
-                self.nextLink = pageDecoder.nextLink
+            throw DecodeError.unknownMimeType
+        }
+        public func execute(client: RuntimeClient,
+            completionHandler: @escaping (KeyCredentialListResultProtocol?, Error?) -> Void) -> Void {
+            if self.nextLink != nil {
+                self.path = nextLink!
+                self.nextLink = nil;
+                self.pathType = .absolute
             }
-            return result;
-        }
-        throw DecodeError.unknownMimeType
-    }
-    public func execute(client: RuntimeClient,
-        completionHandler: @escaping (KeyCredentialListResultProtocol?, Error?) -> Void) -> Void {
-        if self.nextLink != nil {
-            self.path = nextLink!
-            self.nextLink = nil;
-            self.pathType = .absolute
-        }
-        client.executeAsync(command: self) {
-            (result: KeyCredentialListResultData?, error: Error?) in
-            completionHandler(result, error)
+            client.executeAsync(command: self) {
+                (result: KeyCredentialListResultData?, error: Error?) in
+                completionHandler(result, error)
+            }
         }
     }
-}
 }

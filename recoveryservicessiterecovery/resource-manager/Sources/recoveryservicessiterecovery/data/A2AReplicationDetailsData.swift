@@ -8,9 +8,11 @@ internal struct A2AReplicationDetailsData : A2AReplicationDetailsProtocol, Repli
     public var fabricObjectId: String?
     public var multiVmGroupId: String?
     public var multiVmGroupName: String?
+    public var multiVmGroupCreateOption: MultiVmGroupCreateOptionEnum?
     public var managementId: String?
     public var protectedDisks: [A2AProtectedDiskDetailsProtocol?]?
     public var protectedManagedDisks: [A2AProtectedManagedDiskDetailsProtocol?]?
+    public var recoveryBootDiagStorageAccountId: String?
     public var primaryFabricLocation: String?
     public var recoveryFabricLocation: String?
     public var osType: String?
@@ -38,9 +40,11 @@ internal struct A2AReplicationDetailsData : A2AReplicationDetailsProtocol, Repli
         enum CodingKeys: String, CodingKey {case fabricObjectId = "fabricObjectId"
         case multiVmGroupId = "multiVmGroupId"
         case multiVmGroupName = "multiVmGroupName"
+        case multiVmGroupCreateOption = "multiVmGroupCreateOption"
         case managementId = "managementId"
         case protectedDisks = "protectedDisks"
         case protectedManagedDisks = "protectedManagedDisks"
+        case recoveryBootDiagStorageAccountId = "recoveryBootDiagStorageAccountId"
         case primaryFabricLocation = "primaryFabricLocation"
         case recoveryFabricLocation = "recoveryFabricLocation"
         case osType = "osType"
@@ -80,6 +84,9 @@ internal struct A2AReplicationDetailsData : A2AReplicationDetailsProtocol, Repli
     if container.contains(.multiVmGroupName) {
         self.multiVmGroupName = try container.decode(String?.self, forKey: .multiVmGroupName)
     }
+    if container.contains(.multiVmGroupCreateOption) {
+        self.multiVmGroupCreateOption = try container.decode(MultiVmGroupCreateOptionEnum?.self, forKey: .multiVmGroupCreateOption)
+    }
     if container.contains(.managementId) {
         self.managementId = try container.decode(String?.self, forKey: .managementId)
     }
@@ -88,6 +95,9 @@ internal struct A2AReplicationDetailsData : A2AReplicationDetailsProtocol, Repli
     }
     if container.contains(.protectedManagedDisks) {
         self.protectedManagedDisks = try container.decode([A2AProtectedManagedDiskDetailsData?]?.self, forKey: .protectedManagedDisks)
+    }
+    if container.contains(.recoveryBootDiagStorageAccountId) {
+        self.recoveryBootDiagStorageAccountId = try container.decode(String?.self, forKey: .recoveryBootDiagStorageAccountId)
     }
     if container.contains(.primaryFabricLocation) {
         self.primaryFabricLocation = try container.decode(String?.self, forKey: .primaryFabricLocation)
@@ -171,9 +181,11 @@ internal struct A2AReplicationDetailsData : A2AReplicationDetailsProtocol, Repli
     if self.fabricObjectId != nil {try container.encode(self.fabricObjectId, forKey: .fabricObjectId)}
     if self.multiVmGroupId != nil {try container.encode(self.multiVmGroupId, forKey: .multiVmGroupId)}
     if self.multiVmGroupName != nil {try container.encode(self.multiVmGroupName, forKey: .multiVmGroupName)}
+    if self.multiVmGroupCreateOption != nil {try container.encode(self.multiVmGroupCreateOption, forKey: .multiVmGroupCreateOption)}
     if self.managementId != nil {try container.encode(self.managementId, forKey: .managementId)}
     if self.protectedDisks != nil {try container.encode(self.protectedDisks as! [A2AProtectedDiskDetailsData?]?, forKey: .protectedDisks)}
     if self.protectedManagedDisks != nil {try container.encode(self.protectedManagedDisks as! [A2AProtectedManagedDiskDetailsData?]?, forKey: .protectedManagedDisks)}
+    if self.recoveryBootDiagStorageAccountId != nil {try container.encode(self.recoveryBootDiagStorageAccountId, forKey: .recoveryBootDiagStorageAccountId)}
     if self.primaryFabricLocation != nil {try container.encode(self.primaryFabricLocation, forKey: .primaryFabricLocation)}
     if self.recoveryFabricLocation != nil {try container.encode(self.recoveryFabricLocation, forKey: .recoveryFabricLocation)}
     if self.osType != nil {try container.encode(self.osType, forKey: .osType)}

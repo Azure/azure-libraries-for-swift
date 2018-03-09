@@ -5,5 +5,4 @@
 import Foundation
 // ProviderSpecificRecoveryPointDetailsProtocol is replication provider specific recovery point details.
 public protocol ProviderSpecificRecoveryPointDetailsProtocol : Codable {
-     var type: String? { get set }
 }

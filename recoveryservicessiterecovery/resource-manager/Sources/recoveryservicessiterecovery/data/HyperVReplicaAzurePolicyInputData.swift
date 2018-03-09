@@ -9,14 +9,12 @@ internal struct HyperVReplicaAzurePolicyInputData : HyperVReplicaAzurePolicyInpu
     public var applicationConsistentSnapshotFrequencyInHours: Int32?
     public var replicationInterval: Int32?
     public var onlineReplicationStartTime: String?
-    public var encryption: String?
     public var storageAccounts: [String]?
 
         enum CodingKeys: String, CodingKey {case recoveryPointHistoryDuration = "recoveryPointHistoryDuration"
         case applicationConsistentSnapshotFrequencyInHours = "applicationConsistentSnapshotFrequencyInHours"
         case replicationInterval = "replicationInterval"
         case onlineReplicationStartTime = "onlineReplicationStartTime"
-        case encryption = "encryption"
         case storageAccounts = "storageAccounts"
         }
 
@@ -37,9 +35,6 @@ internal struct HyperVReplicaAzurePolicyInputData : HyperVReplicaAzurePolicyInpu
     if container.contains(.onlineReplicationStartTime) {
         self.onlineReplicationStartTime = try container.decode(String?.self, forKey: .onlineReplicationStartTime)
     }
-    if container.contains(.encryption) {
-        self.encryption = try container.decode(String?.self, forKey: .encryption)
-    }
     if container.contains(.storageAccounts) {
         self.storageAccounts = try container.decode([String]?.self, forKey: .storageAccounts)
     }
@@ -57,7 +52,6 @@ internal struct HyperVReplicaAzurePolicyInputData : HyperVReplicaAzurePolicyInpu
     if self.applicationConsistentSnapshotFrequencyInHours != nil {try container.encode(self.applicationConsistentSnapshotFrequencyInHours, forKey: .applicationConsistentSnapshotFrequencyInHours)}
     if self.replicationInterval != nil {try container.encode(self.replicationInterval, forKey: .replicationInterval)}
     if self.onlineReplicationStartTime != nil {try container.encode(self.onlineReplicationStartTime, forKey: .onlineReplicationStartTime)}
-    if self.encryption != nil {try container.encode(self.encryption, forKey: .encryption)}
     if self.storageAccounts != nil {try container.encode(self.storageAccounts as! [String]?, forKey: .storageAccounts)}
   }
 }

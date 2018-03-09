@@ -7,4 +7,5 @@ import Foundation
 public protocol ImageStorageProfileProtocol : Codable {
      var osDisk: ImageOSDiskProtocol { get set }
      var dataDisks: [ImageDataDiskProtocol?]? { get set }
+     var zoneResilient: Bool? { get set }
 }

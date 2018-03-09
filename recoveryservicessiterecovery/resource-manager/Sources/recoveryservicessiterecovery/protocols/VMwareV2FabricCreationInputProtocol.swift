@@ -5,4 +5,6 @@
 import Foundation
 // VMwareV2FabricCreationInputProtocol is fabric provider specific settings.
 public protocol VMwareV2FabricCreationInputProtocol : FabricSpecificCreationInputProtocol {
+     var keyVaultUrl: String? { get set }
+     var keyVaultResourceArmId: String? { get set }
 }

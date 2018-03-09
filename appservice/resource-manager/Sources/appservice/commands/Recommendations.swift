@@ -11,6 +11,12 @@ public struct Recommendations {
     public static func DisableAllForWebApp(resourceGroupName: String, siteName: String, subscriptionId: String) -> RecommendationsDisableAllForWebApp {
         return DisableAllForWebAppCommand(resourceGroupName: resourceGroupName, siteName: siteName, subscriptionId: subscriptionId)
     }
+    public static func DisableRecommendationForSite(resourceGroupName: String, siteName: String, name: String, subscriptionId: String) -> RecommendationsDisableRecommendationForSite {
+        return DisableRecommendationForSiteCommand(resourceGroupName: resourceGroupName, siteName: siteName, name: name, subscriptionId: subscriptionId)
+    }
+    public static func DisableRecommendationForSubscription(name: String, subscriptionId: String) -> RecommendationsDisableRecommendationForSubscription {
+        return DisableRecommendationForSubscriptionCommand(name: name, subscriptionId: subscriptionId)
+    }
     public static func GetRuleDetailsByWebApp(resourceGroupName: String, siteName: String, name: String, subscriptionId: String) -> RecommendationsGetRuleDetailsByWebApp {
         return GetRuleDetailsByWebAppCommand(resourceGroupName: resourceGroupName, siteName: siteName, name: name, subscriptionId: subscriptionId)
     }
