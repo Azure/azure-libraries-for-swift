@@ -1,6 +1,4 @@
-[![Build Status](https://travis-ci.org/Azure/azure-libraries-for-java.svg?style=flat-square&label=build)](https://travis-ci.org/Azure/azure-libraries-for-java)
-
-# Azure Management Libraries for Swift (BETA)
+﻿# Azure Management Libraries for Swift (BETA)
 
 
 The Azure Management Libraries for Swift is a higher-level, object-oriented API for *managing* Azure resources, that is optimized for ease of use, succinctness and consistency.
